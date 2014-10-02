@@ -1,0 +1,9 @@
+Modéliser l'accessibilité au centre ville d'Utopia (Examen 2011/2012):
+	- Est-ce que tous les sommets sont joignables entre eux?
+	=> Détecter les composants fortements connexes
+
+Premier algorithme: (parcours DFS)
+	- La procédure explore(G, u) ne se termine que si tous les sommets accessibles à partir de u soient visités/explorés (cad après avoir exploré toute la descandence de u)
+
+
+Personnellement, chez soi, faire les autres exos
