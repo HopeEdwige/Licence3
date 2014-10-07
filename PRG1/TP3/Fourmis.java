@@ -1,4 +1,6 @@
-
+/**
+ * A class to get the "Fourmis" algorithm
+ */
 public class Fourmis {
 	
 	/**

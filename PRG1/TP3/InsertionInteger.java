@@ -1,6 +1,9 @@
 import java.util.Scanner;
 
 
+/**
+ * A class to get an array of sorted integers
+ */
 public class InsertionInteger {
 	
 	private static final int SIZE_MAX = 10;
@@ -8,12 +11,20 @@ public class InsertionInteger {
 	private int[] array = new int[SIZE_MAX];
 
 	
-	public InsertionInteger(){
+	/**
+	 * The constructor
+	 * Just initializes the size to 0
+	 */
+	public InsertionInteger() {
 		this.size = 0;
 	}
 
 	
-	public int[] toArray(){
+	/**
+	 * Get a copy of the current array
+	 * @return int[] A copy of the current array
+	 */
+	public int[] toArray() {
 		int[] copy = new int[SIZE_MAX];
 		if (size > 0) {
 			for (int i = 0; i < this.size; i++) {
@@ -24,6 +35,12 @@ public class InsertionInteger {
 	}
 	
 	
+	/**
+	 * Insert an integer into the current array
+	 * The array is sorted before and after the insertion
+	 * @param int value The value of the new element to insert
+	 * @return boolean true if the element is inserted, false if error encountered
+	 */
 	public boolean insert(int value) {
 		boolean result = false;
 		if (this.size == SIZE_MAX) {
@@ -59,6 +76,10 @@ public class InsertionInteger {
 	}
 	
 	
+	/**
+	 * Get a displayable description of this object and its current state
+	 * @return String A displayable description of this object
+	 */
 	public String toString() {
 		String ret = "";
 		
@@ -73,6 +94,10 @@ public class InsertionInteger {
 	}
 	
 	
+	/**
+	 * Initializes the values of the array
+	 * @param Scanner scanner The scanner object where we'll get the inputs
+	 */
 	public void createArray(Scanner scanner) {
 		System.out.println("Veuillez entrer la suite d'entiers finis par -1:");
 		int entry = scanner.nextInt();

@@ -1,17 +1,29 @@
 import java.util.Scanner;
 
 
+/**
+ * A class to get an array of sorted Pair objects
+ */
 public class InsertionPair {
+
 	private static final int SIZE_MAX = 10;
 	private int size;
 	private Pair[] array = new Pair[SIZE_MAX];
 
 	
+	/**
+	 * The constructor
+	 * Juste initializes the size to 0
+	 */
 	public InsertionPair(){
 		this.size = 0;
 	}
 
 	
+	/**
+	 * Get a copy of the current array
+	 * @return Pair[] A copy of the current array
+	 */
 	public Pair[] toArray(){
 		Pair[] copy = new Pair[SIZE_MAX];
 		if (size > 0) {
@@ -24,6 +36,12 @@ public class InsertionPair {
 	}
 	
 	
+	/**
+	 * Insert a Pair object into the current array
+	 * The array is sorted before and after the insertion
+	 * @param Pair toInsert The new Pair object to insert
+	 * @return boolean true if the element is inserted, false if error encountered
+	 */
 	public boolean insert(Pair toInsert) {
 		boolean result = false;
 		if (this.size == SIZE_MAX) {
@@ -59,6 +77,10 @@ public class InsertionPair {
 	}
 	
 	
+	/**
+	 * Get a displayable description of this object and its current state
+	 * @return String A displayable description of this object
+	 */
 	public String toString() {
 		String ret = "";
 		
@@ -73,6 +95,10 @@ public class InsertionPair {
 	}
 	
 	
+	/**
+	 * Initializes the values of the array
+	 * @param Scanner scanner The scanner object where we'll get the inputs
+	 */
 	public void createArray(Scanner scanner) {
 		System.out.println("Veuillez entrer la suite d'entiers finis par -1:");
 		int last = 0;
