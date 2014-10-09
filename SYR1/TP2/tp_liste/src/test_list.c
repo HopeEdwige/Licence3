@@ -80,26 +80,42 @@ main(int argc, char **argv)
 
     case 'Q' :
     case 'q' :
-      /* à compléter */
+      printf("Valeur du nouvel element ? ");
+      scanf("%d",&value);
+      if (insert_tail(&la_liste,value)!=0) {
+        printf("Erreur : impossible d'ajouter l'élément %d\n en fin de liste",value);
+      }
       break;
 
 
     case 'F' :
     case 'f' :
-      /* à compléter */
+      printf("Index de l'élément à rechercher ? \n");
+      scanf("%d",&value);
+      list_elem_t* elem = find_element(la_liste,value);
+      if (elem==NULL) {
+        printf("Erreur : impossible de retrouver l'élément à l'index %d\n",value);
+      }
+      else {
+        printf("L'élément à l'index %d est [%d]\n", value, elem->value);
+      }
       break;
 
 
 
     case 's' :
     case 'S' :
-      /* à compléter */
+      printf("Valeur de l'élément à supprimer ? ");
+      scanf("%d",&value);
+      if (remove_element(&la_liste,value)!=0) {
+        printf("Erreur : impossible de supprimer l'élément à de valeur %d\n",value);
+      };
       break;
 
 
     case 'r' :
     case 'R' :
-      /* à compléter */
+      reverse_list(&la_liste);
       break;
 
 
@@ -122,6 +138,3 @@ main(int argc, char **argv)
   }
   return 0;
 }
-
-
-

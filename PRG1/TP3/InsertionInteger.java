@@ -96,13 +96,13 @@ public class InsertionInteger {
 	
 	/**
 	 * Initializes the values of the array
-	 *Â @param Scanner scanner The scanner object where we'll get the inputs
+	 * @param Scanner scanner The scanner object where we'll get the inputs
 	 */
 	public void createArray(Scanner scanner) {
-		System.out.println("Veuillez entrer la suite d'entiers finis par -1:");
 		int entry = scanner.nextInt();
 		while(entry != -1) {
 			this.insert(entry);
+			entry = scanner.nextInt();
 		}
 	}
 	

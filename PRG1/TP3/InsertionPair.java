@@ -13,7 +13,7 @@ public class InsertionPair {
 	
 	/**
 	 * The constructor
-	 * Juste initializes the size to 0
+	 * Just initializes the size to 0
 	 */
 	public InsertionPair(){
 		this.size = 0;
@@ -50,23 +50,22 @@ public class InsertionPair {
 			int i = 0;
 			boolean fini = false;
 			while (i < this.size && !fini) {
-				if (this.array[i] < value) {
+				if (this.array[i].less(toInsert)) {
 					i++;
-				} else if (this.array[i] == value) {
-					result = false;
+				} else if (this.array[i].equals(toInsert)) {
 					fini = true;
 				} else {
 					this.size ++;
 					for (int j = this.size-1; j > i; j--){
 						this.array[j] = this.array[j-1];
 					}
-					this.array[i] = value;
+					this.array[i] = toInsert;
 					result = true;
 					fini = true;
 				}
 			}
 			if (i == this.size) {
-				this.array[this.size] = value;
+				this.array[this.size] = toInsert;
 				this.size ++;
 				result = true;
 			}
@@ -97,22 +96,22 @@ public class InsertionPair {
 	
 	/**
 	 * Initializes the values of the array
-	 * @param Scanner scanner The scanner object where we'll get the inputs
+	 * @param Scanner scanner The scanner object where we'll get the inputs
 	 */
 	public void createArray(Scanner scanner) {
-		System.out.println("Veuillez entrer la suite d'entiers finis par -1:");
-		int last = 0;
 		int entry = scanner.nextInt();
-		while ((entry != -1) && (last != -1)) {
-			if (last != 0) {
-				Pair toInsert = new Pair(last, entry);
-				this.insert(toInsert);
-				last = 0;
-			}
-			
-			else {
-				last = entry;
+		int last;
+		boolean fini = false;
+		while ((entry != -1) && !fini) {
+			last = scanner.nextInt();
+			if (last != -1) {
+				Pair p = new Pair(entry, last);
+				this.insert(p);
+				entry = scanner.nextInt();
+			} else {
+				fini = true;
 			}
 		}
+		System.out.println(this.toString());
 	}
 }

@@ -3,9 +3,9 @@
  * 			TP de programmation en C
  *			Mise en oeuvre de listes chaînées
  *
- * Groupe 	:
- * Nom Prénom 1 :
- * Nom Prénom 2 :
+ * Groupe 	:  2.2
+ * Nom Prénom 1 :  DANG Minh Anh
+ * Nom Prénom 2 :  ANDRIAMILANTO Tompoariniaina
  *
  **************************************************************************/
 
@@ -70,8 +70,7 @@ free_element (list_elem_t * l)
  *    0 en cas de succès.
  *   -1 si l'ajout est impossible.
  */
-int
-insert_head (list_elem_t * * l, int value)
+int insert_head (list_elem_t * * l, int value)
 {
   if (l == NULL) { return -1; }
   list_elem_t * new_elt = create_element (value);
@@ -81,6 +80,31 @@ insert_head (list_elem_t * * l, int value)
   *l = new_elt;
   return 0;
 }
+
+
+/*
+ * SYNOPSYS :
+ *   list_elem_t * get_tail(list_elem_t * l)
+ * DESCRIPTION :
+ *    Retourne un pointeur vers le dernier élément de la liste
+ * PARAMETRES :
+ *   list_elem_t * * l : pointeur sur l'élément de départ
+ * RESULTAT :
+ *   Renvoie le dernier élement, si erreur ou non présent, renvoie NULL
+ */
+list_elem_t * get_tail(list_elem_t * l) {
+  //Create the iterator element
+  list_elem_t * tmp = l;
+
+  //Then travel the list
+  if (tmp != NULL) {
+    while (tmp->next != NULL) {
+      tmp = tmp->next;
+    }
+  }
+  return tmp;
+}
+
 
 /*
  * SYNOPSYS :
@@ -94,8 +118,7 @@ insert_head (list_elem_t * * l, int value)
  *    0 en cas de succès.
  *   -1 si l'ajout est impossible.
  */
-int
-insert_tail(list_elem_t * * l, int value) {
+int insert_tail(list_elem_t * * l, int value) {
   //Error if the pointer of pointer is null
   if (l==NULL) {
     return -1;
@@ -128,6 +151,7 @@ insert_tail(list_elem_t * * l, int value) {
   }
 }
 
+
 /*
  * SYNOPSYS :
  *   list_elem_t * find_element(list_elem_t * l, int index)
@@ -141,11 +165,24 @@ insert_tail(list_elem_t * * l, int value) {
  *   - un pointeur sur le maillon de la liste en cas de succès
  *   - NULL si erreur
  */
-list_elem_t *
-find_element(list_elem_t * l, int index) {
-  // à compléter
-  return NULL;
+list_elem_t * find_element(list_elem_t * l, int index) {
+  //If the list is empty
+  if (l==NULL) {
+    return NULL;
+  }
+
+  //If another case
+  else {
+    int i = 0;
+    list_elem_t* tmp = l;
+    while ((i < index) && (tmp != NULL)) {
+      i++;
+      tmp = tmp->next;
+    }
+    return tmp;
+  }
 }
+
 
 /*
  * SYNOPSYS :
@@ -162,11 +199,33 @@ find_element(list_elem_t * l, int index) {
  *    0 en cas de succès.
  *   -1 si erreur
  */
-int
-remove_element(list_elem_t * * ppl, int value) {
-  // à compléter
-  return -1;
+int remove_element(list_elem_t * * ppl, int value) {
+  if (ppl==NULL) {
+    return -1;
+  }
+
+  else if (*ppl==NULL) {
+    return -1;
+  }
+
+  else {
+    list_elem_t* tmp = *ppl;
+    list_elem_t* last = tmp;
+    while (tmp != NULL) {
+      if (tmp->value == value) {
+        last->next = tmp->next;
+        free_element(tmp);
+        return 0;
+      }
+      else {
+        last = tmp;
+        tmp = tmp->next;
+      }
+    }
+    return 0;
+  }
 }
+
 
 /*
  * SYNOPSYS :
@@ -180,36 +239,34 @@ remove_element(list_elem_t * * ppl, int value) {
  * RESULTAT :
  *   aucun 
  */
-void
-reverse_list(list_elem_t * * l) {
-	// à compléter
-}
+void reverse_list(list_elem_t * * l) {
+	if ((l != NULL) && (*l != NULL)) {
+    //A counter
+    int size = nb_malloc;
+    int count = size - 1;
 
+    //Check if there's more than 1 element
+    if (size > 1) {
+      //A table of pointers
+      list_elem_t* table [size];
 
-/*
- * SYNOPSYS :
- *   list_elem_t * get_tail(list_elem_t * l)
- * DESCRIPTION :
- *    Retourne un pointeur vers le dernier élément de la liste
- * PARAMETRES :
- *   list_elem_t * * l : pointeur sur l'élément de départ
- * RESULTAT :
- *   Renvoie le dernier élement, si erreur ou non présent, renvoie NULL
- */
-list_elem_t * get_tail(list_elem_t * l) {
-  //Create the iterator element
-  list_elem_t * tmp = l;
+      //Then put all the pointers in it in reverse
+      list_elem_t* tmp = *l;
+      while (tmp != NULL) {
+        table[count] = tmp;
+        count--;
+        tmp = tmp->next;
+      }
 
-  //Then travel the list
-  if (tmp != NULL) {
-    while (tmp->next != NULL) {
-      tmp = tmp->next;
+      //Link the pointer to their true next
+      int i = 0;
+      while (i < size-2) {
+        table[i]->next = table[i+1];
+        i++;
+      }
+
+      //Put NULL to the last element
+      table[size-1]->next = NULL;
     }
-    return tmp;
-  }
-
-  //If the list is NULL (empty)
-  else {
-    return NULL;
   }
 }
