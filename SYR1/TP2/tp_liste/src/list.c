@@ -255,7 +255,6 @@ void reverse_list(list_elem_t * * l) {
 	if ((l != NULL) && (*l != NULL)) {
     //A counter, nb_malloc is the number of elements in the list
     int count = nb_malloc - 1;
-    printf("nb_malloc = %d \n", nb_malloc);
 
     //Check if there's more than 1 element
     //If only one, nothing to do
