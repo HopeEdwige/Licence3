@@ -109,7 +109,7 @@ main(int argc, char **argv)
       scanf("%d",&value);
       if (remove_element(&la_liste,value)!=0) {
         printf("Erreur : impossible de supprimer l'élément à de valeur %d\n",value);
-      };
+      }
       break;
 
 

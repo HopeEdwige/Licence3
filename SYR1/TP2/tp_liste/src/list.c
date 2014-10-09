@@ -16,6 +16,7 @@
 
 int nb_malloc = 0;	// compteur global du nombre d'allocations
 
+
 /*
  * Je modifie pour tester
  * SYNOPSYS    :
@@ -28,9 +29,7 @@ int nb_malloc = 0;	// compteur global du nombre d'allocations
  * RESULTAT :
  *   NULL en cas d'échec, sinon un pointeur sur une structure de type list_elem_t
  */
-static list_elem_t *
-create_element (int value)
-{
+static list_elem_t * create_element (int value) {
   list_elem_t * newelt = malloc (sizeof (list_elem_t));
   if (newelt != NULL) {
     ++nb_malloc;
@@ -39,6 +38,7 @@ create_element (int value)
   }
   return newelt;
 }
+
 
 /*
  * SYNOPSYS    :
@@ -50,12 +50,11 @@ create_element (int value)
  * RESULTAT    :
  *   rien
  */
-static void
-free_element (list_elem_t * l)
-{
+static void free_element (list_elem_t * l) {
   --nb_malloc;
   free (l);
 }
+
 
 /*
  * SYNOPSYS :
@@ -70,8 +69,7 @@ free_element (list_elem_t * l)
  *    0 en cas de succès.
  *   -1 si l'ajout est impossible.
  */
-int insert_head (list_elem_t * * l, int value)
-{
+int insert_head (list_elem_t * * l, int value) {
   if (l == NULL) { return -1; }
   list_elem_t * new_elt = create_element (value);
   if (new_elt == NULL) { return -1; }
@@ -120,7 +118,7 @@ list_elem_t * get_tail(list_elem_t * l) {
  */
 int insert_tail(list_elem_t * * l, int value) {
   //Error if the pointer of pointer is null
-  if (l==NULL) {
+  if (l == NULL) {
     return -1;
   }
 
@@ -142,7 +140,7 @@ int insert_tail(list_elem_t * * l, int value) {
   else {
     list_elem_t * tail = get_tail(*l);
 
-    if(tail == NULL) {
+    if (tail == NULL) {
       return -1;
     }
 
@@ -167,7 +165,7 @@ int insert_tail(list_elem_t * * l, int value) {
  */
 list_elem_t * find_element(list_elem_t * l, int index) {
   //If the list is empty
-  if (l==NULL) {
+  if (l == NULL) {
     return NULL;
   }
 
@@ -200,20 +198,34 @@ list_elem_t * find_element(list_elem_t * l, int index) {
  *   -1 si erreur
  */
 int remove_element(list_elem_t * * ppl, int value) {
-  if (ppl==NULL) {
+  //If the pointer of the pointer is null
+  if (ppl == NULL) {
     return -1;
   }
 
-  else if (*ppl==NULL) {
+  //If the pointer is null
+  else if (*ppl == NULL) {
     return -1;
   }
 
+  //If the parameters are ok
   else {
     list_elem_t* tmp = *ppl;
-    list_elem_t* last = tmp;
+    list_elem_t* last;
     while (tmp != NULL) {
       if (tmp->value == value) {
-        last->next = tmp->next;
+
+        //If not first element
+        if (tmp != *ppl) {
+          last->next = tmp->next;
+        }
+
+        //If first element
+        else {
+          *ppl = tmp->next;
+        }
+
+        //Free the memory then return 0
         free_element(tmp);
         return 0;
       }
@@ -241,14 +253,14 @@ int remove_element(list_elem_t * * ppl, int value) {
  */
 void reverse_list(list_elem_t * * l) {
 	if ((l != NULL) && (*l != NULL)) {
-    //A counter
-    int size = nb_malloc;
-    int count = size - 1;
+    //A counter, nb_malloc is the number of elements in the list
+    int count = nb_malloc - 1;
 
     //Check if there's more than 1 element
-    if (size > 1) {
+    //If only one, nothing to do
+    if (nb_malloc > 1) {
       //A table of pointers
-      list_elem_t* table [size];
+      list_elem_t** table [nb_malloc];
 
       //Then put all the pointers in it in reverse
       list_elem_t* tmp = *l;
@@ -260,13 +272,13 @@ void reverse_list(list_elem_t * * l) {
 
       //Link the pointer to their true next
       int i = 0;
-      while (i < size-2) {
+      while (i < nb_malloc - 2) {
         table[i]->next = table[i+1];
         i++;
       }
 
       //Put NULL to the last element
-      table[size-1]->next = NULL;
+      table[nb_malloc - 1]->next = NULL;
     }
   }
 }
