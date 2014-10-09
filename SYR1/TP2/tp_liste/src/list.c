@@ -260,7 +260,7 @@ void reverse_list(list_elem_t * * l) {
     //If only one, nothing to do
     if (nb_malloc > 1) {
       //A table of pointers
-      list_elem_t** table [nb_malloc];
+      list_elem_t* table [nb_malloc];
 
       //Then put all the pointers in it in reverse
       list_elem_t* tmp = *l;
@@ -268,11 +268,12 @@ void reverse_list(list_elem_t * * l) {
         table[count] = tmp;
         count--;
         tmp = tmp->next;
+        printf("Count = %d \n", count);
       }
 
       //Link the pointer to their true next
       int i = 0;
-      while (i < nb_malloc - 2) {
+      while (i < (nb_malloc - 2)) {
         table[i]->next = table[i+1];
         i++;
       }
