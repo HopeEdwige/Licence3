@@ -255,6 +255,7 @@ void reverse_list(list_elem_t * * l) {
 	if ((l != NULL) && (*l != NULL)) {
     //A counter, nb_malloc is the number of elements in the list
     int count = nb_malloc - 1;
+    printf("nb_malloc = %d \n", nb_malloc);
 
     //Check if there's more than 1 element
     //If only one, nothing to do
@@ -265,21 +266,32 @@ void reverse_list(list_elem_t * * l) {
       //Then put all the pointers in it in reverse
       list_elem_t* tmp = *l;
       while (tmp != NULL) {
+        //printf("Count = %d \n", count);
         table[count] = tmp;
         count--;
         tmp = tmp->next;
-        printf("Count = %d \n", count);
       }
 
       //Link the pointer to their true next
       int i = 0;
-      while (i < (nb_malloc - 2)) {
-        table[i]->next = table[i+1];
+      while (i < nb_malloc) {
+        //printf("i = %d, contenu = %d \n", i, table[i]->value);
+  
+        //If i+1 exists in the table
+        if (i < (nb_malloc - 1)) {
+          table[i]->next = table[i+1];
+        }
+
+        //If not
+        else {
+          table[i]->next = NULL;
+        }
+
         i++;
       }
 
-      //Put NULL to the last element
-      table[nb_malloc - 1]->next = NULL;
+      //Link the pointer of the first element to the new first
+      *l = table[0];
     }
   }
 }
