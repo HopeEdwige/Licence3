@@ -33,3 +33,11 @@ listing :
 clean :
 	rm obj/*.o
 	rm bin/test_list
+
+
+#
+# Test des fonctions
+#
+test_list :
+	make
+	./bin/test_list < commandes.txt
