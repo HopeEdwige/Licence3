@@ -16,17 +16,17 @@ public class Fourmis {
 	 */
 	public static String next(String ui) {
 		String ret = "";
-		
+
 		System.out.println("Valeur d'entrée: " + ui);
-		
+
 		//Travel the String
 		for (int i = 0; i < ui.length(); i++) {
 			//The counter
 			int count = 1;
-			
+
 			//Get each char
 			char c = ui.charAt(i);
-			
+
 			//While the other letters have the same value
 			if (i < ui.length() - 1) {
 				while (ui.charAt(i+1) == c) {
@@ -34,11 +34,11 @@ public class Fourmis {
 					i++;
 				}
 			}
-			
+
 			//Create the string
 			ret = ret + count + c;
 		}
-		
+
 		System.out.println("Valeur de sortie: " + ret);
 		return ret;
 	}
