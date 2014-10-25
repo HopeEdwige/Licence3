@@ -89,7 +89,7 @@ public class SmallSet {
 
 	/**
 	 * Remove a value from the set
-	 *Â @param int x The value to remove
+	 * @param int x The value to remove
 	 */
 	public void remove(int x) {
 		if ((x >= 0) && (x < 256))
@@ -247,7 +247,7 @@ public class SmallSet {
 	 */
 	@Override
 	public String toString() {
-		String ret = "ElÃ©ments prÃ©sents: ";
+		String ret = "Eléments présents: ";
 		for (int i = 0; i < 256; i++) {
 			ret += i + " ";
 		}
