@@ -15,27 +15,25 @@
  *   -1 : autre erreur
  */
 int syr1_fopen_read(char *name, SYR1_FILE* file) {
-    //A pointer to the file descriptor
-    file_descriptor* descriptor = &file->descriptor;
-
     //Get the copy of the file descriptor from the catalog
-    int result_copy = search_entry(name, descriptor);
+    int result_copy = search_entry(name,  &(file->descriptor));
 
     //If it's ok
     if (result_copy == 0) {
+
         //Create the buffer (a bloc is 512 Bytes long)
-        file->buffer = malloc(512);
+        file->buffer = malloc(IO_BLOCK_SIZE);
 
         //If there was an error during the malloc
         if (file->buffer != NULL) {
 
             //Put the first bloc into the buffer
-            int result_read_block = read_block(descriptor->alloc[0], file->buffer);
+            int result_read_block = read_block(file->descriptor.alloc[0], file->buffer);
 
             //If ok
             if (result_read_block == 1) {
                 //Put the read mode
-                *file->mode = 'r';
+                strcpy(file->mode, "r");
 
                 //The other parameters are initialized to 0
                 file->current_block = 0;
@@ -86,11 +84,12 @@ int syr1_fread(SYR1_FILE *file, int item_size, int nbitem, char* buf) {
 }
 
 
+
 /*
  * SYNOPSYS :
  * 	 int syr1_getc(SYR1_FILE *file)
  * DESCRIPTION :
- *   Ce sous-programme lit un caractère à prtir du fichier passé en paramètre.
+ *   Ce sous-programme lit un caractère à partir du fichier passé en paramètre.
  * PARAMETRES :
  *   file : pointeur sur un descripteur de fichier logique (File Control Bloc)
  * RESULTAT :
@@ -100,7 +99,58 @@ int syr1_fread(SYR1_FILE *file, int item_size, int nbitem, char* buf) {
  *    -3 : fin de fichier
  */
 int syr1_getc(SYR1_FILE *file) {
-  return -1;
+
+    if (file != NULL) {
+
+        if (strcmp(file->mode, "r")) {
+
+            //If we have read all the block
+            if (file->block_offset == (IO_BLOCK_SIZE/sizeof(char))) {
+                //Go to the next block
+                int result_read_next_block = read_block(file->descriptor.alloc[file->file_offset + 1], file->buffer);
+
+                //If the end of the file
+                if (result_read_next_block == -1) {
+                    return -3;
+                }
+
+                //If an IO error
+                else if (result_read_next_block == -2) {
+                    return -2;
+                }
+
+                //If ok
+                else {
+                    file->block_offset = 0;
+                    file->current_block++;
+
+                    //Then read the next char after
+                    syr1_getc(file);
+                }
+            }
+
+            //If we can read it
+            else {
+                //Read the char
+                int ret = (int)file->buffer[file->block_offset];
+                
+                if (ret != 0) {
+                    file->block_offset++;
+                    file->file_offset++;
+                    return ret;
+                }
+
+                //If no more char to read in the block (so EOF)
+                else {
+                    return -3;
+                }
+            }
+            
+        }
+    }
+
+    //If no BCF or the mode isn't correct
+    return -1;
 }
 
 
@@ -119,7 +169,7 @@ int syr1_getc(SYR1_FILE *file) {
 int syr1_fclose_read(SYR1_FILE* file) {
     //Here we have all the working case
     if (file != NULL) {
-        
+        return free_logical_file(file);
     }
 
     //If errors
