@@ -3,6 +3,14 @@
 #include<string.h>
 #include<syr1_file.h>
 
+
+/*
+	Groupe 2.2
+	ANDRIAMILANTO Tompoariniaina
+	DANG MINH Anh
+*/
+
+
 /* SYNOPSYS :
  * 	  int syr1_fopen_read(char *name, SYR1_FILE *file) {
  * DESCRIPTION :
@@ -16,7 +24,7 @@
  */
 int syr1_fopen_read(char *name, SYR1_FILE* file) {
 	//Get the copy of the file descriptor from the catalog
-	int result_copy = search_entry(name,  &(file->descriptor));
+	int result_copy = search_entry(name, &(file->descriptor));
 
 	//If it's ok
 	if (result_copy == 0) {
@@ -106,28 +114,8 @@ int syr1_getc(SYR1_FILE *file) {
 		//Check the mode
 		if (strcmp(file->mode, "r") == 0) {
 
-			//If we have read all the block
-			if (file->block_offset == (IO_BLOCK_SIZE/sizeof(char))) {
-
-				//Go to the next block
-				int result_read_next_block = read_block(file->descriptor.alloc[file->file_offset + 1], file->buffer);
-
-				//If ok
-				if (result_read_next_block == 0) {
-					file->block_offset = 0;
-					file->current_block++;
-                    file->file_offset++;
-
-					//Then read the next char after
-					return syr1_getc(file);
-				}
-
-				//If error
-				return result_read_next_block;
-			}
-
 			//If we can read it
-			else {
+			if (file->block_offset <= (IO_BLOCK_SIZE/sizeof(char))) {
 				//Read the char
 				int ret = (int)file->buffer[file->block_offset];
 
@@ -140,6 +128,26 @@ int syr1_getc(SYR1_FILE *file) {
 
 				//If no more char to read in the block (so EOF)
 				return -3;
+			}
+
+			//If we have read all the block
+			else {
+
+				//Go to the next block
+				int result_read_next_block = read_block(file->descriptor.alloc[file->file_offset + 1], file->buffer);
+
+				//If ok
+				if (result_read_next_block == 0) {
+					file->block_offset = 0;
+					file->current_block++;
+					file->file_offset++;
+
+					//Then read the next char after
+					return syr1_getc(file);
+				}
+
+				//If error
+				return result_read_next_block;
 			}
 
 		}
