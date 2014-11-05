@@ -139,7 +139,7 @@ int syr1_getc(SYR1_FILE *file) {
 				int result_read_next_block = read_block(file->descriptor.alloc[file->current_block], file->buffer);
 
 				//If ok
-				if (result_read_next_block == 0) {
+				if (result_read_next_block == 1) {
 					file->block_offset = 0;
 					file->file_offset++;
 

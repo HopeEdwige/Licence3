@@ -62,13 +62,13 @@ int syr1_fopen_write(char *name, SYR1_FILE *file) {
 				file->current_block = count;
 
 				if (count == 0) {
-					file->file_offset = tmp - 1;
+					file->file_offset = tmp;
 				}
 
 				else {
-					file->file_offset = ((count - 1) * IO_BLOCK_SIZE) + tmp - 1;
+					file->file_offset = ((count - 1) * IO_BLOCK_SIZE) + tmp;
 				}
-				file->block_offset = tmp - 1;
+				file->block_offset = tmp;
 
 				//Everything's ok here
 				return 0;
@@ -208,10 +208,10 @@ int syr1_putc(unsigned char c, SYR1_FILE* file)  {
 
 						//Put the block number in the implementation table
 						file->descriptor.alloc[file->current_block] = result_get_free_block;
-						
+
 						//Set some parameters
 						file->block_offset = 0;
-						file->file_offset = 0;
+						file->file_offset++;
 
 						//Clean the buffer
 						int i;
