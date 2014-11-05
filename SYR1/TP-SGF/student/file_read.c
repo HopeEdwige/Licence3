@@ -115,7 +115,8 @@ int syr1_getc(SYR1_FILE *file) {
 		if (strcmp(file->mode, "r") == 0) {
 
 			//If we can read it
-			if (file->block_offset <= (IO_BLOCK_SIZE/sizeof(char))) {
+			if (file->block_offset <= IO_BLOCK_SIZE) {
+
 				//Read the char
 				int ret = (int)file->buffer[file->block_offset];
 
@@ -134,12 +135,12 @@ int syr1_getc(SYR1_FILE *file) {
 			else {
 
 				//Go to the next block
-				int result_read_next_block = read_block(file->descriptor.alloc[file->file_offset + 1], file->buffer);
+                file->current_block++;
+				int result_read_next_block = read_block(file->descriptor.alloc[file->current_block], file->buffer);
 
 				//If ok
 				if (result_read_next_block == 0) {
 					file->block_offset = 0;
-					file->current_block++;
 					file->file_offset++;
 
 					//Then read the next char after

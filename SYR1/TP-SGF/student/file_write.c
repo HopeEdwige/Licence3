@@ -37,13 +37,11 @@ int syr1_fopen_write(char *name, SYR1_FILE *file) {
 		if (file->buffer != NULL) {
 
 			//Get the last bloc of this file
-			int count = 0;
+			int count = 1;  //A file always use at least one block
 			while (((int)file->descriptor.alloc[count] != 0) && (count < MAX_BLOCK_PER_FILE)) {
 				count++;
 			}
-			if (count != 0) {
-				count--;
-			}
+			count--;
 
 			//Put the last bloc into the buffer
 			int result_read_block = read_block(file->descriptor.alloc[count], file->buffer);
@@ -56,14 +54,21 @@ int syr1_fopen_write(char *name, SYR1_FILE *file) {
 
 				//Get the current position in the block
 				int tmp = 0;
-				while (((int)file->buffer[tmp] != 0) && (tmp < IO_BLOCK_SIZE/sizeof(char))) {
+				while (((int)file->buffer[tmp] != 0) && (tmp <= IO_BLOCK_SIZE)) {
 					tmp++;
 				}
 
 				//The other parameters are initialized
 				file->current_block = count;
-				file->file_offset = count * ((IO_BLOCK_SIZE/sizeof(char)) - 1) + tmp;
-				file->block_offset = tmp;
+
+				if (count == 0) {
+					file->file_offset = tmp - 1;
+				}
+
+				else {
+					file->file_offset = ((count - 1) * IO_BLOCK_SIZE) + tmp - 1;
+				}
+				file->block_offset = tmp - 1;
 
 				//Everything's ok here
 				return 0;
@@ -165,7 +170,7 @@ int syr1_putc(unsigned char c, SYR1_FILE* file)  {
 		if (strcmp(file->mode, "w") == 0) {
 
 			//If we can write here
-			if (file->block_offset < (IO_BLOCK_SIZE/sizeof(char))) {
+			if (file->block_offset < IO_BLOCK_SIZE) {
 
 				//Write the char
 				file->buffer[file->block_offset] = (int)c;
@@ -206,7 +211,13 @@ int syr1_putc(unsigned char c, SYR1_FILE* file)  {
 						
 						//Set some parameters
 						file->block_offset = 0;
-						file->file_offset++;
+						file->file_offset = 0;
+
+						//Clean the buffer
+						int i;
+						for (i = 0; i <= IO_BLOCK_SIZE; i++) {
+							file->buffer[i] = (int)0;
+						}
 
 						//Then write the char in this new block
 						return syr1_putc(c, file);
