@@ -92,23 +92,16 @@ int syr1_fopen_write(char *name, SYR1_FILE *file) {
 				//Create the buffer (a bloc is 512 Bytes long)
 				file->buffer = malloc(IO_BLOCK_SIZE);
 
-				//Load the block in the buffer
-				int result_read_block = read_block(file->descriptor.alloc[0], file->buffer);
+				//Put the write mode
+				strcpy(file->mode, "w");
 
-				//If the read is ok
-				if (result_read_block == 1) {
+				//Set some parameters
+				file->block_offset = 0;
+				file->file_offset = 0;
+				file->current_block = 0;
 
-					//Put the write mode
-					strcpy(file->mode, "w");
-
-					//Set some parameters
-					file->block_offset = 0;
-					file->file_offset = 0;
-					file->current_block = 0;
-
-					//Return ok
-					return 0;
-				}
+				//Return ok
+				return 0;
 
 			}
 		}
@@ -210,19 +203,13 @@ int syr1_putc(unsigned char c, SYR1_FILE* file)  {
 
 						//Put the block number in the implementation table
 						file->descriptor.alloc[file->current_block] = result_get_free_block;
+						
+						//Set some parameters
+						file->block_offset = 0;
+						file->file_offset++;
 
-						//Load the block in the buffer
-						int result_read_block = read_block(result_get_free_block, file->buffer);
-
-						//If the read is ok
-						if (result_read_block == 1) {
-							//Set some parameters
-							file->block_offset = 0;
-							file->file_offset++;
-
-							//Then write the char in this new block
-							return syr1_putc(c, file);
-						}
+						//Then write the char in this new block
+						return syr1_putc(c, file);
 
 					}
 
