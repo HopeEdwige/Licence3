@@ -83,7 +83,7 @@ init_fs: $(PROGS)
 # Génération du listing en pdf
 #
 listing:
-	@a2ps --tabsize=4 --medium=A4 --title=$(NAME) -o tp_sgf.ps student/openclose.c student/file_read.c student/file_write.c 
+	@a2ps --tabsize=4 --medium=A4 --title=$(NAME) -o tp_sgf.ps student/openclose.c student/file_read.c student/file_write.c result_test_read.txt result_test_write.txt
 	@ps2pdf -sPAPERSIZE=a4 tp_sgf.ps
 
 
@@ -106,3 +106,7 @@ test_write: $(PROGS)
 clean :
 	\rm -f obj/file_read.o obj/file_write.o obj/openclose.o bin/test_* bin/simple_*
 
+# Tous les tests
+test_all: $(PROGS)
+	./bin/test_read > result_test_read.txt
+	./bin/test_write > result_test_write.txt
