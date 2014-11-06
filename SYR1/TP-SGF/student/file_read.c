@@ -136,7 +136,7 @@ int syr1_getc(SYR1_FILE *file) {
             else {
 
                 //If there is another block to read
-                if (file->current_block < (file->descriptor.size/(IO_BLOCK_SIZE-1))) {
+                if (file->current_block < (file->descriptor.size/IO_BLOCK_SIZE)) {
 
                     //Go to the next block
                     file->current_block++;

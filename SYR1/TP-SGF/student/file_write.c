@@ -39,7 +39,7 @@ int syr1_fopen_write(char *name, SYR1_FILE *file) {
             //Set the params
             file->file_offset = file->descriptor.size;
             file->current_block = file->file_offset/IO_BLOCK_SIZE;
-            file->block_offset = (file->file_offset%IO_BLOCK_SIZE) + 1;
+            file->block_offset = file->file_offset%IO_BLOCK_SIZE;
 
             //Put the last bloc into the buffer
             int result_read_block = read_block(file->descriptor.alloc[file->current_block], file->buffer);
@@ -184,15 +184,15 @@ int syr1_putc(unsigned char c, SYR1_FILE* file)  {
                     //If ok
                     if (result_get_free_block >= 0) {
 
-                        //Increment the current block
-                        file->current_block++;
+                    	//Increment the current block
+                    	file->current_block++;
 
                         //Put the block number in the implementation table
                         file->descriptor.alloc[file->current_block] = result_get_free_block;
 
                         //Set some parameters
                         file->block_offset = 0;
-                        file->file_offset++;
+                		file->file_offset++;
 
                         //Then write the char in this new block
                         return syr1_putc(c, file);
