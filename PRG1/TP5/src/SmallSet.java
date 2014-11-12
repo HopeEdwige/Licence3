@@ -35,7 +35,7 @@ public class SmallSet {
 
 	/**
 	 * Get the number of values of this set
-	 *Â @return int The number of values
+	 * @return int The number of values
 	 */
 	public int size() {
 		int count = 0;
@@ -248,9 +248,10 @@ public class SmallSet {
 	 */
 	@Override
 	public String toString() {
-		String ret = "ElÃ©ents prÃ©ents: ";
+		String ret = "Eléments présents: ";
 		for (int i = 0; i < 256; i++) {
-			ret += i + " ";
+			if (this.tab[i])
+				ret += i + " ";
 		}
 		return ret;
 	}

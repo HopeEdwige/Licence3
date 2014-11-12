@@ -200,7 +200,7 @@ public class List<T extends SuperT> {
 		 * @return true if on the flag, false if not
 		 */
 		public boolean isOnFlag() {
-			return (this.current == List.this.flag);
+			return (this.current.value == null);
 		}
 
 
@@ -268,6 +268,7 @@ public class List<T extends SuperT> {
 			//Link it
 			this.current.left.right = newElement;
 			this.current.left = newElement;
+			this.current = newElement;
 		}
 
 
@@ -286,6 +287,7 @@ public class List<T extends SuperT> {
 			//Link it
 			this.current.right.left = newElement;
 			this.current.right = newElement;
+			this.current = newElement;
 		}
 
 
