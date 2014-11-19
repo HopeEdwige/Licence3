@@ -1,0 +1,65 @@
+
+***********************************************************
+Test écriture N°1 : ouverture en écriture du fichier testABC.txt
+[OK]	Ouverture en écriture réussie
+[OK] 	  Fermeture du fichier réussie
+[OK] 	 Impossible de refermer deux fois le même fichier
+
+Nombre d'E/S physiques : 1 (1 lectures + 0 écritures)
+
+***********************************************************
+Test écriture N°2 : Reécriture de 525 caractères dans le fichier testABC.txt
+[OK]	 Ouverture en écriture réussie
+[OK]     Fermeture du fichier réussie
+
+Nombre d'E/S physiques : 3 (2 lectures + 1 écritures)
+
+***********************************************************
+Test écriture N°3 : Reécriture de 526 caractères dans le fichier test012.txt
+[OK]	 Ouverture en écriture réussie
+[OK]     Fermeture du fichier réussie
+
+Nombre d'E/S physiques : 5 (3 lectures + 2 écritures)
+
+***********************************************************
+Test écriture N°4 : relecture du fichier testABC.txt
+[OK]	 Ouverture en relecture réussie
+[FAILED] Erreur de relecture 'B/42' attendu mais 'A/41' lu
+[FAILED] Erreur de relecture 'C/43' attendu mais 'B/42' lu
+[FAILED] Erreur de relecture 'D/44' attendu mais 'C/43' lu
+[FAILED] Erreur de relecture 'E/45' attendu mais 'D/44' lu
+[FAILED] Erreur de relecture 'F/46' attendu mais 'E/45' lu
+[FAILED] Le nombre de caractère lu ne correspond pas à la taille du fichier sur le disque
+
+Nombre d'E/S physiques : 6 (4 lectures + 2 écritures)
+
+***********************************************************
+Test écriture N°5 : relecture du fichier test012.txt 
+[OK]	 Ouverture en relecture réussie
+[FAILED] Erreur de relecture '6/36' attendu mais '4/34' lu
+[FAILED] Erreur de relecture '7/37' attendu mais '5/35' lu
+[FAILED] Erreur de relecture '8/38' attendu mais '0/30' lu
+[FAILED] Erreur de relecture '9/39' attendu mais '1/31' lu
+[FAILED] Erreur de relecture '0/30' attendu mais '2/32' lu
+[FAILED] Le nombre de caractère lu ne correspond pas à la taille du fichier test2.txt
+
+Nombre d'E/S physiques : 8 (6 lectures + 2 écritures)
+
+*********************************************************
+Test écriture N°6 : test de la taille maximum d'un fichier
+[FAILED] Erreur d'ouverture en écriture pour test.txt
+[FAILED] Erreur fermeture : code erreur n°-1
+
+Nombre d'E/S physiques : 8 (6 lectures + 2 écritures)
+
+***********************************************************
+Test écriture N°7 : relecture du fichier de taille maximum
+[OK]	 Ouverture en relecture réussie
+[FAILED] Erreur de relecture 'D/44' attendu mais 'A/41' lu
+[FAILED] Erreur de relecture 'G/47' attendu mais 'A/41' lu
+[FAILED] Erreur de relecture 'H/48' attendu mais 'B/42' lu
+[FAILED] Erreur de relecture 'I/49' attendu mais 'C/43' lu
+[FAILED] Erreur de relecture 'J/4A' attendu mais 'D/44' lu
+[FAILED] Problème lors de la relecture du fichier de taille maximale erreur = 69 après 18330 caractères
+
+Nombre d'E/S physiques : 44 (42 lectures + 2 écritures)

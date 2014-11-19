@@ -3,20 +3,28 @@
 #include<string.h>
 #include<syr1_file.h>
 
+
+/*
+    Groupe 2.2
+    ANDRIAMILANTO Tompoariniaina
+    DANG MINH Anh
+*/
+
+
 /* SYNOPSYS :
- * 	  int syr1_fopen_read(char *name, SYR1_FILE *file) {
+ *    int syr1_fopen_read(char *name, SYR1_FILE *file) {
  * DESCRIPTION :
  *   Ce sous-programme gère l'ouverture d'un fichier logique en mode lecture.
  * PARAMETRES :
  *   name : chaîne de caratère contenant le nom externe du fichier à ouvrir
  *   file : pointeur sur un Bloc Control Fichier (File Control Bloc)
  * RESULTAT :
- *    0 : ouverture réussie
+ *  0 : ouverture réussie
  *   -1 : autre erreur
  */
 int syr1_fopen_read(char *name, SYR1_FILE* file) {
     //Get the copy of the file descriptor from the catalog
-    int result_copy = search_entry(name,  &(file->descriptor));
+    int result_copy = search_entry(name, &(file->descriptor));
 
     //If it's ok
     if (result_copy == 0) {
@@ -54,98 +62,104 @@ int syr1_fopen_read(char *name, SYR1_FILE* file) {
 
 /*
  * SYNOPSYS :
- * 	 int syr1_fread(SYR1_FILE *file, int item_size, int nbitem, char* buf)
+ *   int syr1_fread(SYR1_FILE *file, int item_size, int nbitem, char* buf)
  * DESCRIPTION :
  *   Ce sous-programme lit nbitem articles de taille item_size dans le fichier
  *   fichier logique passé en paramètre.
  * PARAMETRES :
- *   	 file : pointeur sur un Bloc Control Fichier (File Control Bloc)
+ *       file : pointeur sur un Bloc Control Fichier (File Control Bloc)
  *  item_size : taille d'un article
- *    nb_item : nombre d'article à lire
+ *  nb_item : nombre d'article à lire
  * RESULTAT :
  *   le nombre d'articles effectivement lus dans le fichier, sinon un code
  *   d'erreur (cf syr1_getc())
- *    -1 : le BCF est NULL, ou le mode d'ouverture est incorrect
- *    -2 : erreur d'entrée-sorties sur le périphérique de stockage
- *    -3 : fin de fichier
+ *  -1 : le BCF est NULL, ou le mode d'ouverture est incorrect
+ *  -2 : erreur d'entrée-sorties sur le périphérique de stockage
+ *  -3 : fin de fichier
  */
 int syr1_fread(SYR1_FILE *file, int item_size, int nbitem, char* buf) {
-  int count = 0;
-  while (count<nbitem*item_size) {
-    int res = syr1_getc(file);
-    if (res<0) {
-      return res;
-    } else {
-      buf[count]=(unsigned char) res;
+    int count = 0;
+    while (count<nbitem*item_size) {
+        int res = syr1_getc(file);
+        if (res<0) {
+            return res;
+        } else {
+            buf[count]=(unsigned char) res;
+        }
+        count++;
     }
-    count++;
-  }
-  return count/item_size;
+    return count/item_size;
 }
 
 
 
 /*
  * SYNOPSYS :
- * 	 int syr1_getc(SYR1_FILE *file)
+ *   int syr1_getc(SYR1_FILE *file)
  * DESCRIPTION :
  *   Ce sous-programme lit un caractère à partir du fichier passé en paramètre.
  * PARAMETRES :
  *   file : pointeur sur un descripteur de fichier logique (File Control Bloc)
  * RESULTAT :
  *  valeur (convertie en int) du caractère lu dans le fichier, sinon
- *    -1 : le BCF est NULL, ou le mode d'ouverture est incorrect
- *    -2 : erreur d'entrée-sorties sur le périphérique de stockage
- *    -3 : fin de fichier
+ *  -1 : le BCF est NULL, ou le mode d'ouverture est incorrect
+ *  -2 : erreur d'entrée-sorties sur le périphérique de stockage
+ *  -3 : fin de fichier
  */
 int syr1_getc(SYR1_FILE *file) {
 
+    //Only if there's a file passed
     if (file != NULL) {
 
-        if (strcmp(file->mode, "r")) {
-
-            //If we have read all the block
-            if (file->block_offset == (IO_BLOCK_SIZE/sizeof(char))) {
-                //Go to the next block
-                int result_read_next_block = read_block(file->descriptor.alloc[file->file_offset + 1], file->buffer);
-
-                //If the end of the file
-                if (result_read_next_block == -1) {
-                    return -3;
-                }
-
-                //If an IO error
-                else if (result_read_next_block == -2) {
-                    return -2;
-                }
-
-                //If ok
-                else {
-                    file->block_offset = 0;
-                    file->current_block++;
-
-                    //Then read the next char after
-                    syr1_getc(file);
-                }
-            }
+        //Check the mode
+        if (strcmp(file->mode, "r") == 0) {
 
             //If we can read it
-            else {
-                //Read the char
-                int ret = (int)file->buffer[file->block_offset];
-                
-                if (ret != 0) {
+            if (file->block_offset < IO_BLOCK_SIZE) {
+
+                //If not end of file
+                if (file->file_offset != file->descriptor.size) {
+                    //Read the char
+                    int ret = (int)file->buffer[file->block_offset];
+
+                    //If everything's ok
                     file->block_offset++;
                     file->file_offset++;
                     return ret;
                 }
 
-                //If no more char to read in the block (so EOF)
-                else {
-                    return -3;
-                }
+                //If EOF reached
+                return -3;
             }
-            
+
+            //If we have read all the block
+            else {
+
+                //If there is another block to read
+                if (file->current_block < (file->descriptor.size/IO_BLOCK_SIZE)) {
+
+                    //Go to the next block
+                    file->current_block++;
+
+                    int result_read_next_block = read_block(file->descriptor.alloc[file->current_block], file->buffer);
+
+                    //If ok
+                    if (result_read_next_block == 1) {
+                        file->block_offset = 0;
+
+                        //Then read the next char after
+                        return syr1_getc(file);
+                    }
+
+                    //If error
+                    return -2;
+                }
+                
+                //If no more block
+                return -3;
+
+            }
+
         }
     }
 
@@ -156,15 +170,15 @@ int syr1_getc(SYR1_FILE *file) {
 
 
 /* SYNOPSYS :
- * 	  int syr1_fclose_read(SYR1_FILE* file)
+ *    int syr1_fclose_read(SYR1_FILE* file)
  * DESCRIPTION :
  *   Ce sous-programme gère la fermeture d'un fichier logique.
  * PARAMETRES :
  *   file : pointeur sur un Bloc de Contrôle Fichier (BCF)
  * RESULTAT :
- *    0 : la fermeture a réussi
+ *  0 : la fermeture a réussi
  *   -1 : problème pendant la libération du descripteur de fichier logique
- *        (ou le fichier logiques file vaut NULL)
+ *      (ou le fichier logiques file vaut NULL)
  */
 int syr1_fclose_read(SYR1_FILE* file) {
     //Here we have all the working case
