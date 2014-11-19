@@ -1,0 +1,2 @@
+
+public enum NodeType { LEAF, SIMPLE_LEFT, SIMPLE_RIGHT, DOUBLE, SENTINEL }
