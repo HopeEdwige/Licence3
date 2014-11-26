@@ -31,7 +31,7 @@ public class NodeState {
 	}
 
 
-        public NodeState copy() {
+    public NodeState copy() {
 		return this;
 	}
 

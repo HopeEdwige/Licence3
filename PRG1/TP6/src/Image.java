@@ -21,12 +21,36 @@ public class Image extends BinaryTree<NodeState> {
 
 
 	public boolean isPixelOn(int x, int y) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
-		return false;
+		Iterator<NodeState> it = this.iterator();
+		int tmpX = 256, tmpY = 256;
+		
+		while (!it.isEmpty()) {
+			
+			//Horizontal
+			if (tmpX == tmpY) {
+				if (x < (tmpX/2))
+					it.goLeft();  //Upper
+				
+				else
+					it.goRight();  //Lower
+				
+				tmpX = tmpX/2;
+			}
+			
+			//Vertical
+			else {
+				if (y < (tmpY/2))
+					it.goLeft();  //Left
+				
+				else
+					it.goRight();  //Right
+				
+				tmpY = tmpY/2;
+			}
+		}
+		
+		it.goUp();
+		return (it.getValue().equals(NodeState.valueOf(1)));
 	}
 
 	public void affect(Image image2, Dessin dessinWindow) {
@@ -38,13 +62,34 @@ public class Image extends BinaryTree<NodeState> {
 	}
 
 	public void rotate180(Image image2, Dessin dessinWindow) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
+		Iterator<NodeState> it = image2.iterator();
+		Iterator<NodeState> itThis = this.iterator();
+		
+		//Clear this image
+		itThis.clear();
+		
+		if (!it.isEmpty())
+			rotateAux(it, itThis);
+		
+		this.plotImage(2, dessinWindow);
 	}
-
+	
+	private void rotateAux (Iterator<NodeState> it, Iterator<NodeState> itThis) {
+		if (!it.isEmpty()) {
+			int e = it.getValue().e;
+			itThis.addValue(NodeState.valueOf(e));
+			it.goLeft();
+			itThis.goRight();
+			rotateAux(it, itThis);
+			it.goUp();
+			itThis.goUp();
+			it.goRight();
+			itThis.goLeft();
+			rotateAux(it, itThis);
+			it.goUp();
+			itThis.goUp();
+		}
+	}
 	
 	public void videoInverse(Dessin dessinWindow) {
 		//Draw the drawing as beginning in the 1st window
@@ -85,31 +130,161 @@ public class Image extends BinaryTree<NodeState> {
 	}
 
 	public void intersection(Image image1, Image image2, Dessin dessinWindow) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
-	}
-
-	public void union(Image image1, Image image2, Dessin dessinWindow) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
+		//Get iterators
+		Iterator<NodeState> it1 = image1.iterator();
+		Iterator<NodeState> it2 = image2.iterator();
+		Iterator<NodeState> it3 = this.iterator();
+		
+		//Clear this image
+		it3.clear();
+		
+		if (!it1.isEmpty() && !it2.isEmpty()){
+			intersectionAux(it1, it2, it3);
+		}
+		
 		this.plotImage(3, dessinWindow); // résultat dans fenêtre 3
 		image1.plotImage(1, dessinWindow); // première image dans fenêtre 1
 		image2.plotImage(2, dessinWindow); // deuxième image dans fenêtre 2
 	}
+	
+	private void intersectionAux(Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
+		if (!it1.isEmpty() && !it2.isEmpty()){
+			NodeState ns1 = it1.getValue();
+			NodeState ns2 = it2.getValue();
+			
+			if (ns1.equals(NodeState.valueOf(0)) || ns2.equals(NodeState.valueOf(0))) {
+				itThis.addValue(NodeState.valueOf(0));
+			}
+			else if (ns1.equals(NodeState.valueOf(1)) && ns2.equals(NodeState.valueOf(1))) {
+				itThis.addValue(NodeState.valueOf(1));
+			}
+			else if (ns1.equals(NodeState.valueOf(2)) && ns2.equals(NodeState.valueOf(2))) {
+				itThis.addValue(NodeState.valueOf(2));
+			}
+			else {
+				itThis.addValue(NodeState.valueOf(2));
+				if (ns1.equals(NodeState.valueOf(1))) {
+					it1.goLeft();
+					it1.addValue(NodeState.valueOf(1));
+					it1.goUp();
+					it1.goRight();
+					it1.addValue(NodeState.valueOf(1));
+					it1.goUp();
+				} else {
+					it2.goLeft();
+					it2.addValue(NodeState.valueOf(1));
+					it2.goUp();
+					it2.goRight();
+					it2.addValue(NodeState.valueOf(1));
+					it2.goUp();
+				}
+			}
+			
+			it1.goLeft();
+			it2.goLeft();
+			itThis.goLeft();
+			intersectionAux(it1, it2, itThis);
+			it1.goUp();
+			it2.goUp();
+			itThis.goUp();
+			it1.goRight();
+			it2.goRight();
+			itThis.goRight();
+			intersectionAux(it1, it2, itThis);
+			it1.goUp();
+			it2.goUp();
+			itThis.goUp();
+			
+		}
+	}
+
+	public void union(Image image1, Image image2, Dessin dessinWindow) {
+		Iterator<NodeState> it1 = image1.iterator();
+		Iterator<NodeState> it2 = image2.iterator();
+		Iterator<NodeState> it3 = this.iterator();
+		
+		//Clear this image
+		it3.clear();
+		
+		if (!it1.isEmpty() && !it2.isEmpty()){
+			unionAux(it1, it2, it3);
+		}
+		this.plotImage(3, dessinWindow); // résultat dans fenêtre 3
+		image1.plotImage(1, dessinWindow); // première image dans fenêtre 1
+		image2.plotImage(2, dessinWindow); // deuxième image dans fenêtre 2
+	}
+	
+	private void unionAux (Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
+		if (!it1.isEmpty() && !it2.isEmpty()){
+			NodeState ns1 = it1.getValue();
+			NodeState ns2 = it2.getValue();
+			
+			if (ns1.equals(NodeState.valueOf(1)) || ns2.equals(NodeState.valueOf(1))) {
+				itThis.addValue(NodeState.valueOf(1));
+			}
+			else if (ns1.equals(NodeState.valueOf(0)) && ns2.equals(NodeState.valueOf(0))) {
+				itThis.addValue(NodeState.valueOf(0));
+			}
+			else if (ns1.equals(NodeState.valueOf(2)) && ns2.equals(NodeState.valueOf(2))) {
+				itThis.addValue(NodeState.valueOf(2));
+			}
+			else {
+				itThis.addValue(NodeState.valueOf(2));
+				if (ns1.equals(NodeState.valueOf(0))) {
+					it1.goLeft();
+					it1.addValue(NodeState.valueOf(0));
+					it1.goUp();
+					it1.goRight();
+					it1.addValue(NodeState.valueOf(0));
+					it1.goUp();
+				} else {
+					it2.goLeft();
+					it2.addValue(NodeState.valueOf(0));
+					it2.goUp();
+					it2.goRight();
+					it2.addValue(NodeState.valueOf(0));
+					it2.goUp();
+				}
+			}
+			
+			it1.goLeft();
+			it2.goLeft();
+			itThis.goLeft();
+			unionAux(it1, it2, itThis);
+			it1.goUp();
+			it2.goUp();
+			itThis.goUp();
+			it1.goRight();
+			it2.goRight();
+			itThis.goRight();
+			unionAux(it1, it2, itThis);
+			it1.goUp();
+			it2.goUp();
+			itThis.goUp();
+			
+		}
+	}
 
 	public boolean testDiagonal() {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
-		return false;
+		Iterator<NodeState> it = this.iterator();
+
+		if (!it.isEmpty())
+			return testDiagAux(it, true);
+	}
+	
+	private boolean testDiagAux(Iterator<NodeState> it, boolean result) {
+		if (!it.isEmpty()) {
+			if (it.getValue().equals(NodeState.valueOf(0)))
+				result = false;
+			
+			else if (it.getValue().equals(NodeState.valueOf(2))) {
+				it.goLeft();
+				
+			}
+		}
+		else {
+			
+		}
 	}
 
 	public boolean sameLeaf(int x1, int y1, int x2, int y2) {
