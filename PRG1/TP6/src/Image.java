@@ -54,12 +54,36 @@ public class Image extends BinaryTree<NodeState> {
 	}
 
 	public void affect(Image image2, Dessin dessinWindow) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
+		Iterator<NodeState> it = image2.iterator();
+		Iterator<NodeState> itThis = this.iterator();
+		
+		itThis.clear();
+		
+		if (!it.isEmpty())
+			affectAux(it, itThis);
+		
+		//Display on the first screen
+		this.plotImage(3, dessinWindow);
 	}
+	
+	
+	private void affectAux(Iterator<NodeState> it, Iterator<NodeState> itThis) {
+		if (!itThis.isEmpty()) {
+			itThis.addValue(it.getValue().copy());
+			
+			it.goLeft();
+			itThis.goLeft();
+			affectAux(it, itThis);
+			it.goUp();
+			itThis.goUp();
+			it.goRight();
+			itThis.goRight();
+			affectAux(it, itThis);
+			it.goUp();
+			itThis.goUp();
+		}
+	}
+	
 
 	public void rotate180(Image image2, Dessin dessinWindow) {
 		Iterator<NodeState> it = image2.iterator();
@@ -268,43 +292,141 @@ public class Image extends BinaryTree<NodeState> {
 	public boolean testDiagonal() {
 		Iterator<NodeState> it = this.iterator();
 
-		if (!it.isEmpty())
-			return testDiagAux(it, true);
+		if (!it.isEmpty()) {
+			return testDiagAux(it);
+		} else {
+			System.out.println("Image vide!");
+			return false;
+		}
 	}
 	
-	private boolean testDiagAux(Iterator<NodeState> it, boolean result) {
+	private boolean testDiagAux(Iterator<NodeState> it) {
+		boolean result = true;
 		if (!it.isEmpty()) {
-			if (it.getValue().equals(NodeState.valueOf(0)))
+			if (it.getValue().equals(NodeState.valueOf(0))) {
 				result = false;
+			} 
 			
 			else if (it.getValue().equals(NodeState.valueOf(2))) {
+				
+				//Go to Left 1st generation
 				it.goLeft();
 				
+				if (it.getValue().equals(NodeState.valueOf(1))) {
+					//Go Up 1st generation
+					it.goUp();
+					//Go to Right 1st generation
+					it.goRight();
+					if (it.getValue().equals(NodeState.valueOf(0))) {
+						result = false;
+					} else if (it.getValue().equals(NodeState.valueOf(2))) {
+						// go to Right 2nd generation
+						it.goRight();
+						if (!testDiagAux(it)) {
+							result = false;
+						}
+						it.goUp();
+					}
+					it.goUp();
+				} else if (it.getValue().equals(NodeState.valueOf(0))) {
+					result = false;
+				} else {
+					it.goLeft();
+					if (!testDiagAux(it)) {
+						result = false;
+					}
+					it.goUp();
+				}
+				it.goUp();
 			}
 		}
-		else {
-			
-		}
+		return result;
 	}
 
 	public boolean sameLeaf(int x1, int y1, int x2, int y2) {
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
-		return false;
+		boolean result = true;
+
+		Iterator<NodeState> it = this.iterator();
+		int tmpX = 256, tmpY = 256;
+		
+		while ((!it.isEmpty()) && (result)) {
+			
+			//Horizontal
+			if (tmpX == tmpY) {
+				if ((x1 < (tmpX/2)) && (x2 < (tmpX/2))) {
+					it.goLeft();  //Upper
+				}
+				else if ((x1 > (tmpX/2)) && (x2 > (tmpX/2))) {
+					it.goRight();  //Lower
+				}
+				else {
+					result = false;
+				}
+
+				tmpX = tmpX/2;
+			}
+			
+			//Vertical
+			else {
+				if (result) {
+					if ((y1 < (tmpY/2)) && (y2 < (tmpY/2))) {
+						it.goLeft();  //Left
+					}
+					else if ((y1 > (tmpY/2)) && (y2 > (tmpY/2))) {
+						it.goRight();  //Right
+					} else {
+						result = false;
+					}
+					
+					tmpY = tmpY/2;
+				}
+			}
+		}
+		
+		return result;
 	}
 
 	public boolean isIncludedIn(Image image2, Dessin dessinWindow)
 	// this est-il inclus dans B
 	{
-		System.out.println();
-		System.out.println("------------------------------------------------");
-		System.out.println("Fonction à écrire");
-		System.out.println("------------------------------------------------");
-		System.out.println();
-		return false;
+		Iterator<NodeState> itThis = this.iterator();
+		Iterator<NodeState> it2 = image2.iterator();
+		if (it2.isEmpty()) {
+			System.out.println("Image2 vide!");
+			return false;
+		} else {
+			return isIncluAux(itThis, it2);
+		}
+	}
+	
+	private boolean isIncluAux (Iterator<NodeState> itThis, Iterator<NodeState> it2) {
+		boolean result = true;
+		if (!it2.isEmpty()) {
+			if (!itThis.isEmpty()) {
+				if (it2.getValue().equals(NodeState.valueOf(1)) || itThis.getValue().equals(NodeState.valueOf(0))) {
+					//On ne fait rien
+				} else if (it2.getValue().equals(NodeState.valueOf(0)) || itThis.getValue().equals(NodeState.valueOf(1))) {
+					result = false;
+				} else {
+					itThis.goLeft();
+					it2.goLeft();
+					if (isIncluAux(itThis, it2)) {
+						itThis.goUp();
+						it2.goUp();
+						itThis.goRight();
+						it2.goRight();
+						if (!isIncluAux(itThis, it2)) {
+							result = false;
+						}
+					} else {
+						result = false;
+					}
+					itThis.goUp();
+					it2.goUp();
+				}
+			}
+		}
+		return result;
 	}
 	
 	public static void readImage(int windowNumber, Dessin dessinWindow) {
