@@ -48,8 +48,8 @@ public class TestImage {
 	}
 
 	private static int testCorrectnessAux(Iterator<NodeState> it) {
-		// 0 est la réponse correcte (pas d'erreurs)
-		// les autres erreurs sont numérotés
+		// 0 est la reponse correcte (pas d'erreurs)
+		// les autres erreurs sont numerote
 		if (it.isEmpty()) {
 			return 0;
 		}

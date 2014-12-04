@@ -4,12 +4,12 @@ public class BinaryTree <T> {
 
     /*
       arbre binaire de <Item> :
-      chaînage références pour les fils : Element left, right
-      pile des pères : Stack<Element> pile
+      chainage references pour les fils : Element left, right
+      pile des peres : Stack<Element> pile
     */
 
     private class Element{
-	// élément de ArbreBinaire <Item>
+	// element de ArbreBinaire <Item>
 	public T value;
 	public Element left, right;
 	public Element() 
@@ -73,7 +73,7 @@ public class BinaryTree <T> {
 
 	@Override public void goUp() {
 	    try {
-		assert !stack.empty() :" la racine n'a pas de père";
+		assert !stack.empty() :" la racine n'a pas de p?e";
 	    }
 	    catch (AssertionError e) {
 		e.printStackTrace();
@@ -145,7 +145,7 @@ public class BinaryTree <T> {
 
 	@Override public void switchValue(int i) {
 	    try {
-		assert i>= 0 : "switchValue : argument négatif";
+		assert i>= 0 : "switchValue : argument n?atif";
 	    }
 	    catch (AssertionError e) {
 		e.printStackTrace();

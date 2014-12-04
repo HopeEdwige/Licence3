@@ -20,18 +20,18 @@ public class TpArbre {
 	// pour l'affichage du texte de la commande
 	private final static String[] TEXT_COMMANDS = {
 			"affichage du dessin contenu dans un fichier",
-			"E[i] <-- dessin contenu dans une fenêtre",
+			"E[i] <-- dessin contenu dans une fenetre",
 			"sauvegarde du dessin E[i] dans un fichier",
 			"affichage du dessin contenu dans l'arbre E[i]",
 			"hauteur et nombre de noeuds de l'arbre E[i]",
-			"teste, par exploration de E[i], si un point est allumé",
+			"teste, par exploration de E[i], si un point est allume",
 			"affectation E[i] <-- E[j]", "E[i] <-- complementaire de E[i]",
-			"E[i] <-- rotation à 180 degres de E[j]",
+			"E[i] <-- rotation de 180 degres de E[j]",
 			"E[i] <-- E[j] intersection E[k]", "E[i] <-- E[j] union E[k]",
-			"teste si la diagonale de E[i] est entièrement allumée",
-			"teste, pour E[i], si deux points sont dans la même feuille",
+			"teste si la diagonale de E[i] est entierement allume",
+			"teste, pour E[i], si deux points sont dans la meme feuille",
 			"teste si E[i] est inclus dans E[j]",
-			"affiche E[i] sous forme d'arbre", "arrêt de l'exécution" };
+			"affiche E[i] sous forme d'arbre", "arret de l'execution" };
 
 	// pour l'affichage des items de choix
 	private final static String[] ITEM_NAMES = { "readImage", "construct",
@@ -39,20 +39,20 @@ public class TpArbre {
 			"videoInverse", "rotate180", "intersection", "union",
 			"testDiagonal", "sameLeaf", "isIncludedIn", "plotTree", "close" };
 
-	private static JFrame ourWindow = new JFrame(); // fenêtre d'affichage
+	private static JFrame ourWindow = new JFrame(); // fenetre d'affichage
 	private static final int SIZE_X = 1024, SIZE_Y = 360;
 
 	private static JMenuBar menuBar = new JMenuBar(); // barre de menu
 	private static JMenu menuChoice = new JMenu("MENU"); // colonne "MENU"
 
-	private static final int SHIFT_X = 120; // décalage horizontal de fenêtre de
+	private static final int SHIFT_X = 120; // d?alage horizontal de fenetre de
 											// dessin
-	private static final int SHIFT_Y = -50; // décalage vertical de fenêtre de
+	private static final int SHIFT_Y = -50; // d?alage vertical de fenetre de
 											// dessin
 	private static final Dessin window = new RealDessin(SIZE_X - SHIFT_X,
 			SIZE_Y);
 
-	private static int numberI, numberJ, numberK; // numéros des arbres (i,j,k)
+	private static int numberI, numberJ, numberK; // num?os des arbres (i,j,k)
 
 	// action de reaction au choix effectue avec la souris
 	private static class Action implements ActionListener {
@@ -291,7 +291,7 @@ public class TpArbre {
 	}
 
 	private static int readWindowNumber() {
-		String string = "numéro de fenetre (entre 1 et "
+		String string = "num?o de fenetre (entre 1 et "
 				+ RealDessin.NUMBER_OF_WINDOWS + ") : ";
 		return readInteger(1, RealDessin.NUMBER_OF_WINDOWS, string);
 	}
@@ -302,20 +302,20 @@ public class TpArbre {
 	}
 
 	private static int readNumberI() {
-		String string = "numéro i<" + NUMBER_OF_TREES
+		String string = "num?o i<" + NUMBER_OF_TREES
 				+ " d'arbre (-1 pour retour au menu) : ";
 		return readInteger(-1, NUMBER_OF_TREES - 1, string);
 	}
 
 	private static int readNumberINotEmpty() {
-		String string = "numéro i<" + NUMBER_OF_TREES
+		String string = "num?o i<" + NUMBER_OF_TREES
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		return readInteger(-1, NUMBER_OF_TREES - 1, string);
 	}
 
 	private static int readNumberJ(int i) {
 		int j;
-		String string = "numéro j<" + NUMBER_OF_TREES + " différent de " + i
+		String string = "num?o j<" + NUMBER_OF_TREES + " diff?ent de " + i
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		do {
 			j = readInteger(-1, NUMBER_OF_TREES - 1, string);
@@ -325,7 +325,7 @@ public class TpArbre {
 
 	private static int readNumberK(int i, int j) {
 		int k;
-		String string = "numéro k<" + NUMBER_OF_TREES + " différent de " + i
+		String string = "num?o k<" + NUMBER_OF_TREES + " diff?ent de " + i
 				+ " et de " + j
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		do {

@@ -166,9 +166,9 @@ public class Image extends BinaryTree<NodeState> {
 			intersectionAux(it1, it2, it3);
 		}
 		
-		this.plotImage(3, dessinWindow); // résultat dans fenêtre 3
-		image1.plotImage(1, dessinWindow); // première image dans fenêtre 1
-		image2.plotImage(2, dessinWindow); // deuxième image dans fenêtre 2
+		this.plotImage(3, dessinWindow); // resultat dans fenetre 3
+		image1.plotImage(1, dessinWindow); // premiere image dans fenetre 1
+		image2.plotImage(2, dessinWindow); // deuxieme image dans fenetre 2
 	}
 	
 	private void intersectionAux(Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
@@ -233,9 +233,9 @@ public class Image extends BinaryTree<NodeState> {
 		if (!it1.isEmpty() && !it2.isEmpty()){
 			unionAux(it1, it2, it3);
 		}
-		this.plotImage(3, dessinWindow); // résultat dans fenêtre 3
-		image1.plotImage(1, dessinWindow); // première image dans fenêtre 1
-		image2.plotImage(2, dessinWindow); // deuxième image dans fenêtre 2
+		this.plotImage(3, dessinWindow); // resultat dans fenetre 3
+		image1.plotImage(1, dessinWindow); // premiere image dans fenetre 1
+		image2.plotImage(2, dessinWindow); // deuxieme image dans fenetre 2
 	}
 	
 	private void unionAux (Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
@@ -435,7 +435,7 @@ public class Image extends BinaryTree<NodeState> {
 		InputStream inFile;
 		try {
 			inFile = new FileInputStream(fileName);
-			System.out.println("Corrigé : readImage");
+			System.out.println("Corrig?: readImage");
 			System.out.println("---------------------");
 			xReadImageFromFile(inFile, windowNumber, dessinWindow);
 			inFile.close();
@@ -526,7 +526,7 @@ public class Image extends BinaryTree<NodeState> {
 		OutputStream outFile;
 		try {
 			outFile = new FileOutputStream(fileName);
-			System.out.println("Corrigé : Save");
+			System.out.println("Corrig?: Save");
 			System.out.println("----------------");
 			Iterator<NodeState> it = this.iterator();
 			String ch = xSave(it, 0, 0, WINDOW_SIZE, true) + "-1\n";
@@ -535,7 +535,7 @@ public class Image extends BinaryTree<NodeState> {
 			outFile.close();
 		} 
 		catch (FileNotFoundException e) {
-			System.out.println("problème d'ouverture de fichier pour "
+			System.out.println("probl?e d'ouverture de fichier pour "
 					+ fileName);
 		} 
 		catch (IOException e) {
@@ -646,7 +646,7 @@ public class Image extends BinaryTree<NodeState> {
 	}
 
 	public int height() {
-		System.out.println("Corrigé : Height");
+		System.out.println("Corrig?: Height");
 		System.out.println("-----------------");
 		return xHeight(this.iterator());
 	}
@@ -672,7 +672,7 @@ public class Image extends BinaryTree<NodeState> {
 	}
 
 	public int numberOfNodes() {
-		System.out.println("Corrigé : numbreOfNodes");
+		System.out.println("Corrig?: numbreOfNodes");
 		System.out.println("-----------------");
 		return xNumberOfNodes(this.iterator());
 	}
@@ -680,7 +680,7 @@ public class Image extends BinaryTree<NodeState> {
 	protected static int xNumberOfNodes(Iterator<NodeState> it) {
 		NodeType type = it.nodeType();
 		assert type == NodeType.LEAF || type == NodeType.DOUBLE : "l'arbre comporte des noeuds simples";
-		assert (type != NodeType.SENTINEL) : "l'itérateur est sur le butoir";
+		assert (type != NodeType.SENTINEL) : "l'it?ateur est sur le butoir";
 		int number = 0;
 		switch (type) {
 		case LEAF:
