@@ -6,18 +6,17 @@ import java.util.Scanner;
 
 
 public class ClientHTTP {
-	
+
 	//HTTP port
 	private static final int PORT = 1042;
-	
+
 	public static void main(String[] args) throws Exception {
 
 		//Read the message so send
 		System.out.println("Veuillez entrer une url:");
 		Scanner scan = new Scanner(System.in);
 		String text = scan.nextLine();
-		//System.out.println("URL entré: " + text);
-		
+
 		//Get the host and the file requested
 		String[] splitted = text.split("/");
 		String host = splitted[0];
@@ -34,7 +33,7 @@ public class ClientHTTP {
 
 		//The input stream read from the server
 		BufferedReader inputBuffer = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-		
+
 		//Create the request
 		String request = "GET ";
 		if (requested == "")

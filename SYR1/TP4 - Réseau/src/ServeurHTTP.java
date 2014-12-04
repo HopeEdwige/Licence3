@@ -10,7 +10,7 @@ import java.sql.Date;
 public class ServeurHTTP {
 
 	private static final int PORT = 1042;
-	
+
 	public static void main(String[] args) throws Exception {
 
 		//Open the server's socket
@@ -22,7 +22,7 @@ public class ServeurHTTP {
 
 			//Buffer to receive the client's messages
 			BufferedReader inputFromClient = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-			
+
 			//Get the request
 			String lineRead = inputFromClient.readLine();
 			System.out.println("Request received: " + lineRead);
@@ -37,16 +37,16 @@ public class ServeurHTTP {
 			String response;
 			if ((splitted != null) && (splitted[0].equals("GET"))) {
 				response = "HTTP/1.0 200 OK \n\n" + "<html>Hello world!";
-				
+
 				//Date
 				Date now = new Date(System.currentTimeMillis());
 				response += "<p>On est exactement le <strong>" + now.toString() + "</strong></p>";
-				
+
 				//Informations about the server
 				response += "<h1>Server</h1><p>Name: " + System.getProperty("java.vm.name") + "</p>";
 				response += "<p>Operating System: " + System.getProperty("os.name") + "</p>";
 				response += "<p>Java version: " + System.getProperty("java.vm.version") + "</p>";
-				
+
 				//Informations about the client
 				InetAddress ipClient = socket.getInetAddress();
 				response += "<h1>Client</h1><p>IP: " + ipClient.getHostAddress() + "</p>";
@@ -58,7 +58,7 @@ public class ServeurHTTP {
 			else {
 				response = "HTTP/1.0 404 NOT FOUND \n\n";
 			}
-				
+
 			//Read the client's message, put it in upper case and send it back
 			output.writeBytes(response);
 
