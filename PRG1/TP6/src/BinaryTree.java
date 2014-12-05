@@ -108,10 +108,11 @@ public class BinaryTree <T> {
 		public void goUp() {
 			try {
 				//Check if we don't use empty elements
-				assert !stack.empty() :"La racine n'a pas de pere.";
+				assert !stack.empty() : "La racine n'a pas de pere.";
 
 				//Then go to the last father encountered
-				currentNode = stack.pop();
+				if (!stack.empty())
+					currentNode = stack.pop();
 			}
 			catch (AssertionError e) {
 				e.printStackTrace();
@@ -135,16 +136,12 @@ public class BinaryTree <T> {
 			//If there's at least one element in it
 			if (tmp != null)
 				currentNode = tmp;
-
-			//If there is no element in it
-			else
-				System.out.println("Arbre vide!");
 		}
 
 
 		@Override
 		/**
-		 * Check if empty or not
+		 * Check if empty or not (if a SENTINEL or not)
 		 * @return true if empty, false it not
 		 */
 		public boolean isEmpty() {
@@ -311,7 +308,6 @@ public class BinaryTree <T> {
 				assert isEmpty() : "Ajouter : On n'est pas sur un butoir.";
 
 				//Create the new element and add it
-				currentNode = new Element();
 				currentNode.left = new Element();
 				currentNode.right = new Element();
 				currentNode.value = v;

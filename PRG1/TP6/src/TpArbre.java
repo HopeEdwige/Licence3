@@ -52,7 +52,7 @@ public class TpArbre {
 	private static final Dessin window = new RealDessin(SIZE_X - SHIFT_X,
 			SIZE_Y);
 
-	private static int numberI, numberJ, numberK; // num?os des arbres (i,j,k)
+	private static int numberI, numberJ, numberK; // numeros des arbres (i,j,k)
 
 	// action de reaction au choix effectue avec la souris
 	private static class Action implements ActionListener {
@@ -291,7 +291,7 @@ public class TpArbre {
 	}
 
 	private static int readWindowNumber() {
-		String string = "num?o de fenetre (entre 1 et "
+		String string = "numero de fenetre (entre 1 et "
 				+ RealDessin.NUMBER_OF_WINDOWS + ") : ";
 		return readInteger(1, RealDessin.NUMBER_OF_WINDOWS, string);
 	}
@@ -302,20 +302,20 @@ public class TpArbre {
 	}
 
 	private static int readNumberI() {
-		String string = "num?o i<" + NUMBER_OF_TREES
+		String string = "numero i<" + NUMBER_OF_TREES
 				+ " d'arbre (-1 pour retour au menu) : ";
 		return readInteger(-1, NUMBER_OF_TREES - 1, string);
 	}
 
 	private static int readNumberINotEmpty() {
-		String string = "num?o i<" + NUMBER_OF_TREES
+		String string = "numero i<" + NUMBER_OF_TREES
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		return readInteger(-1, NUMBER_OF_TREES - 1, string);
 	}
 
 	private static int readNumberJ(int i) {
 		int j;
-		String string = "num?o j<" + NUMBER_OF_TREES + " diff?ent de " + i
+		String string = "numero j<" + NUMBER_OF_TREES + " different de " + i
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		do {
 			j = readInteger(-1, NUMBER_OF_TREES - 1, string);
@@ -325,7 +325,7 @@ public class TpArbre {
 
 	private static int readNumberK(int i, int j) {
 		int k;
-		String string = "num?o k<" + NUMBER_OF_TREES + " diff?ent de " + i
+		String string = "numero k<" + NUMBER_OF_TREES + " different de " + i
 				+ " et de " + j
 				+ " d'arbre non vide (-1 pour retour au menu) : ";
 		do {
