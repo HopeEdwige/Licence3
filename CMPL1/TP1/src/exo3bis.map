@@ -1,0 +1,55 @@
+1 réserver 3
+3
+2 empiler 0
+0
+4 affecter nbv 0
+0
+2 empiler 0
+0
+4 affecter nbautre 1
+1
+20 lirent
+4 affecter vlue 2
+2
+3 contenu vlue 2
+2
+2 empiler marqueur (const) -1
+-1
+13 diff (sommet de pile prend le résultat)
+18 bsifaux (si vlue != marqueur sauter) 49
+49
+3 contenu vlue 2
+2
+2 empiler vconnue (const) 12
+12
+12 eg
+18 bsifaux (si vlue != vconnue sauter) 37
+37
+3 contenu nbv 0
+0
+2 empiler 1
+1
+14 add
+4 affecter nbv 0
+0
+19 bincond (saut du else si if vrai) 44
+44
+3 contenu nbautre 1
+1
+2 empiler 1
+1
+14 add
+4 affecter nbautre 1
+1
+20 lirent (lire vlue)
+4 affecter vlue 2
+2
+19 bincond (saut tant que) 14
+14
+3 contenu nbv 0
+0
+22 ecrent nbv
+3 contenu nbautre 1
+1
+22 ecrent nbautre
+24 arret
