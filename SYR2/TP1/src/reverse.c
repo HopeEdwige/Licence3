@@ -9,6 +9,13 @@
 
 /**
  * The main function to ne thrown
+ *
+ * Parameters:
+ *     - int argc  => The number of arguments
+ *     - char** filename  => The name of the file (only the second element)
+ *
+ * Return:
+ *     - 
  */
 int main(int argc, char** filename) {
 	return reverse_file(filename[1]);
@@ -55,8 +62,8 @@ int reverse_file(char* filename) {
  */
 int reverse_buffer(char* buffer) {
 	int i;
-	for (i = 0; i < BUFFER_SIZE; i = (i + sizeof(char))) {
-		printf("%s", &buffer[i]);
+	for (i = (BUFFER_SIZE - 1); i >= 0; i = (i - sizeof(char))) {
+		printf("%c", &buffer[i]);
 	}
 	return 0;
 }
