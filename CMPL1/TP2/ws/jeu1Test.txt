@@ -1,0 +1,24 @@
+DURAND 120
+
+  BEAUJOLAIS     vieillesgaleries 50  prixmultiples 70 ,
+
+  prixmultiples 110,
+
+  BOURGOGNE      potin 50 vieillesgaleries 40 elephant 10;
+
+
+DUPONT   110
+
+  BOURGOGNE      croisement 70 superv 40;
+
+
+POTIN  140
+
+  BEAUJOLAIS     potin 90 ;
+
+
+DURAND
+
+  elephant 90;
+
+/
