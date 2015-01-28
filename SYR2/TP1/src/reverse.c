@@ -24,6 +24,12 @@ int main(int argc, char** filename) {
 
 /**
  * Function to display a file in reverse
+ *
+ * Parameters:
+ *     - char* filename  => The name of the file
+ *
+ * Return:
+ *     - int  => The result of the execution
  */
 int reverse_file(char* filename) {
 	// Try to open the file
@@ -49,12 +55,12 @@ int reverse_file(char* filename) {
 				// While we still can read
 				do {
 
-					// Put the line read in the list
-					int result_add = add(&ma_liste, buffer);
-
-					// If an error occured
-					if (result_add != 0)
+					// Put the line read in the list and check error
+					if (add(&ma_liste, buffer) != 0)
 						return -1;
+
+					// Clear the current buffer
+					bzero(buffer, BUFFER_SIZE);
 
 					// Load another line
 					result_read = read(file, buffer, BUFFER_SIZE);
@@ -62,6 +68,7 @@ int reverse_file(char* filename) {
 				} while (result_read > 0);
 
 				// Reverse the list
+				ma_liste = reverse_list(ma_liste);
 
 				// Then for each element of the reversed list
 				simple_list * iterator = ma_liste;
@@ -91,29 +98,41 @@ int reverse_file(char* filename) {
 		}
 	}
 
+	// If an error occured
 	return -1;
 }
 
 
 /**
  * Function to display a buffer in reverse
+ *
+ * Parameters:
+ *     - char* buffer  => The buffer to use
+ *
  */
-int reverse_buffer(char* buffer) {
+void reverse_buffer(char* buffer) {
 	int i;
 	for (i = (BUFFER_SIZE - 1); i >= 0; i = (i - sizeof(char))) {
 		printf("%c", buffer[i]);
 	}
-	return 0;
 }
 
 
 
 
-/* External functions for the list */
+
+/* ##############################  External functions for the list ############################## */
 /**
  * Add an element to the list
+ *
+ * Parameters:
+ *     - simple_list** list  => A pointer to the list structure
+ *     - char* content  => The content of the list element
+ *
+ * Returns:
+ *     - int  => The result of the execution
  */
-int add(simple_list ** list, char* content) {
+int add(simple_list** list, char* content) {
 	// Error if the pointer of pointer is null
 	if (list != NULL) {
 
@@ -126,10 +145,7 @@ int add(simple_list ** list, char* content) {
 			char* content_buffer = malloc(BUFFER_SIZE);
 
 			// Copy the buffer passed
-			int i;
-			for (i = 0; i < BUFFER_SIZE; i++) {
-				content_buffer[i] = content[i];
-			}
+			memcpy(content_buffer, content, BUFFER_SIZE);
 
 			// Add its values
 			new_element->content = content_buffer;
@@ -157,11 +173,49 @@ int add(simple_list ** list, char* content) {
 		}
 	}
 
+	// If an error occured
 	return -1;
 }
 
 
+/**
+ * Free the memory used by a list structure
+ *
+ * Parameters:
+ *     - simple_list* list  => A pointer to the element to free
+ *
+ */
 void free_list(simple_list* list) {
 	free(list->content);
 	free(list);
+}
+
+
+/**
+ * Reverse a list
+ *
+ * Parameters:
+ *     - simple_list* list  => A pointer to the first element of the list to reverse
+ *
+ * Returns:
+ *     - simple_list*  => A pointer to the new list head
+ */
+simple_list* reverse_list(simple_list* head) {
+	// Some temporary variables
+	simple_list* tmp = NULL;
+	simple_list* tmp2;
+	
+	// While there are still some unreversed elements
+	while (head != NULL) {
+		// Get the current element and store it in a var
+		tmp2 = head;
+		head = head->next;
+
+		// Switch the next of the current element with the last one
+		tmp2->next = tmp;
+		tmp = tmp2;
+	}
+
+	// Return the new head
+	return tmp;
 }

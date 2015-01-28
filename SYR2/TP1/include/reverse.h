@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 
 
 // Constants
@@ -24,11 +25,13 @@ typedef struct s_list {
 // Functions declarations
 int reverse_file(char* filename);
 
-int reverse_buffer(char* buffer);
+void reverse_buffer(char* buffer);
 
 int add(simple_list * * list, char* content);
 
 void free_list(simple_list* list);
+
+simple_list* reverse_list(simple_list* head);
 
 
 
