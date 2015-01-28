@@ -15,7 +15,7 @@
  *     - char** filename  => The name of the file (only the second element)
  *
  * Return:
- *     - 
+ *     - int  => The result of the execution
  */
 int main(int argc, char** filename) {
 	return reverse_file(filename[1]);
@@ -26,29 +26,67 @@ int main(int argc, char** filename) {
  * Function to display a file in reverse
  */
 int reverse_file(char* filename) {
-	int result_open = open(filename, O_RDONLY);
+	// Try to open the file
+	int file = open(filename, O_RDONLY);
 
-	if (result_open >= 0) {
+	// If we could open it correctly
+	if (file >= 0) {
 
-		//Create the buffer
+		// Create the buffer
 		char* buffer = malloc(BUFFER_SIZE);
 
+		// If we were able to allocate the memory for the buffer
 		if (buffer != NULL) {
 
-			int result_read = read(result_open, buffer, BUFFER_SIZE);
+			int result_read = read(file, buffer, BUFFER_SIZE);
 
-			if (result_read >= 0) {
+			// Check that the file isn't empty
+			if (result_read > 0) {
 
-				// Display the buffer
-				reverse_buffer(buffer);
+				// Create the list
+				simple_list * ma_liste = NULL;
 
-				int result_close = close(result_open);
+				// While we still can read
+				do {
 
-				if (result_close == 0) {
-					free(buffer);
+					// Put the line read in the list
+					int result_add = add(&ma_liste, buffer);
 
-					return 0;
+					// If an error occured
+					if (result_add != 0)
+						return -1;
+
+					// Load another line
+					result_read = read(file, buffer, BUFFER_SIZE);
+
+				} while (result_read > 0);
+
+				// Reverse the list
+
+				// Then for each element of the reversed list
+				simple_list * iterator = ma_liste;
+				while (iterator != NULL) {
+
+					// Display each element of the list
+					reverse_buffer(iterator->content);
+
+					// Then load the next one
+					simple_list * last = iterator;
+					iterator = iterator->next;
+
+					// Free the last iterator
+					free(last);
 				}
+
+				// Close the file
+				int result_close = close(file);
+				
+				// Free the buffer
+				free(buffer);
+
+				// If close correctly
+				if (result_close == 0)
+					return 0;
 			}
 		}
 	}
@@ -63,7 +101,52 @@ int reverse_file(char* filename) {
 int reverse_buffer(char* buffer) {
 	int i;
 	for (i = (BUFFER_SIZE - 1); i >= 0; i = (i - sizeof(char))) {
-		printf("%c", &buffer[i]);
+		printf("%c", buffer[i]);
 	}
 	return 0;
+}
+
+
+
+
+/* External functions for the list */
+/**
+ * Add an element to the list
+ */
+int add(simple_list ** list, char* content) {
+	// Error if the pointer of pointer is null
+	if (list != NULL) {
+
+		// Create the new element
+		simple_list * new_element = malloc (sizeof(simple_list));
+
+		if (new_element != NULL) {
+
+			// Add its values
+			new_element->content = content;
+			new_element->next = NULL;
+
+			// If it's the first element
+			if (*list == NULL)
+				*list = new_element;
+
+			// If not, link it to the last element
+			else {
+
+				// Travel to the last element
+				simple_list * tail = * list;
+				while (tail->next != NULL) {
+					tail = tail->next;
+				}
+
+				// Then add this element to it
+				tail->next = new_element;
+			}
+
+			// Ok here
+			return 0;
+		}
+	}
+
+	return -1;
 }
