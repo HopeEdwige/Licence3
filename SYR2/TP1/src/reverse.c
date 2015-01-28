@@ -75,7 +75,7 @@ int reverse_file(char* filename) {
 					iterator = iterator->next;
 
 					// Free the last iterator
-					free(last);
+					free_list(last);
 				}
 
 				// Close the file
@@ -118,17 +118,26 @@ int add(simple_list ** list, char* content) {
 	if (list != NULL) {
 
 		// Create the new element
-		simple_list * new_element = malloc (sizeof(simple_list));
+		simple_list * new_element = malloc(sizeof(simple_list));
 
 		if (new_element != NULL) {
 
+			// Create the content buffer
+			char* content_buffer = malloc(BUFFER_SIZE);
+
+			// Copy the buffer passed
+			int i;
+			for (i = 0; i < BUFFER_SIZE; i++) {
+				content_buffer[i] = content[i];
+			}
+
 			// Add its values
-			new_element->content = content;
+			new_element->content = content_buffer;
 			new_element->next = NULL;
 
 			// If it's the first element
-			if (*list == NULL)
-				*list = new_element;
+			if (* list == NULL)
+				* list = new_element;
 
 			// If not, link it to the last element
 			else {
@@ -149,4 +158,10 @@ int add(simple_list ** list, char* content) {
 	}
 
 	return -1;
+}
+
+
+void free_list(simple_list* list) {
+	free(list->content);
+	free(list);
 }

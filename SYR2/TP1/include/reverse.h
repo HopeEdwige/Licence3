@@ -28,6 +28,8 @@ int reverse_buffer(char* buffer);
 
 int add(simple_list * * list, char* content);
 
+void free_list(simple_list* list);
+
 
 
 #endif /*SYR1_TP1*/
