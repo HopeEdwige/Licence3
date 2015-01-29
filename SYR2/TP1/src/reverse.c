@@ -8,7 +8,7 @@
 
 
 /**
- * The main function to ne thrown
+ * The main function to be thrown
  *
  * Parameters:
  *     - int argc  => The number of arguments
