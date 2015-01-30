@@ -1,19 +1,19 @@
 import java.awt.* ;
-
 import javax.swing.JFrame;
 
+
+
 public class Vin {
+  public static int etat, code ; // numero de l'etat et code de l'item
+    public static boolean errcontr ; // pour gerer l'erreur fatale
 
-    public static int etat, code ; // numéro de l'état et code de l'item
-    public static boolean errcontr ; // pour gérer l'erreur fatale
-
-    private static JFrame fenAffichage = new JFrame () ; // fenêtre d'affichage
-    private static TextArea fenEntree ; // fenêtre d'entrée en cours d'analyse
-    private static TextArea fenTrace ; // traces : états, item, action
+    private static JFrame fenAffichage = new JFrame () ; // fenetre d'affichage
+    private static TextArea fenEntree ; // fenetre d'entree en cours d'analyse
+    private static TextArea fenTrace ; // traces : etats, item, action
 
     private static void afficherEtatAnalyse(int numact, int arrivee) {
 	String mess = 
-	    "départ=" + etat + "  item=" + Lexvin.item[code] +
+	    "d?art=" + etat + "  item=" + Lexvin.item[code] +
 	    "  arrivee=" + arrivee + "  numact=" + numact + "\n";    
 	fenTrace.append(mess) ;
     } // afficherEtatAnalyse
