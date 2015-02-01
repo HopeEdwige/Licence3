@@ -49,11 +49,15 @@ int main() {
 				// If the SON
 				if (result_fork == 0) {
 
-					// Clean the command ("\n" problem)
+					// Clean the command (remove the annoying "\n" at the end of it)
 					command[strlen(command) - 1] = '\0';
 
+					// Now cut the command into different strings
+					char espace = ' ';
+					char *command_splitted = strtok(command, &espace);
+
 					// Execute the function passed
-					int result_execution = execlp(command, command, NULL);
+					int result_execution = execlp(command_splitted[0], command_splitted);
 
 					// Return the execution result
 					return result_execution;
