@@ -37,8 +37,10 @@ int main() {
 		while (strcmp(command, "exit\n") != 0) {
 
 			// If there was an error during the reading
-			if (result_read == NULL)
+			if (result_read == NULL) {
+				fprintf(stderr, "%s\n", "The command couldn't been read.");
 				return 1;  // Exit with an error code
+			}
 
 			// If no error, we can execute the command
 			else {
@@ -54,6 +56,10 @@ int main() {
 
 					// Execute the function passed
 					int result_execution = execlp(command, command, NULL);
+
+					// If an error occured
+					if (result_execution != 0)
+						fprintf(stderr, "%s%d\n", "Error during the execution of the command. Exit with code ", result_execution);
 
 					// Return the execution result
 					return result_execution;
@@ -79,5 +85,6 @@ int main() {
 	}
 
 	// If an error
+	fprintf(stderr, "%s\n", "The command couldn't been read.");
 	return 1;
 }
