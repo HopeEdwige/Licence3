@@ -54,23 +54,25 @@ int main() {
 					// Clean the command (remove the annoying "\n" at the end of it)
 					command[strlen(command) - 1] = '\0';
 
+					// The table of commands
+					char *command_parts[MAX_SIZE];
+					int i = 0;
+
 					// Now cut the command into different strings
 					char *token = strtok(command, " ");
 
 					// Get all the parts
-					char command_splitted[MAX_SIZE];
-					int i = 0;
 					while (token != NULL) {
-						command_splitted[i] = token;
+						command_parts[i] = token;
 						token = strtok(NULL, " ");
 						i++;
 					}
 
-					// Add the stop element
-					command_splitted[i] = NULL;
+					// The last one is NULL
+					command_parts[i] = NULL;
 
 					// Execute the function passed
-					int result_execution = execlp(command_splitted[0], command_splitted);
+					int result_execution = execvp(command_parts[0], command_parts);
 
 					// If an error occured
 					if (result_execution != 0)
