@@ -75,134 +75,127 @@ int main() {
 	if (strcmp(command2, "exit\n") == 0)
 		return 0;
 
-	// Check if there wasn't any error
-	if ((result_read != NULL) && (result_read2 != NULL)) {
+	// While we have another value than exit
+	while ((strcmp(command, "exit\n") != 0) && (strcmp(command2, "exit\n") != 0)) {
 
-		// While we have another value than exit
-		while ((strcmp(command, "exit\n") != 0) && (strcmp(command2, "exit\n") != 0)) {
+		// If there was an error during the reading
+		if (result_read == NULL) {
+			fprintf(stderr, "%s\n", "The first command couldn't been read.");
+			return 1;  // Exit with an error code
+		}
 
-			// If there was an error during the reading
-			if (result_read == NULL) {
-				fprintf(stderr, "%s\n", "The first command couldn't been read.");
-				return 1;  // Exit with an error code
-			}
+		// Check the second command
+		if (result_read2 == NULL) {
+			fprintf(stderr, "%s\n", "The second command couldn't been read.");
+			return 1;  // Exit with an error code
+		}
 
-			// Check the second command
-			if (result_read2 == NULL) {
-				fprintf(stderr, "%s\n", "The second command couldn't been read.");
-				return 1;  // Exit with an error code
-			}
+		// If no error, we can execute the command
+		else {
 
-			// If no error, we can execute the command
-			else {
+			// Do the fork here
+			pid_t result_fork = fork();
 
-				// Do the fork here
-				pid_t result_fork = fork();
+			// If the SON
+			if (result_fork == 0) {
 
-				// If the SON
-				if (result_fork == 0) {
+				// The table of commands
+				char *command_parts[MAX_SIZE];
+				char *command_parts2[MAX_SIZE];
 
-					// The table of commands
-					char *command_parts[MAX_SIZE];
-					char *command_parts2[MAX_SIZE];
+				// Split the commands
+				get_command_parts(command, command_parts);
+				get_command_parts(command2, command_parts2);
 
-					// Split the commands
-					get_command_parts(command, command_parts);
-					get_command_parts(command2, command_parts2);
+				// Create a pipe here
+				int fd[2];
+				if (pipe(fd) < 0) {
+					fprintf(stderr, "%s\n", "Error during the creation of the pipe.");
+					return 1;
+				}
 
-					// Create a pipe here
-					int fd[2];
-					if (pipe(fd) < 0) {
-						fprintf(stderr, "%s\n", "Error during the creation of the pipe.");
+				// Then create another fork
+				pid_t son_fork = fork();
+
+				// If the NEW SON
+				if (son_fork == 0) {
+
+					// Close the unused write end
+					close(fd[1]);
+
+					// Redirect the standard input from the pipe
+					if (dup2(0, fd[0]) < 0) {  // Less than 0 if error
+						fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
 						return 1;
 					}
 
-					// Then create another fork
-					pid_t son_fork = fork();
+					// Then execute the second one
+					int second_execution = execvp(command_parts2[0], command_parts2);
 
-					// If the new son
-					if (son_fork == 0) {
+					// If an error occured
+					if (second_execution != 0)
+						fprintf(stderr, "%s%d\n", "Error during the execution of the second command. Exit with code ", second_execution);
 
-						// Close the unused write end
-						close(fd[1]);
-
-						// Redirect the standard input from the pipe
-						if (dup2(0, fd[0]) < 0) {  // Less than 0 if error
-							fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
-							return 1;
-						}
-
-						// Then execute the second one
-						int second_execution = execvp(command_parts2[0], command_parts2);
-
-						// If an error occured
-						if (second_execution != 0) {
-							fprintf(stderr, "%s%d\n", "Error during the execution of the second command. Exit with code ", second_execution);
-							return second_execution;
-						}
-					}
-
-					// If the first son
-					else {
-
-						// Close unused read end
-						close(fd[0]);
-
-						// Redirect the standard output to the pipe
-						if (dup2(1, fd[1]) < 0) {  // Less than 0 if error
-							fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
-							return 1;
-						}
-
-						// Execute the first command passed
-						int result_execution = execvp(command_parts[0], command_parts);
-
-						// If an error occured
-						if (result_execution != 0) {
-							fprintf(stderr, "%s%d\n", "Error during the execution of the first command. Exit with code ", result_execution);
-							return result_execution;
-						}
-
-						// Wait the second son to terminate
-						int status;
-						pid_t result_wait;
-						while ((result_wait = wait(&status)) > 0) { }
-					}
-
-					// If no error during all the process
-					return 0;
+					return second_execution;
 				}
 
-
-				// If the FATHER
+				// If the FIRST SON
 				else {
 
-					// Wait the sons to terminate
+					// Close unused read end
+					close(fd[0]);
+
+					// Redirect the standard output to the pipe
+					if (dup2(1, fd[1]) < 0) {  // Less than 0 if error
+						fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
+						return 1;
+					}
+
+					// Execute the first command passed
+					int result_execution = execvp(command_parts[0], command_parts);
+
+					// If an error occured
+					if (result_execution != 0) {
+						fprintf(stderr, "%s%d\n", "Error during the execution of the first command. Exit with code ", result_execution);
+						return result_execution;
+					}
+
+					// Wait the second son to terminate
 					int status;
 					pid_t result_wait;
 					while ((result_wait = wait(&status)) > 0) { }
 				}
+
+				// If no error during all the process
+				return 0;
 			}
 
-			// Read the first command
-			fprintf(stdout, "%s\n", "Please enter the first command:");
-			result_read = fgets(command, (MAX_SIZE/sizeof(char)), stdin);
 
-			// Close if exit
-			if (strcmp(command, "exit\n") == 0)
-				return 0;
+			// If the FATHER
+			else {
 
-			// Read the second one
-			fprintf(stdout, "%s\n", "Please enter the second command:");
-			result_read2 = fgets(command2, (MAX_SIZE/sizeof(char)), stdin);
-
-			// Close if exit
-			if (strcmp(command2, "exit\n") == 0)
-				return 0;
+				// Wait the sons to terminate
+				int status;
+				pid_t result_wait;
+				while ((result_wait = wait(&status)) > 0) { }
+			}
 		}
 
-		// If exit enterred
-		return 0;
+		// Read the first command
+		fprintf(stdout, "%s\n", "Please enter the first command:");
+		result_read = fgets(command, (MAX_SIZE/sizeof(char)), stdin);
+
+		// Close if exit
+		if (strcmp(command, "exit\n") == 0)
+			return 0;
+
+		// Read the second one
+		fprintf(stdout, "%s\n", "Please enter the second command:");
+		result_read2 = fgets(command2, (MAX_SIZE/sizeof(char)), stdin);
+
+		// Close if exit
+		if (strcmp(command2, "exit\n") == 0)
+			return 0;
 	}
 
 	// If an error
