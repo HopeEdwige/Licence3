@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/types.h>
 #include <sys/wait.h>
 
 
@@ -124,7 +125,7 @@ int main() {
 					close(fd[1]);
 
 					// Redirect the standard input from the pipe
-					if (dup2(0, fd[0]) < 0) {  // Less than 0 if error
+					if (dup2(fd[0], 0) < 0) {  // Less than 0 if error
 						fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
 						return 1;
 					}
@@ -142,16 +143,16 @@ int main() {
 				// If the FIRST SON
 				else {
 
-					// Close unused read end
+					// Close the unused read end
 					close(fd[0]);
 
-					// Redirect the standard output to the pipe
+					// Redirect the standard output from the pipe
 					if (dup2(1, fd[1]) < 0) {  // Less than 0 if error
 						fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
 						return 1;
 					}
 
-					// Execute the first command passed
+					// Then execute the second one
 					int result_execution = execvp(command_parts[0], command_parts);
 
 					// If an error occured
@@ -161,15 +162,14 @@ int main() {
 					}
 
 					// Wait the second son to terminate
-					int status;
+					/*int status;
 					pid_t result_wait;
-					while ((result_wait = wait(&status)) > 0) { }
+					while ((result_wait = wait(&status)) > 0) { }*/
 				}
 
 				// If no error during all the process
 				return 0;
 			}
-
 
 			// If the FATHER
 			else {
@@ -180,6 +180,9 @@ int main() {
 				while ((result_wait = wait(&status)) > 0) { }
 			}
 		}
+
+		// Break a line
+		fprintf(stdout, "%s\n", "");
 
 		// Read the first command
 		fprintf(stdout, "%s\n", "Please enter the first command:");
