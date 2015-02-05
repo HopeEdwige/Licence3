@@ -94,26 +94,48 @@ int main() {
 		// If no error, we can execute the command
 		else {
 
+			// The table of commands
+			char *command_parts[MAX_SIZE];
+			char *command_parts2[MAX_SIZE];
+
+			// Split the commands
+			get_command_parts(command, command_parts);
+			get_command_parts(command2, command_parts2);
+
+			// Create a pipe here
+			int fd[2];
+			if (pipe(fd) < 0) {
+				fprintf(stderr, "%s\n", "Error during the creation of the pipe.");
+				return 1;
+			}
+
 			// Do the fork here
 			pid_t result_fork = fork();
 
 			// If the SON
 			if (result_fork == 0) {
 
-				// The table of commands
-				char *command_parts[MAX_SIZE];
-				char *command_parts2[MAX_SIZE];
+				// Close the unused read end
+				close(fd[0]);
 
-				// Split the commands
-				get_command_parts(command, command_parts);
-				get_command_parts(command2, command_parts2);
-
-				// Create a pipe here
-				int fd[2];
-				if (pipe(fd) < 0) {
-					fprintf(stderr, "%s\n", "Error during the creation of the pipe.");
+				// Redirect the standard output from the pipe
+				if (dup2(1, fd[1]) < 0) {  // Less than 0 if error
+					fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
 					return 1;
 				}
+
+				// Then execute the second one
+				int result_execution = execvp(command_parts[0], command_parts);
+
+				// If an error occured
+				if (result_execution != 0) {
+					fprintf(stderr, "%s%d\n", "Error during the execution of the first command. Exit with code ", result_execution);
+					return result_execution;
+				}
+			}
+
+			// If the FATHER
+			else {
 
 				// Then create another fork
 				pid_t son_fork = fork();
@@ -125,7 +147,7 @@ int main() {
 					close(fd[1]);
 
 					// Redirect the standard input from the pipe
-					if (dup2(fd[0], 0) < 0) {  // Less than 0 if error
+					if (dup2(0, fd[0] ) < 0) {  // Less than 0 if error
 						fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
 						return 1;
 					}
@@ -134,45 +156,11 @@ int main() {
 					int second_execution = execvp(command_parts2[0], command_parts2);
 
 					// If an error occured
-					if (second_execution != 0)
+					if (second_execution != 0) {
 						fprintf(stderr, "%s%d\n", "Error during the execution of the second command. Exit with code ", second_execution);
-
-					return second_execution;
-				}
-
-				// If the FIRST SON
-				else {
-
-					// Close the unused read end
-					close(fd[0]);
-
-					// Redirect the standard output from the pipe
-					if (dup2(1, fd[1]) < 0) {  // Less than 0 if error
-						fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
-						return 1;
+						return second_execution;
 					}
-
-					// Then execute the second one
-					int result_execution = execvp(command_parts[0], command_parts);
-
-					// If an error occured
-					if (result_execution != 0) {
-						fprintf(stderr, "%s%d\n", "Error during the execution of the first command. Exit with code ", result_execution);
-						return result_execution;
-					}
-
-					// Wait the second son to terminate
-					/*int status;
-					pid_t result_wait;
-					while ((result_wait = wait(&status)) > 0) { }*/
 				}
-
-				// If no error during all the process
-				return 0;
-			}
-
-			// If the FATHER
-			else {
 
 				// Wait the sons to terminate
 				int status;
