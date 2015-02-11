@@ -118,6 +118,11 @@ int main(int argc, char** args) {
 				return 2;
 			}
 
+
+
+
+			/* #################### FIRST COMMAND #################### */
+
 			// Do the fork here
 			pid_t result_fork;
 			if ((result_fork = fork()) < 0) {
@@ -153,6 +158,8 @@ int main(int argc, char** args) {
 			int status;
 			pid_t result_wait;
 			while ((result_wait = wait(&status)) > 0) {}
+
+
 
 
 			/* #################### SECOND COMMAND #################### */
