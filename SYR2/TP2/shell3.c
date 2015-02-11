@@ -9,8 +9,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
-#include <sys/types.h>
-#include <sys/wait.h>
+#include <wait.h>
 
 
 // Constants
@@ -106,11 +105,15 @@ int main() {
 			int fd[2];
 			if (pipe(fd) < 0) {
 				fprintf(stderr, "%s\n", "Error during the creation of the pipe.");
-				return 1;
+				return 2;
 			}
 
 			// Do the fork here
-			pid_t result_fork = fork();
+			pid_t result_fork;
+			if ((result_fork = fork()) < 0) {
+				fprintf(stderr, "%s\n", "Error during the first fork.");
+				return 3;
+			}
 
 			// If the first SON
 			if (result_fork == 0) {
@@ -121,20 +124,20 @@ int main() {
 				// Redirect the standard output to the pipe
 				if (dup2(fd[1], 1) < 0) {  // Less than 0 if error
 					fprintf(stderr, "%s\n", "The io redirection failed in the in => out direction.");
-					return 1;
+					return 4;
 				}
+
+				// Close after we made dup on it
+				close(fd[1]);
 
 				// Then execute the second one
 				int result_execution = execvp(command_parts[0], command_parts);
 
-				// Close completely the pipe
-				close(fd[1]);
-
 				// If an error occured
-				if (result_execution != 0) {
+				if (result_execution != 0)
 					fprintf(stderr, "%s%d\n", "Error during the execution of the first command. Exit with code ", result_execution);
-					return result_execution;
-				}
+				
+				return result_execution;
 			}
 
 			// If the FATHER
@@ -144,43 +147,47 @@ int main() {
 				int status;
 				pid_t result_wait;
 				while ((result_wait = wait(&status)) > 0) { }
+			}
 
-				// Then create another fork
-				pid_t son_fork = fork();
+			// Then create another fork
+			pid_t son_fork;
+			if ((son_fork = fork()) < 0) {
+				fprintf(stderr, "%s\n", "Error during the second fork.");
+				return 5;
+			}
 
-				// If the NEW SON
-				if (son_fork == 0) {
+			// If the NEW SON
+			if (son_fork == 0) {
 
-					// Close the unused write end
-					close(fd[1]);
+				// Close the unused write end
+				close(fd[1]);
 
-					// Redirect the standard input from the pipe
-					if (dup2(fd[0], 0) < 0) {  // Less than 0 if error
-						fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
-						return 1;
-					}
-
-					// Then execute the second one
-					int second_execution = execvp(command_parts2[0], command_parts2);
-
-					// Close completely the pipe
-					close(fd[0]);
-
-					// If an error occured
-					if (second_execution != 0) {
-						fprintf(stderr, "%s%d\n", "Error during the execution of the second command. Exit with code ", second_execution);
-						return second_execution;
-					}
+				// Redirect the standard input from the pipe
+				if (dup2(fd[0], 0) < 0) {  // Less than 0 if error
+					fprintf(stderr, "%s\n", "The io redirection failed in the out => in direction.");
+					return 6;
 				}
 
-				// If the father
-				else {
+				// Close after we made dup on it
+				close(fd[0]);
 
-					// Wait the last son to terminate
-					int status;
-					pid_t result_wait;
-					while ((result_wait = wait(&status)) > 0) { }
-				}
+				// Then execute the second one
+				int second_execution = execvp(command_parts2[0], command_parts2);
+
+				// If an error occured
+				if (second_execution != 0)
+					fprintf(stderr, "%s%d\n", "Error during the execution of the second command. Exit with code ", second_execution);
+
+				return second_execution;
+			}
+
+			// If the father
+			else {
+
+				// Wait the last son to terminate
+				int status;
+				pid_t result_wait;
+				while ((result_wait = wait(&status)) > 0) { }
 			}
 		}
 
