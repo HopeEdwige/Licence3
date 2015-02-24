@@ -1,41 +1,116 @@
+/*
+    TP1 - SYR2
+    ANDRIAMILANTO Tompoariniaina
+    BOUCHERIE Thomas
+*/
+
+// Includes
 #include <stdio.h>
 #include <sys/ipc.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 #include <sys/types.h>
 #include <unistd.h>
 #include <stdlib.h>
 #include <strings.h>
 
+
+// Constants
 #define TAILLE 1024
 
-void ecrire_tableau(int *compteur, char *tableau) {
-  char message[64], *msg=message;
-  snprintf(message, 64, "Je suis le processus %d!\n", getpid());
 
-  while ((*compteur<TAILLE)&&(*msg)) {
-    tableau[*compteur] = *msg;
-    msg++;
-    usleep(100000);
-    (*compteur)++;
-  }
+/**
+ * Write the id of the process in the table
+ *
+ * Parameters:
+ *     - int *compteur  => The counter of messages
+ *     - char *tableau  => The table to write in
+ *
+ * Return:
+ *     - int  => The result of the execution
+ */
+void write_in_table(int *compteur, char *tableau) {
+    char message[64], *msg=message;
+    snprintf(message, 64, "I'm the process number %d!\n", getpid());
+
+    while ((*compteur<TAILLE)&&(*msg)) {
+        tableau[*compteur] = *msg;
+        msg++;
+        usleep(100000);
+        (*compteur)++;
+    }
 }
 
-int main() {
-  int id, *compteur;
-  char *tableau;
-  key_t key = (key_t)1234;
 
-  id = shmget(key,TAILLE+sizeof(int),0600|IPC_CREAT);  //Taille = Tableau et sizeof(int) = compteur
-  if (id<0) { perror("Error shmget"); exit(1); }
+/**
+ * The main program
+ *
+ * Parameters:
+ *     - int *compteur  => The counter of messages
+ *     - char *tableau  => The table to write in
+ *
+ * Return:
+ *     - int  => The result of the execution
+ */
+int main(int argc, char** args) {
 
-  compteur = (int*) shmat(id,0,0);
-  if (compteur==NULL) { perror("Error shmat"); exit(1); }
+    // If there are too many arguments
+    if (argc > 1) {
+        fprintf(stderr, "%s\n", "There are too many arguments. This program requires none.");
+        return 1;  // Exit with an error code
+    }
 
-  tableau = (char *)(compteur + 1);
-  
-  ecrire_tableau(compteur, tableau);
-  printf("%s\n", tableau);
+    // The variables stored in the shared memory
+    int id, *compteur;
+    char *tableau;
+    key_t key = (key_t)1234;
 
-  if (shmdt(compteur)<0) { perror("Error shmdt"); exit(1); }
-  return 0;
+    // Create the shared memory
+    id = shmget(key,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
+    if (id<0) { perror("Error shmget"); exit(1); }
+
+    // Get the value of the counter
+    compteur = (int*) shmat(id,0,0);
+    if (compteur==NULL) { perror("Error shmat"); exit(1); }
+
+    // Get the table's location to store the message
+    tableau = (char *)(compteur + 1);
+
+
+    /* ######################### Semaphore control and cricical zone here ######################### */
+
+    // Create the correct structure for the semaphore implementation
+    struct sembuf up = {0, 1, 0};
+    struct sembuf down = {0, -1, 0};
+
+    // Create the semaphore table
+    int my_sem = semget(IPC_PRIVATE, 1, 0600);
+
+    // Enter in the critical zone
+    int sem_val = semctl(my_sem, 0, GETVAL);
+
+    if (sem_val == -1) { perror("Error semctl"); exit(1); }
+    while (sem_val != 0) {}
+
+    // Put UP the semaphore
+    if (semop(my_sem, &up, 1) == -1) { perror("Error semop UP"); exit(1); }
+
+    // Write in the table
+    write_in_table(compteur, tableau);
+
+    // Put DOWN the semaphore
+    if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
+
+    // Destroy the semaphore
+    if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }
+
+    /* ######################### End of semaphore control and cricical zone ######################### */
+
+
+    // Then display it
+    printf("%s\n", tableau);
+
+    // Close the shared memory segment (but doesn't delete it!)
+    if (shmdt(compteur)<0) { perror("Error shmdt"); exit(1); }
+    return 0;
 }

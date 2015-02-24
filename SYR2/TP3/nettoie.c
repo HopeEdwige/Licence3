@@ -1,45 +1,41 @@
-#include <stdio.h>
-#include <sys/ipc.h>
-#include <sys/shm.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <stdlib.h>
-#include <strings.h>
+/*
+	TP1 - SYR2
+	ANDRIAMILANTO Tompoariniaina
+	BOUCHERIE Thomas
+*/
 
+// Includes
+#include <stdio.h>
+#include <sys/shm.h>
+#include <stdlib.h>
+
+
+// Constants
 #define TAILLE 1024
 
 
-/*void ecrire_tableau(int *compteur, char *tableau) {
-  char message[64], *msg=message;
-  snprintf(message, 64, "Je suis le processus %d!\n", getpid());
+/**
+ * This program just delete the shared memory segment
+ *
+ * Parameters:
+ *     - int argc  => The number of arguments
+ *     - char** args  => The arguments
+ *
+ * Return:
+ *     - int  => The result of the execution
+ */
+int main(int argc, char** args) {
 
-  while ((*compteur<TAILLE)&&(*msg)) {
-    tableau[*compteur] = *msg;
-    msg++;
-    usleep(100000);
-    (*compteur)++;
-  }
-}
-*/
+	// If there are too many arguments
+	if (argc > 1) {
+		fprintf(stderr, "%s\n", "There are too many arguments. This program requires none.");
+		return 1;  // Exit with an error code
+	}
 
-int main() {
-  //int id; //*compteur;
-  //char *tableau;
+	// Get the location of the shared memory segment
+    int id = shmget((key_t)1234,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
 
-  int id = shmget((key_t)1234,TAILLE+sizeof(int),0600|IPC_CREAT);  //Taille = Tableau et sizeof(int) = compteur
-  //if (id<0) { perror("Error shmget"); exit(1); }
-
-  //compteur = (int*) shmat(id,0,0);
-  //if (compteur==NULL) { perror("Error shmat"); exit(1); }
-
-  //tableau = (char *)(compteur + 1);
-  
-  //ecrire_tableau(compteur, tableau);
-  //printf("%s\n", tableau);
-
-  //if (shmdt(compteur)<0) { perror("Error shmdt"); exit(1); }
-
-  if (shmctl(id, IPC_RMID, NULL) < 0) { perror("Erreur shmctl"); exit(1); }
-  return 0;
-
+    // Delete the shared memory segment
+    if (shmctl(id, IPC_RMID, NULL) < 0) { perror("Error shmctl"); exit(1); }
+    return 0;
 }

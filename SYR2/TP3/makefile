@@ -7,10 +7,6 @@ all: tp4.c nettoie.c
 	gcc $(CFLAGS) -o tp4 tp4.c
 	gcc $(CFLAGS) -o nettoie nettoie.c
 
-tp4: tp4.c nettoie.c
-	gcc $(CFLAGS) -o tp4 tp4.c
-	gcc $(CFLAGS) -o nettoie nettoie.c
-
 
 # Clean the workspace
 clean:
