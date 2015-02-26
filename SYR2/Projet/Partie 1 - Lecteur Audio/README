@@ -1,0 +1,13 @@
+SYR2 - Projet - Partie 1
+ANDRIAMILANTO Tompoariniaina
+BOUCHERIE Thomas
+
+
+Question 1:
+	Si on passe une fréquence d'échantillonnage deux fois trop grande, le programme lis la musique deux fois plus vite car au lieu de lire x échantillons à la seconde il en lis le double. Même fonctionnement si on entre une fréquence deux fois plus petite.
+
+Question 2:
+	(A faire via écouteurs)
+
+Question 3:
+	Si l'on déclare une mauvaise taille d'échantillon, on entend un grésillement.
