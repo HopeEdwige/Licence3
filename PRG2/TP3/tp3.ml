@@ -71,7 +71,7 @@ let rec execute = function (p, r) -> match p with
     Stop -> r
   | TGauche -> { r with ori = gauche r.ori }
   | TDroite -> { r with ori = droite r.ori }
-  | Avancer i -> { r with pos = avancer(r.pos, r.ori, i) }
+  | Avancer i -> let new_r = { r with pos = avancer(r.pos, r.ori, i) } in gtrace new_r; new_r
   | Pinceau e -> { r with etat = e }
   | Bloc [] -> r
   | Bloc (p1::l) -> execute(Bloc l, execute(p1, r))
@@ -79,3 +79,21 @@ let rec execute = function (p, r) -> match p with
     if (i > 0) then execute(Repeat(i-1, p1), execute(p1
 , r))
     else r;;
+
+
+let mon_petit_poney = {
+  pos = (0, 0);
+  ori = Nord;
+  etat = Pose
+};;
+
+let dessiner_carre = Repeat(4, Bloc [Avancer 50; TDroite]);;
+
+let dessiner_pointille = Repeat(4, Bloc[Repeat(8,Bloc [Avancer 10; Pinceau Leve; Avancer 10; Pinceau Pose; Avancer 10]); TDroite ]);;
+
+(*let i = 50;;
+let carre_plein = Bloc [Repeat(3, Bloc [Avancer i; TDroite]); Bloc [Avancer i-1; TDroite]];;*)
+
+let carre_plein_unicorn =  Repeat(10, Bloc[Avancer 10;TDroite; Avancer 1;TDroite ;Avancer 10 ;TGauche; Avancer 1;TGauche ;Avancer 10]);;
+
+let _ = execute (carre_plein_unicorn, mon_petit_poney) in read_line();;
