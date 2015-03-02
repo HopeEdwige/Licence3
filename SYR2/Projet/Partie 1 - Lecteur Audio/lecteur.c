@@ -59,8 +59,9 @@ int main(int argc, char** args) {
 		/* ##### Insert here the modifications of audio parameters ##### */
 		//sample_rate = sample_rate * 2;
 		//sample_rate = sample_rate / 2;
-		//channels = 1;
-		sample_size = 8;  // 8 Bits
+		channels = 1;
+		//sample_size = 4;  // 4 Bits  => Put automatically to 16
+		//sample_size = 8;  // 8 Bits  => Unaudible
 
 		// If the read was successfull
 		fprintf(stderr, "Filename = %s; Sample Rate = %u; Sample Size = %u; Channels = %u; \n", filename, sample_rate, sample_size, channels);
@@ -80,21 +81,20 @@ int main(int argc, char** args) {
 		ssize_t write_audio;
 
 		// Create buffers
-		int buffer_size = sample_size/8;  // Bits to Bytes
-		char audio_buffer[buffer_size];
+		char audio_buffer[sample_size];
 
 		// For each audio sample		
 		do {
 			// Simply read each sample of the audio file
-			read_audio = read(read_init_audio, audio_buffer, buffer_size);
+			read_audio = read(read_init_audio, audio_buffer, sample_size);
 
 			// And write them after
-			write_audio = write(write_init_audio, audio_buffer, buffer_size);
+			write_audio = write(write_init_audio, audio_buffer, sample_size);
 
 			// Clear the buffer after each pass
-			bzero(audio_buffer, buffer_size);
+			bzero(audio_buffer, sample_size);
 
-		} while ((read_audio == buffer_size) && (write_audio == buffer_size));
+		} while ((read_audio == sample_size) && (write_audio == sample_size));
 
 		// If an error happened
 		if (read_audio == -1) { perror("Error at reading the audio file."); return 1; }

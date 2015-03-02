@@ -87,19 +87,17 @@ int main(int argc, char** args) {
     int my_sem = semget(IPC_PRIVATE, 1, 0600);
 
     // Enter in the critical zone
-    int sem_val = semctl(my_sem, 0, GETVAL);
+    while (semctl(my_sem, 0, GETVAL) != 0) {}
+    if (semctl(my_sem, 0, GETVAL) == -1) { perror("Error semctl"); exit(1); }
 
-    if (sem_val == -1) { perror("Error semctl"); exit(1); }
-    while (sem_val != 0) {}
-
-    // Put UP the semaphore
-    if (semop(my_sem, &up, 1) == -1) { perror("Error semop UP"); exit(1); }
+    // Put DOWN the semaphore
+    if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
 
     // Write in the table
     write_in_table(compteur, tableau);
 
-    // Put DOWN the semaphore
-    if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
+    // Put UP the semaphore
+    if (semop(my_sem, &up, 1) == -1) { perror("Error semop UP"); exit(1); }
 
     // Destroy the semaphore
     if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }

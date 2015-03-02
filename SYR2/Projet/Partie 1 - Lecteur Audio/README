@@ -7,7 +7,7 @@ Question 1:
 	Si on passe une fréquence d'échantillonnage deux fois trop grande, le programme lis la musique deux fois plus vite car au lieu de lire x échantillons à la seconde il en lis le double. Même fonctionnement si on entre une fréquence deux fois plus petite.
 
 Question 2:
-	(A faire via écouteurs)
+	Si on change le stéréo en mono, il va lire les échantillons les uns après les autres comme étant des échantillons stéréo et va donc lire successivement le son du "left" et le son du "right".
 
 Question 3:
-	Si l'on déclare une mauvaise taille d'échantillon, on entend un grésillement.
+	Si l'on déclare une mauvaise taille d'échantillon, on entend un grésillement mais on arrive à percevoir la musique en fond. Effectivement il lit l'échantillon comme un entier 8 bits non signés et ne lis donc pas correctement la musique.
