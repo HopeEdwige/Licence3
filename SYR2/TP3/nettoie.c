@@ -7,6 +7,7 @@
 // Includes
 #include <stdio.h>
 #include <sys/shm.h>
+#include <sys/sem.h>
 #include <stdlib.h>
 
 
@@ -33,9 +34,18 @@ int main(int argc, char** args) {
 	}
 
 	// Get the location of the shared memory segment
-    int id = shmget((key_t)1234,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
+    key_t key = (key_t)1234;
+    int id = shmget(key,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
+
+    // Get the semaphore table
+    int my_sem = semget(key, 1, 0600|IPC_CREAT);
+    if (my_sem == -1) { perror("Error semget"); exit(1); }
 
     // Delete the shared memory segment
     if (shmctl(id, IPC_RMID, NULL) < 0) { perror("Error shmctl"); exit(1); }
+
+    // Destroy the semaphore
+    if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }
+
     return 0;
 }

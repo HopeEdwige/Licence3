@@ -69,13 +69,6 @@ int main(int argc, char** args) {
     id = shmget(key,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
     if (id<0) { perror("Error shmget"); exit(1); }
 
-    // Get the value of the counter
-    compteur = (int*) shmat(id,0,0);
-    if (compteur==NULL) { perror("Error shmat"); exit(1); }
-
-    // Get the table's location to store the message
-    tableau = (char *)(compteur + 1);
-
 
     /* ######################### Semaphore control and cricical zone here ######################### */
 
@@ -84,23 +77,27 @@ int main(int argc, char** args) {
     struct sembuf down = {0, -1, 0};
 
     // Create the semaphore table
-    int my_sem = semget(IPC_PRIVATE, 1, 0600);
+    int my_sem = semget(key, 1, 0600|IPC_CREAT);
+    if (my_sem == -1) { perror("Error semget"); exit(1); }
 
-    // Enter in the critical zone
-    while (semctl(my_sem, 0, GETVAL) != 0) {}
-    if (semctl(my_sem, 0, GETVAL) == -1) { perror("Error semctl"); exit(1); }
+    // Initialize the value of the semaphore
+    if (semctl(my_sem, 0, SETVAL, 1) == -1) { perror("Error semctl"); exit(1); }
 
     // Put DOWN the semaphore
     if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
+
+    // Get the value of the counter
+    compteur = (int*) shmat(id, 0, 0);
+    if (compteur == NULL) { perror("Error shmat"); exit(1); }
+
+    // Get the table's location to store the message
+    tableau = (char*)(compteur + 1);
 
     // Write in the table
     write_in_table(compteur, tableau);
 
     // Put UP the semaphore
     if (semop(my_sem, &up, 1) == -1) { perror("Error semop UP"); exit(1); }
-
-    // Destroy the semaphore
-    if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }
 
     /* ######################### End of semaphore control and cricical zone ######################### */
 
@@ -109,6 +106,6 @@ int main(int argc, char** args) {
     printf("%s\n", tableau);
 
     // Close the shared memory segment (but doesn't delete it!)
-    if (shmdt(compteur)<0) { perror("Error shmdt"); exit(1); }
+    if (shmdt(compteur) < 0) { perror("Error shmdt"); exit(1); }
     return 0;
 }
