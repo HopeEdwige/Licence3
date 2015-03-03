@@ -14,6 +14,6 @@ clean:
 
 
 # Test programs
-test_tp4:
+test:
 	gdb ./tp4
 	valgrind $(VGOPTIONS) ./tp4

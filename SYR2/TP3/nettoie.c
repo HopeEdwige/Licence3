@@ -38,14 +38,15 @@ int main(int argc, char** args) {
     int id = shmget(key,TAILLE+sizeof(int),0600|IPC_CREAT);  // Taille => Tableau // sizeof(int) => compteur
 
     // Get the semaphore table
-    int my_sem = semget(key, 1, 0600|IPC_CREAT);
-    if (my_sem == -1) { perror("Error semget"); exit(1); }
+    int my_sem = semget(key, 1, 0600);  // Don't create it if it doesn't exist yet
+    if (my_sem > 0) {
+
+        // Destroy it only if it was initialized before
+        if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }
+    }
 
     // Delete the shared memory segment
     if (shmctl(id, IPC_RMID, NULL) < 0) { perror("Error shmctl"); exit(1); }
-
-    // Destroy the semaphore
-    if (semctl(my_sem, 0, IPC_RMID) == -1) { perror("Error semop DESTROY"); exit(1); }
 
     return 0;
 }

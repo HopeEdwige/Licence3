@@ -76,12 +76,21 @@ int main(int argc, char** args) {
     struct sembuf up = {0, 1, 0};
     struct sembuf down = {0, -1, 0};
 
-    // Create the semaphore table
-    int my_sem = semget(key, 1, 0600|IPC_CREAT);
-    if (my_sem == -1) { perror("Error semget"); exit(1); }
+    // Get the semaphore table
+    int my_sem = semget(key, 1, 0600);
 
-    // Initialize the value of the semaphore
-    if (semctl(my_sem, 0, SETVAL, 1) == -1) { perror("Error semctl"); exit(1); }
+    // If it wasn't created/initialized yet
+    if (my_sem == -1) {
+
+        // Create it
+        my_sem = semget(key, 1, 0600|IPC_CREAT);
+
+        // Initialize the value of it (only one process at a time)
+        if (semctl(my_sem, 0, SETVAL, 1) == -1) { perror("Error semctl"); exit(1); }
+    }
+
+    // If after trying to create it an error was thrown
+    if (my_sem == -1) { perror("Error semget"); exit(1); }
 
     // Put DOWN the semaphore
     if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
