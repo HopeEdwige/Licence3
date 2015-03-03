@@ -3,8 +3,8 @@ CFLAGS = -g -Wall
 
 
 # Compilations
-all: sysprog-audio-1.5/audio.c lecteur.c
-	gcc $(CFLAGS) -c -I sysprog-audio-1.5 -o audio.o sysprog-audio-1.5/audio.c
+all: audio.c lecteur.c
+	gcc $(CFLAGS) -c -I ./ -o audio.o audio.c
 	gcc $(CFLAGS) -o lecteur lecteur.c audio.o
 
 

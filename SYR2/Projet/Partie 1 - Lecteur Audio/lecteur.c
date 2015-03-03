@@ -59,7 +59,7 @@ int main(int argc, char** args) {
 		/* ##### Insert here the modifications of audio parameters ##### */
 		//sample_rate = sample_rate * 2;
 		//sample_rate = sample_rate / 2;
-		channels = 1;
+		//channels = 1;
 		//sample_size = 4;  // 4 Bits  => Put automatically to 16
 		//sample_size = 8;  // 8 Bits  => Unaudible
 
@@ -70,7 +70,7 @@ int main(int argc, char** args) {
 		int write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
 
 		// If an error happened
-		if (write_init_audio < 1) { perror("Error at getting the audio output device."); return 1; }
+		if (write_init_audio < 1) { perror("Error at getting the audio output device"); return 1; }
 
 
 
@@ -97,16 +97,16 @@ int main(int argc, char** args) {
 		} while ((read_audio == sample_size) && (write_audio == sample_size));
 
 		// If an error happened
-		if (read_audio == -1) { perror("Error at reading the audio file."); return 1; }
+		if (read_audio == -1) { perror("Error at reading the audio file"); return 1; }
 
 		// If an error happened
-		if (write_audio == -1) { perror("Error at playing the audio file."); return 1; }
+		if (write_audio == -1) { perror("Error at playing the audio file"); return 1; }
 
 		// Close the descriptor file when it's done
-		if (close(read_init_audio) != 0) { perror("Error at closing the read file descriptor."); return 1; }
+		if (close(read_init_audio) != 0) { perror("Error at closing the read file descriptor"); return 1; }
 
 		// Close the descriptor file when it's done
-		if (close(write_init_audio) != 0) { perror("Error at closing the write file descriptor."); return 1; }
+		if (close(write_init_audio) != 0) { perror("Error at closing the write file descriptor"); return 1; }
 
 		// If everything went ok
 		return 0;
