@@ -17,10 +17,11 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
+#include <netdb.h>
 
 
 // Constants
-#define SERVER_PORT 1055  // Server Port
+#define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
 
 

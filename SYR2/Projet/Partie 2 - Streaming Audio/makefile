@@ -3,20 +3,16 @@ CFLAGS = -g -Wall
 
 
 # Compilations
-all: audio.c lecteur.c audioserver.c
-	gcc $(CFLAGS) -c -I ./ -o audio.o audio.c
-	gcc $(CFLAGS) -o lecteur lecteur.c audio.o
+all: audioserver.c audioclient.c
 	gcc $(CFLAGS)  -I ./ -o audioserver audioserver.c
+	gcc $(CFLAGS)  -I ./ -o audioclient audioclient.c
 
 
 # Clean the workspace
 clean:
-	rm audio.o lecteur audioserver
+	rm audioserver audioclient
 
 
 # Test programs
-test-lecteur:
-	padsp ./lecteur
-
-test-server:
-	./audioserver
+test:
+	./audioserver && ./audioclient
