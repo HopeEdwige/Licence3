@@ -19,9 +19,14 @@
  */
 int main(int argc, char** args) {
 
+
+	/* 	################################################## Parameters check ################################################## */
 	// If there are too many arguments
 	if (argc > 1) { perror("There are too many arguments. This program requires none"); return 1; }
 
+
+
+	/* 	################################################## Socket creation and bind ################################################## */
 	// Create the server socket
 	int server_socket = socket(AF_INET, SOCK_DGRAM, 0);
 
@@ -37,6 +42,9 @@ int main(int argc, char** args) {
 	// Bind the port
 	if (bind(server_socket, (struct sockaddr *) &addr, sizeof(struct sockaddr_in)) == -1) { perror("Error during the server socket's bind"); return 1; }
 
+
+
+	/* 	################################################## Receiving the packet ################################################## */
 	// Create the buffer
 	char server_buffer[BUFFER_SIZE];
 
@@ -49,9 +57,15 @@ int main(int argc, char** args) {
 	// Wait a packet
 	int packets_receved = recvfrom(server_socket, &server_buffer, BUFFER_SIZE, 0, (struct sockaddr *) &source, &source_length);
 
+	// Print the message received
+	fprintf(stdout, "%s\n", server_buffer);
+
 	// If error
 	if (packets_receved == -1) { perror("Error during the receiving of the packet"); return 1; }
 
+
+
+	/* 	################################################## Socket closing ################################################## */
 	// Then close it in the end
 	if (close(server_socket) == -1) { perror("Error during the closing of the server socket"); return 1; }
 

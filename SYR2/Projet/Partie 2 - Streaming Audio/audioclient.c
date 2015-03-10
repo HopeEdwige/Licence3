@@ -19,6 +19,8 @@
  */
 int main(int argc, char** args) {
 
+
+	/* 	################################################## Parameters check ################################################## */
 	// If there aren't the correct number of arguments
 	if (argc != 3) { perror("Three arguments expected. Run with audioclient [server_host_name] [file_name]"); return 1; }
 
@@ -43,37 +45,34 @@ int main(int argc, char** args) {
 
 
 
-	/* 	################################################## Socket creation and bind ################################################## */
+	/* 	################################################## Socket creation and destination configuration ################################################## */
 	// Create the client socket
 	int client_socket = socket(AF_INET, SOCK_DGRAM, 0);
 
 	// If error
 	if (client_socket == -1) { perror("Error during the creation of the client socket"); return 1; }
 
-	// The structure containing the port number
-	struct sockaddr_in addr;
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(SERVER_PORT);
-	addr.sin_addr = *ip_addr;
-
-	// Bind the port
-	if (bind(client_socket, (struct sockaddr *) &addr, sizeof(struct sockaddr_in)) == -1) { perror("Error during the client socket's bind"); return 1; }
-
-
-
-	/* 	################################################## Sending the packet ################################################## */
-	// The structure for informations about the destination (will be filled)
+	// The structure for informations about the destination
 	struct sockaddr_in destination;
+	destination.sin_family = AF_INET;
+	destination.sin_port = htons(SERVER_PORT);
+	destination.sin_addr = *ip_addr;
 
 	// Its length (for the pointer)
 	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
 
+
+
+	/* 	################################################## Sending the packet ################################################## */
 	// Send a packet
 	int packet_send = sendto(client_socket, args[2], BUFFER_SIZE, 0, (struct sockaddr *)&destination, destination_length);
 
 	// If error
 	if (packet_send == -1) { perror("Error during the receiving of the packet"); return 1; }
 
+
+
+	/* 	################################################## Socket closing ################################################## */
 	// Then close it in the end
 	if (close(client_socket) == -1) { perror("Error during the closing of the client socket"); return 1; }
 
