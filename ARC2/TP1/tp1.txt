@@ -1,0 +1,14 @@
+cycle			PC		IR				bus		MA		res		commande
+0			0		0				0		1000		0		inc4 (ChMA, PC>bus, ChC)
+1			0		0				4		0		0		add (ChIR, ChPC)
+2			4		0x01800E17			0		0		0		add (SelrA, R>bus, ChA)
+3			4		-				38		0		0		add (IMM16>bus, ChC)
+4			4		-				38		38		0		add (C>bus, ChMA)
+5			4		-				69		38		0		add (ChR, selrB, Lec)
+0			4		-				4		4		0		inc4 (ChMA, PC>bus, ChC)
+1			4		-				8		4		0		add (c>bus, ChPC, ChIR)
+2			8		0x01C00F17			0		4		0		add (selrA, R>bus, ChA)
+3			8		-				0x3C		4		0		add (IMM16>bus, ChC)
+4			8		-				0x3C		0x3C		0		add (C>bus, ChMA)
+5			8		-				0x1C		0x3C		0		add (ChR, selrB, Lec)
+
