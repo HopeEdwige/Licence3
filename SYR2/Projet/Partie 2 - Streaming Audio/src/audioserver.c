@@ -27,13 +27,29 @@ void server_error_encountered(int err_socket, int err_type, char* err_message, s
 
 	// Send an error packet
 	if (sendto(err_socket, &error_packet, sizeof(struct packet), 0, err_destination, destination_length) == -1)
-		perror("Error during the sending of the error packet");
+		perror("Error during the sending of the error packet. We can ");
+}
 
-	// Close the socket
-	close(err_socket);
 
-	// Exit the program
-	exit(1);
+int init_socket() {
+
+	// Create the server socket
+	int my_socket = socket(AF_INET, SOCK_DGRAM, 0);
+
+	// If error
+	if (my_socket == -1) { perror("Error during the creation of the server socket"); exit(1); }
+
+	// The structure containing the port number
+	struct sockaddr_in addr;
+	addr.sin_family = AF_INET;
+	addr.sin_port = htons(SERVER_PORT);
+	addr.sin_addr.s_addr = htonl(INADDR_ANY);
+
+	// Bind the port
+	if (bind(my_socket, (struct sockaddr *)&addr, sizeof(struct sockaddr_in)) == -1) { perror("Error during the server socket's bind"); exit(1); }
+
+	// Then return the socket
+	return my_socket;
 }
 
 
@@ -49,85 +65,71 @@ void server_error_encountered(int err_socket, int err_type, char* err_message, s
  */
 int main(int argc, char** args) {
 
-
-	/* 	################################################## Parameters check ################################################## */
+	/* 	################################################## Initialisations ################################################## */
 	// If there are too many arguments
 	if (argc > 1) { perror("There are too many arguments. This program requires none"); return 1; }
 
+	// Socket creation and bind
+	int server_socket = init_socket();
 
-
-	/* 	################################################## Socket creation and bind ################################################## */
-	// Create the server socket
-	int server_socket = socket(AF_INET, SOCK_DGRAM, 0);
-
-	// If error
-	if (server_socket == -1) { perror("Error during the creation of the server socket"); return 1; }
-
-	// The structure containing the port number
-	struct sockaddr_in addr;
-	addr.sin_family = AF_INET;
-	addr.sin_port = htons(SERVER_PORT);
-	addr.sin_addr.s_addr = htonl(INADDR_ANY);
-
-	// Bind the port
-	if (bind(server_socket, (struct sockaddr *) &addr, sizeof(struct sockaddr_in)) == -1) { perror("Error during the server socket's bind"); return 1; }
-
-
-
-	/* 	################################################## Waiting client to connect ################################################## */
-	// Create the buffer
+	// The variable to store datas received
 	struct packet packet_received;
-
-	// The structure for informations about the source (will be filled)
 	struct sockaddr_in source;
-
-	// Its length (for the pointer)
 	socklen_t source_length = (socklen_t)sizeof(struct sockaddr);
 
-	// Wait a client to send a packet
-	int filenamepacket_receved = recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr *) &source, &source_length);
-
-	// If error
-	if (filenamepacket_receved == -1) { perror("Error during the receiving of the packet"); return 1; }
-
-
-
-	/* 	################################################## Only one client can enter in this section ################################################## */
-
-	/* 	################################################## Treat the filename received and send the response ################################################## */
-	// If not the filename packet
-	if (packet_received.type != P_FILENAME)
-		server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Filename was requested but another packet received", (struct sockaddr*)&addr, source_length);
-
-	// Print to check the datas received
-	fprintf(stdout, "%u\n", packet_received.type);
-	fprintf(stdout, "%s\n", packet_received.message);
-
-	// Try to open the file
-	// The values of the parameters of the audio file (will be filled by aud_readinit)
+	// Some more variables that we'll need
+	int server_state = SERVER_FREE;
 	int sample_rate, sample_size, channels;
-
-	// Read the music file
-	int read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
-
-	// If an error happened (maybe the file doesn't exist)
-	if (read_init_audio == -1)
-		server_error_encountered(server_socket, P_ERR_FILENOTFOUND, "Error at reading the audio file", (struct sockaddr*)&addr, source_length);
+	int read_init_audio;
 
 
 
+	/* 	################################################## Server clients ################################################## */
+	do {
+
+		// Reinitialize variables
+		clear_packet(&packet_received);
+
+		// Wait a packet
+		if (recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr *)&source, &source_length) != -1) {
+
+			// In function of the type of the packet received
+			switch (packet_received.type) {
+
+				// Receiving the filename
+				case P_FILENAME:
+
+					// If the server isn't busy
+					if (server_state == SERVER_FREE) {
+
+						// Put the server busy
+						server_state = SERVER_BUSY;
+
+						// Initialize by getting informations about the music to play
+						read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
+
+						// If an error happened (maybe the file doesn't exist)
+						if (read_init_audio == -1)
+							server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source, source_length);
+					}
+
+					//If it is
+					else 
+						server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source, source_length);
+					break;
+			}
+		}
+
+		// If an error during the receiving of a packet
+		else
+			server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Filename was requested but another packet received", (struct sockaddr*)&source, source_length);
+
+	} while (packet_received.type != P_CLOSE_SERVER);
 
 
-
-
-	/* 	################################################## End of single client zone ################################################## */
-
-
-
-	/* 	################################################## Socket closing ################################################## */
-	// Then close it in the end
+	// Then close the socket if a client asked to
 	if (close(server_socket) == -1) { perror("Error during the closing of the server socket"); return 1; }
 
-	// If everything's was ok (but the server is normally just waiting for clients)
+	// If everything's was ok
 	return 0;
 }

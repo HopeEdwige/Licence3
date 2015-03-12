@@ -24,13 +24,19 @@
 // Constants
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
-// Structure types
+
+// Message types
 #define P_ERR_TRANSMISSION 0
-#define P_FILENAME 1
-#define P_NEXT_BLOCK 2
-#define P_ERR_FILENOTFOUND 3
+#define P_SERVER_ERROR 2
+#define P_FILENAME 3
+#define P_BLOCK 3
 #define P_REQ_NEXT_BLOCK 4
 #define P_EOF 5
+#define P_CLOSE_SERVER 6
+
+// Server state
+#define SERVER_FREE 1
+#define SERVER_BUSY 1
 
 
 
