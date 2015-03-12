@@ -63,12 +63,13 @@ int main(int argc, char** args) {
 
 
 
-	/* 	################################################## Sending the packet ################################################## */
-	// Send a packet
-	int packet_send = sendto(client_socket, args[2], BUFFER_SIZE, 0, (struct sockaddr *)&destination, destination_length);
+	/* 	################################################## Sending the filename ################################################## */
+	// Create the packet to send
+	struct packet filename;
+	create_packet(&filename, P_FILENAME, args[2]);
 
-	// If error
-	if (packet_send == -1) { perror("Error during the receiving of the packet"); return 1; }
+	// Send the packet
+	if (sendto(client_socket, &filename, sizeof(struct packet), 0, (struct sockaddr *)&destination, destination_length) == -1) { perror("Error during the sending of the packet"); return 1; }
 
 
 
