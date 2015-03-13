@@ -99,6 +99,18 @@ let rec genererProg i = function () ->
   then Bloc (lance (genList (genererProg (i-1)) (Random.int rec_max)))
   else Stop;;
 
-let mon_prog = lance (genererProg 3);;
+let mon_prog = lance (genererProg 2);;
 
 let result = execute mon_prog mon_robot;;
+
+let rec pasRepete = function p ->
+  match p with
+      Stop -> true
+    | Repete (_, _) -> false
+    | TourneGauche -> true
+    | TourneDroite -> true
+    | Avance _ -> true
+    | Pinceau _ -> true
+    | Bloc l -> List.for_all pasRepete l;;
+
+let result_pas_repete = pasRepete mon_prog;;
