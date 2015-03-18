@@ -27,17 +27,15 @@
 
 // Message types
 #define P_ERR_TRANSMISSION 0
-#define P_SERVER_ERROR 2
-#define P_FILENAME 3
-#define P_BLOCK 3
+#define P_SERVER_ERROR 1
+#define P_FILENAME 2
+#define P_FILE_HEADER 3
 #define P_REQ_NEXT_BLOCK 4
-#define P_EOF 5
-#define P_CLOSE_SERVER 6
-
-// Server state
-#define SERVER_FREE 1
-#define SERVER_BUSY 1
-
+#define P_REQ_SAME_BLOCK 5
+#define P_BLOCK 6
+#define P_EOF 7
+#define P_CLOSE_TRANSMISSION 8
+#define P_CLOSED 9
 
 
 // Structures
@@ -47,7 +45,7 @@ typedef struct packet {
 } packet;
 
 
-// Methods (public) signatures
+// Methods signatures
 void create_packet(struct packet* to_init, int type, char* content);
 void clear_packet(struct packet* to_clear);
 
