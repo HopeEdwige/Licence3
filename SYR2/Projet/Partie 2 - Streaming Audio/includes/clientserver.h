@@ -24,6 +24,7 @@
 // Constants
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
+#define NB_TRIES 3        // Trying to send a packet when error happens
 
 // Message types
 #define P_ERR_TRANSMISSION 0
@@ -31,7 +32,7 @@
 #define P_FILENAME 2
 #define P_FILE_HEADER 3
 #define P_REQ_NEXT_BLOCK 4
-#define P_REQ_SAME_BLOCK 5
+#define P_REQ_SAME_PACKET 5
 #define P_BLOCK 6
 #define P_EOF 7
 #define P_CLOSE_TRANSMISSION 8

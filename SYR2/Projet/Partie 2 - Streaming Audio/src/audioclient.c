@@ -8,6 +8,48 @@
 
 
 /**
+ * If an error is encountered, close the connection
+ *
+ * Parameters:
+ *	 - int err_socket  => The file descriptor to the server socket
+ *   - char* err_message  => The error message
+ *   - struct sockaddr* err_destination  => The destination address (server)
+ *	 - int audio_fd  => The audio file descriptor (if 0, none)
+ *
+ */
+void close_connection(int err_socket, char* err_message, struct sockaddr* err_destination, int audio_fd) {
+
+	// Display error message
+	perror(err_message);
+
+	// Some parameters
+	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
+
+	// Create the packet to send
+	struct packet error_packet;
+	create_packet(&error_packet, P_CLOSED, "");
+
+	// Try three times
+	int i = 0;
+	while ((sendto(err_socket, &error_packet, sizeof(struct packet), 0, err_destination, destination_length) == -1) && (i < NB_TRIES)) {
+		i++;
+	}
+
+	// If we couldn't send it
+	if (i == NB_TRIES) perror("Error during the client closing connection");
+
+	// Then close the socket
+	if (close(err_socket) == -1) perror("Error during the closing of the client socket");
+
+	// And close the audio file descriptor (audio_fd == 0 if none so no need to close)
+	if ((audio_fd != 0) && (close(audio_fd) == -1)) perror("Error during the closing of the client socket");
+
+	// Close client
+	exit(1);
+}
+
+
+/**
  * Initialize the socket 
  *
  * Parameters:
@@ -76,10 +118,14 @@ int main(int argc, char** args) {
 	struct sockaddr_in destination;
 	int client_socket = init_socket(args[1], &destination);
 
-	// Parameters that we'll need
+	// Parameters for the packet transmission
 	struct packet to_server;
 	struct packet from_server;
 	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
+
+	// Some more variables that we'll need for reading audio files
+	int sample_rate, sample_size, channels;
+	int write_audio, write_init_audio = 0;
 
 
 
@@ -88,25 +134,96 @@ int main(int argc, char** args) {
 	// The first packet to send is the filename
 	create_packet(&to_server, P_FILENAME, args[2]);
 
-	// Send the packet
-	if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) { perror("Error during the sending of the packet"); return 1; }
+	// Send the packet containing the filename
+	if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) { perror("Error during the sending of the filename packet"); return 1; }
 
 
 
 
 	/* 	################################################## Talk with the server ################################################## */
 	do {
-		NOTHING
+
+		// Clear packets
+		clear_packet(&to_server);
+		clear_packet(&from_server);
+
+		// Wait a packet
+		if (recvfrom(client_socket, &from_server, sizeof(struct packet), 0, (struct sockaddr *)&destination, &destination_length) != -1) {
+
+			// In function of the type of the packet received
+			switch (from_server.type) {
+
+				// --------------- An error happened on the server ---------------
+				case P_SERVER_ERROR:
+
+					// Display the error
+					perror(from_server.message);
+
+					// Close connection
+					close_connection(client_socket, "Closing due to server error",(struct sockaddr*)&destination, 0);
+					break;
+
+
+				// --------------- An error happened on the server ---------------
+				case P_FILE_HEADER:
+
+					// To avoid an error saying that we can't put declaration just after this label
+					;  // Seriously ...
+
+					// Get the audio parameters
+					char* sample_rate_emplacement = from_server.message + sizeof(int);
+					char* sample_size_emplacement = from_server.message + 2*sizeof(int);
+					char* channels_emplacement = from_server.message + 3*sizeof(int);
+					sample_rate = *sample_rate_emplacement;
+					sample_size = *sample_size_emplacement;
+					channels = *channels_emplacement;
+
+					// Initialize the write end
+					write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
+
+					// If an error happened
+					if (write_init_audio < 1) close_connection(client_socket, "Error at getting the audio output device", (struct sockaddr*)&destination, 0);
+
+					// If everything's ok, request the first block
+					clear_packet(&to_server);
+					to_server.type = P_REQ_NEXT_BLOCK;
+
+					// Send the request
+					if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
+						close_connection(client_socket, "Error at requesting the first block", (struct sockaddr*)&destination, write_init_audio);
+
+					break;
+
+
+				// --------------- A block is received, read it ---------------
+				case P_BLOCK:
+
+					// Just read it
+					write_audio = write(write_init_audio, from_server.message, sample_size);
+
+					// If error during the reading
+					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
+
+					// If everything's ok, request the next block
+					clear_packet(&to_server);
+					to_server.type = P_REQ_NEXT_BLOCK;
+
+					// Send the request
+					if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
+						close_connection(client_socket, "Error at requesting a block", (struct sockaddr*)&destination, write_init_audio);
+
+					break;
+				
+			}
+		}
+
+		// If an error during the receiving of a packet
+		else perror("Error during the receiving of a packet");
+
 	} while (from_server.type != P_CLOSE_TRANSMISSION);
 
-	// Send the last packet
-	clear_packet(to_server);
-
-
-
-	/* 	################################################## Socket closing ################################################## */
-	// Then close it in the end
-	if (close(client_socket) == -1) { perror("Error during the closing of the client socket"); return 1; }
+	// Close the connection
+	close_connection(client_socket, "Everything's ok, close connection now", (struct sockaddr*)&destination, write_init_audio);
 
 	// If everything's was ok (but the server is normally just waiting for clients)
 	return 0;

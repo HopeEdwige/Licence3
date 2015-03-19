@@ -12,15 +12,19 @@
  * And also send a message to the client
  *
  * Parameters:
- *	 - int argc  => The number of arguments passed
- *	 - char** args  => The arguments list
+ *	 - int err_socket  => The file descriptor to the server socket
+ *	 - int err_type  => The error type
+ *	 - char* err_message  => The error message
+ *   - struct sockaddr* err_destination  => The destination address (client)
+ *   - socklen_t destination_length => The length of a sockaddr structure
  *
- * Return:
- *	 - int  => The result of the execution
  */
-void server_error_encountered(int err_socket, int err_type, char* err_message, struct sockaddr* err_destination, socklen_t destination_length) {
+void server_error_encountered(int err_socket, int err_type, char* err_message, struct sockaddr* err_destination) {
 	// Display the error encountered
 	perror(err_message);
+
+	// Some parameters
+	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
 
 	// Create the packet to send
 	struct packet error_packet;
@@ -28,7 +32,7 @@ void server_error_encountered(int err_socket, int err_type, char* err_message, s
 
 	// Send an error packet
 	if (sendto(err_socket, &error_packet, sizeof(struct packet), 0, err_destination, destination_length) == -1)
-		perror("Error during the sending of the error packet. We can ");
+		perror("Error during the sending of the error packet.");
 }
 
 
@@ -87,9 +91,9 @@ int main(int argc, char** args) {
 	struct sockaddr_in current_client;
 	socklen_t source_length = (socklen_t)sizeof(struct sockaddr);
 
-	// Some more variables that we'll need
+	// Some more variables that we'll need to read the audio file
 	int sample_rate, sample_size, channels;
-	int read_init_audio, read_audio;
+	int read_audio, read_init_audio = 0;
 
 	// Initialize the two structures for the adresses
 	memset(&current_client, 0, sizeof(struct sockaddr_in));
@@ -100,7 +104,7 @@ int main(int argc, char** args) {
 	/* 	################################################## Serve clients ################################################## */
 	while (1) {  // Server always running
 
-		// Reinitialize variables
+		// Clear packets
 		clear_packet(&packet_to_send);
 		clear_packet(&packet_received);
 
@@ -109,7 +113,7 @@ int main(int argc, char** args) {
 
 			// If the server is busy
 			if (memcmp(&source, &current_client, sizeof(struct sockaddr_in)) == 0)
-				server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source, source_length);
+				server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source);
 
 			else {
 				// In function of the type of the packet received
@@ -119,7 +123,7 @@ int main(int argc, char** args) {
 					case P_FILENAME:
 
 						// Put the server busy
-						current_client = source;
+						memcpy(&current_client, &source, sizeof(struct sockaddr_in));
 
 						// Initialize by getting informations about the music to play
 						read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
@@ -128,10 +132,10 @@ int main(int argc, char** args) {
 						if (read_init_audio == -1) {
 
 							// Send an error message and close connection
-							server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source, source_length);
+							server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source);
 
 							// Free the server
-							read_audio = read(read_init_audio, buffer, sample_size);
+							memset(&current_client, 0, sizeof(struct sockaddr_in));
 						}
 
 						// If none
@@ -148,13 +152,13 @@ int main(int argc, char** args) {
 							create_packet(&packet_to_send, P_FILE_HEADER, buffer);
 
 							// Send it
-							if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source_length, source_length) == -1) {
+							if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
 
 								// Send an error message and close connection
-								server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source, source_length);
+								server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source);
 
 								// Free the server
-								memset(&current_client, 0, sizeof(struct sockaddr_in));
+								//memset(&current_client, 0, sizeof(struct sockaddr_in));
 							}
 						}
 						break;
@@ -175,28 +179,28 @@ int main(int argc, char** args) {
 						create_packet(&packet_to_send, type, buffer);
 
 						// And send it
-						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source_length, source_length) == -1) {
+						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
 
 							// Send an error message and close transmission
-							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the next block", (struct sockaddr*)&source, source_length);
+							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the next block", (struct sockaddr*)&source);
 
 							// Free the server
-							read_audio = read(read_init_audio, buffer, sample_size);
+							//memset(&current_client, 0, sizeof(struct sockaddr_in));
 						}
 						break;
 
 
-					// --------------- Client requesting the same block ---------------
-					case P_REQ_SAME_BLOCK:
+					// --------------- Client requesting the same packet (if it doesn't received it) ---------------
+					case P_REQ_SAME_PACKET:
 
 						// Resend packet previously created
-						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source_length, source_length) == -1) {
+						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
 
 							// Send an error message and close transmission
-							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the same block", (struct sockaddr*)&source, source_length);
+							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the same block", (struct sockaddr*)&source);
 
 							// Free the server
-							read_audio = read(read_init_audio, buffer, sample_size);
+							//memset(&current_client, 0, sizeof(struct sockaddr_in));
 						}
 						break;
 
@@ -204,8 +208,11 @@ int main(int argc, char** args) {
 					// --------------- Client received correctly the close transmission ---------------
 					case P_CLOSED:
 
+						// Close the descriptor file when it's done
+						if ((read_init_audio > 0) && (close(read_init_audio) != 0)) perror("Error at closing the read file descriptor");
+
 						// Free the server
-						read_audio = read(read_init_audio, buffer, sample_size);
+						memset(&current_client, 0, sizeof(struct sockaddr_in));
 
 						break;
 				}
@@ -214,7 +221,7 @@ int main(int argc, char** args) {
 
 		// If an error during the receiving of a packet
 		else
-			server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Filename was requested but another packet received", (struct sockaddr*)&source, source_length);
+			server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error during the receiving of a packet", (struct sockaddr*)&source);
 
 	}
 
