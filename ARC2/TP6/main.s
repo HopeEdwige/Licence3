@@ -10,7 +10,8 @@
 			####################################
 rechercheDichotomique:
 			# Les registres utilisees ici sont d'abord sauvegardees
-			addi 	sp, sp, -24
+			addi 	sp, sp, -28
+			stw		ra, 24(sp)
 			stw 	r16, 20(sp)
 			stw		r17, 16(sp)
 			stw 	r18, 12(sp)
@@ -31,11 +32,11 @@ rechercheDichotomique:
 			
 			# debut + (fin - debut) / 2 sauvegardee dans r20
 			sub		r20, r19, r18
-			addi	r2, zero, 2
-			div 	r20, r20, r2
+			addi	r5, zero, 2
+			div 	r20, r20, r5
 			add		r20, r20, r18
 
-			# i * 4 car 4 octets
+			# tab[pos] = *tab + (pos * 4) car 4 octets
 			slli	r21, r20, 2
 
 			# Recupere un pointeur sur tab[pos] stockee ensuite dans r21
@@ -48,22 +49,63 @@ rechercheDichotomique:
 			beq 	r21, r16, retourRechDicho
 			
 			# Si plus petite, recherche dans l'ensemble superieure
+			blt 	r21, r16, plusPetite
+			
+			# Sinon plus grande
+			br 		plusGrande
+			
+
+plusPetite:
+			# Place les parametres
 			mov		r4, r16
 			mov 	r5, r17
 			mov 	r6, r20
 			addi 	r6, r6, 1
 			mov 	r7, r19
+			
+			# Replace le contenu des registres utilisees par la fonction
+			ldw		ra, 24(sp)
+			ldw 	r16, 20(sp)
+			ldw		r17, 16(sp)
+			ldw 	r18, 12(sp)
+			ldw		r19, 8(sp)
+			ldw 	r20, 4(sp)
+			ldw 	r21, 0(sp)
+			addi 	sp, sp, 28
+			
+			# Appelle la fonction
 			call 	rechercheDichotomique
 			
+			# Retour
+			ret
+			
+			
+plusGrande:
 			# Si plus grande, recherche dans l'ensemble inferieure
 			mov		r4, r16
 			mov 	r5, r17
 			mov		r6, r18
 			mov 	r7, r20
 			subi	r7, r7, 1
+			
+			# Replace le contenu des registres utilisees par la fonction
+			ldw		ra, 24(sp)
+			ldw 	r16, 20(sp)
+			ldw		r17, 16(sp)
+			ldw 	r18, 12(sp)
+			ldw		r19, 8(sp)
+			ldw 	r20, 4(sp)
+			ldw 	r21, 0(sp)
+			addi 	sp, sp, 28
+			
+			# Appelle la fonction
 			call 	rechercheDichotomique
 			
+			# Retour
+			ret
 			
+			
+
 # Retourne la valeur et replace le contenu des variables
 retourRechDicho:
 			# Stocke la valeur de retour (r20) dans celle recuperee par la suite (r2)
