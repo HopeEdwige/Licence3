@@ -88,16 +88,15 @@ int main(int argc, char** args) {
 	struct packet packet_to_send;
 	char buffer[BUFFER_SIZE];
 	struct sockaddr_in source;
-	struct sockaddr_in current_client;
+	struct in_addr current_client;
 	socklen_t source_length = (socklen_t)sizeof(struct sockaddr);
 
 	// Some more variables that we'll need to read the audio file
 	int sample_rate, sample_size, channels;
 	int read_audio, read_init_audio = 0;
 
-	// Initialize the two structures for the adresses
-	memset(&current_client, 0, sizeof(struct sockaddr_in));
-	memset(&source, 1, sizeof(struct sockaddr_in));
+	// Initialize the 
+	memset(&current_client, 0, sizeof(struct in_addr));
 
 
 
@@ -112,10 +111,10 @@ int main(int argc, char** args) {
 		if (recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr *)&source, &source_length) != -1) {
 
 			// If the server is busy
-			if (memcmp(&source, &current_client, sizeof(struct sockaddr_in)) == 0)
-				server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source);
+			/*if (memcmp(&source.sin_addr, &current_client, sizeof(struct in_addr)) == 0)
+				server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source);*/
 
-			else {
+			//else {
 				// In function of the type of the packet received
 				switch (packet_received.type) {
 
@@ -123,7 +122,7 @@ int main(int argc, char** args) {
 					case P_FILENAME:
 
 						// Put the server busy
-						memcpy(&current_client, &source, sizeof(struct sockaddr_in));
+						memcpy(&current_client, &source.sin_addr, sizeof(struct in_addr));
 
 						// Initialize by getting informations about the music to play
 						read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
@@ -135,7 +134,7 @@ int main(int argc, char** args) {
 							server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source);
 
 							// Free the server
-							memset(&current_client, 0, sizeof(struct sockaddr_in));
+							memset(&current_client, 0, sizeof(struct in_addr));
 						}
 
 						// If none
@@ -153,7 +152,7 @@ int main(int argc, char** args) {
 								server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source);
 
 								// Free the server
-								//memset(&current_client, 0, sizeof(struct sockaddr_in));
+								//memset(&current_client, 0, sizeof(struct in_addr));
 							}
 						}
 						break;
@@ -161,6 +160,14 @@ int main(int argc, char** args) {
 
 					// --------------- Client requesting another block ---------------
 					case P_REQ_NEXT_BLOCK:
+
+						// The number of blocks to put in the buffer
+						/*int nb_blocks = BUFFER_SIZE/sample_size;
+
+						// Read this number of blocks
+						while (nb_blocks > 0) {
+
+						}*/
 
 						// Simply read each sample of the audio file
 						read_audio = read(read_init_audio, buffer, sample_size);
@@ -180,7 +187,7 @@ int main(int argc, char** args) {
 							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the next block", (struct sockaddr*)&source);
 
 							// Free the server
-							//memset(&current_client, 0, sizeof(struct sockaddr_in));
+							//memset(&current_client, 0, sizeof(struct in_addr));
 						}
 						break;
 
@@ -195,7 +202,7 @@ int main(int argc, char** args) {
 							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the same block", (struct sockaddr*)&source);
 
 							// Free the server
-							//memset(&current_client, 0, sizeof(struct sockaddr_in));
+							//memset(&current_client, 0, sizeof(struct in_addr));
 						}
 						break;
 
@@ -207,11 +214,11 @@ int main(int argc, char** args) {
 						if ((read_init_audio > 0) && (close(read_init_audio) != 0)) perror("Error at closing the read file descriptor");
 
 						// Free the server
-						memset(&current_client, 0, sizeof(struct sockaddr_in));
+						memset(&current_client, 0, sizeof(struct in_addr));
 
 						break;
 				}
-			}
+			//}
 		}
 
 		// If an error during the receiving of a packet
