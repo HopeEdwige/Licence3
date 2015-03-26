@@ -171,12 +171,26 @@ int main(int argc, char** args) {
 					;  // Seriously ...
 
 					// Get the audio parameters
-					char* sample_rate_emplacement = from_server.message + sizeof(int);
-					char* sample_size_emplacement = from_server.message + 2*sizeof(int);
-					char* channels_emplacement = from_server.message + 3*sizeof(int);
-					sample_rate = *sample_rate_emplacement;
-					sample_size = *sample_size_emplacement;
-					channels = *channels_emplacement;
+					char *token = strtok(from_server.message, " ");
+					int i = 0;
+					while ((token != NULL) && (i < 3)) {
+						switch (i) {
+							case 0:
+								sample_rate = atoi(token);
+								break;
+
+							case 1:
+								sample_size = atoi(token);
+								break;
+
+							case 2:
+								channels = atoi(token);
+								break;
+						}
+
+						token = strtok(NULL, " ");
+						i++;
+					}
 
 					// Initialize the write end
 					write_init_audio = aud_writeinit(sample_rate, sample_size, channels);

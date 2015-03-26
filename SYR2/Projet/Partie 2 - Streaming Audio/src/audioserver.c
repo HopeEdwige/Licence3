@@ -141,12 +141,7 @@ int main(int argc, char** args) {
 						// If none
 						else {
 							// Store informations about this file
-							char* sample_rate_emplacement = buffer + sizeof(int);
-							char* sample_size_emplacement = buffer + 2*sizeof(int);
-							char* channels_emplacement = buffer + 3*sizeof(int);
-							*sample_rate_emplacement = sample_rate;
-							*sample_size_emplacement = sample_size;
-							*channels_emplacement = channels;
+							snprintf(buffer, sizeof(buffer), "%d %d %d", sample_rate, sample_size, channels);
 
 							// Create the packet to send
 							create_packet(&packet_to_send, P_FILE_HEADER, buffer);
