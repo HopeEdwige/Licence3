@@ -178,6 +178,9 @@ int main(int argc, char** args) {
 						int type = P_BLOCK;
 						while ((count < nb_blocks) && (type == P_BLOCK)) {
 
+							// Clear the temporary buffer
+							bzero(tmp_buf);
+
 							// Simply read each sample of the audio file
 							read_audio = read(read_init_audio, tmp_buf, sample_size_byte);
 

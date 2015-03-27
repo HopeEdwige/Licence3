@@ -229,6 +229,9 @@ int main(int argc, char** args) {
 					int count = 0;
 					do {
 
+						// Clear the temporary buffer
+						bzero(tmp_buf);
+
 						// Fill the temporary buffer
 						memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
 
