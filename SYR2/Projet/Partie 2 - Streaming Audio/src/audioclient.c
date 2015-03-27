@@ -223,7 +223,7 @@ int main(int argc, char** args) {
 				case P_BLOCK:
 
 					// To avoid an error saying that we can't put declaration just after this label
-					;  // Seriously ...
+					/*;  // Seriously ...
 
 					// Read this number of blocks
 					int count = 0;
@@ -233,18 +233,18 @@ int main(int argc, char** args) {
 						bzero(tmp_buf, BUFFER_SIZE);
 
 						// Fill the temporary buffer
-						/*memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
+						memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
 
 						// Just read it
-						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);*/
-						write_audio = write(write_init_audio, from_server.message, sample_size_byte);
+						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);
 
 						// Increments the counter
-						//count++;
-						count = nb_blocks;
+						count++;
 
-					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));
+					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));*/
 
+					write_audio = write(write_init_audio, from_server.message, sample_size_byte);
+					
 					// If error during the reading
 					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
 
@@ -263,7 +263,7 @@ int main(int argc, char** args) {
 				case P_EOF:
 
 					// To avoid an error saying that we can't put declaration just after this label
-					;  // Seriously ...
+					/*;  // Seriously ...
 
 					// Read this number of blocks
 					int last_count = 0;
@@ -281,7 +281,9 @@ int main(int argc, char** args) {
 						// Increments the counter
 						last_count++;
 
-					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));
+					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));*/
+
+					write_audio = write(write_init_audio, from_server.message, sample_size_byte);
 
 					// If error during the reading
 					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
