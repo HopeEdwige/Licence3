@@ -126,6 +126,11 @@ int main(int argc, char** args) {
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
 	int write_audio, write_init_audio = 0;
+	
+	// Parameters for the timeout
+	int nb;
+	fd_set watch_over;
+	struct timeval timeout;
 
 
 
@@ -137,6 +142,12 @@ int main(int argc, char** args) {
 	// Send the packet containing the filename
 	if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) { perror("Error during the sending of the filename packet"); return 1; }
 
+	// Clear and initialize the fd set
+	FD_ZERO(&watch_over);
+	FD_SET(client_socket, &watch_over);
+	timeout.tv_sec = 0;
+	timeout.tv_usec = 200000;  // 200ms
+	nb = select(client_socket+1, &watch_over, NULL, NULL, &timeout);
 
 
 
@@ -147,103 +158,124 @@ int main(int argc, char** args) {
 		clear_packet(&to_server);
 		clear_packet(&from_server);
 
-		// Wait a packet
-		if (recvfrom(client_socket, &from_server, sizeof(struct packet), 0, (struct sockaddr *)&destination, &destination_length) != -1) {
+		// If error during the select
+		if (nb < 0) {
+			perror("Can't attach the select to the file descriptor");
+			exit(1);
+		}
 
-			// In function of the type of the packet received
-			switch (from_server.type) {
+		// Just request the same packet if timeout reached
+		if (nb == 0) {
 
-				// --------------- An error happened on the server ---------------
-				case P_SERVER_ERROR:
+			clear_packet(&to_server);
+			to_server.type = P_REQ_SAME_PACKET;
+			if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
+				perror("Can't request same packet");
+				exit(1);
+			}
+		}
 
-					// Display the error
-					perror(from_server.message);
+		// If open, just act normally
+		if (FD_ISSET(client_socket, &watch_over)) {
 
-					// Close connection
-					close_connection(client_socket, "Closing due to server error",(struct sockaddr*)&destination, 0);
-					break;
+			// Wait a packet
+			if (recvfrom(client_socket, &from_server, sizeof(struct packet), 0, (struct sockaddr *)&destination, &destination_length) != -1) {
+
+				// In function of the type of the packet received
+				switch (from_server.type) {
+
+					// --------------- An error happened on the server ---------------
+					case P_SERVER_ERROR:
+
+						// Display the error
+						perror(from_server.message);
+
+						// Close connection
+						close_connection(client_socket, "Closing due to server error",(struct sockaddr*)&destination, 0);
+						break;
 
 
-				// --------------- An error happened on the server ---------------
-				case P_FILE_HEADER:
+					// --------------- An error happened on the server ---------------
+					case P_FILE_HEADER:
 
-					// To avoid an error saying that we can't put declaration just after this label
-					;
+						// To avoid an error saying that we can't put declaration just after this label
+						;
 
-					// Get the audio parameters
-					char *token = strtok(from_server.message, " ");
-					int i = 0;
-					while ((token != NULL) && (i < 3)) {
-						switch (i) {
-							case 0:
-								sample_rate = atoi(token);
-								break;
+						// Get the audio parameters
+						char *token = strtok(from_server.message, " ");
+						int i = 0;
+						while ((token != NULL) && (i < 3)) {
+							switch (i) {
+								case 0:
+									sample_rate = atoi(token);
+									break;
 
-							case 1:
-								sample_size = atoi(token);
-								break;
+								case 1:
+									sample_size = atoi(token);
+									break;
 
-							case 2:
-								channels = atoi(token);
-								break;
+								case 2:
+									channels = atoi(token);
+									break;
+							}
+
+							token = strtok(NULL, " ");
+							i++;
 						}
 
-						token = strtok(NULL, " ");
-						i++;
-					}
+						// Initialize the write end
+						write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
 
-					// Initialize the write end
-					write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
+						// If an error happened
+						if (write_init_audio < 1) close_connection(client_socket, "Error at getting the audio output device", (struct sockaddr*)&destination, 0);
 
-					// If an error happened
-					if (write_init_audio < 1) close_connection(client_socket, "Error at getting the audio output device", (struct sockaddr*)&destination, 0);
+						// If everything's ok, request the first block
+						clear_packet(&to_server);
+						to_server.type = P_REQ_NEXT_BLOCK;
 
-					// If everything's ok, request the first block
-					clear_packet(&to_server);
-					to_server.type = P_REQ_NEXT_BLOCK;
+						// Send the request
+						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
+							close_connection(client_socket, "Error at requesting the first block", (struct sockaddr*)&destination, write_init_audio);
 
-					// Send the request
-					if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
-						close_connection(client_socket, "Error at requesting the first block", (struct sockaddr*)&destination, write_init_audio);
-
-					break;
+						break;
 
 
-				// --------------- A block is received, read it ---------------
-				case P_BLOCK:
+					// --------------- A block is received, read it ---------------
+					case P_BLOCK:
 
-					write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+						write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+						
+						// If error during the reading
+						if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
+
+						// If everything's ok, request the next block
+						clear_packet(&to_server);
+						to_server.type = P_REQ_NEXT_BLOCK;
+
+						// Send the request
+						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
+							close_connection(client_socket, "Error at requesting a block", (struct sockaddr*)&destination, write_init_audio);
+
+						break;
+
+
+					// --------------- The last block is received, read it ---------------
+					case P_EOF:
+
+						// Read the audio file
+						write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+
+						// If error during the reading
+						if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
+
+						// If everything's ok, request the next block
+						clear_packet(&to_server);
+
+						// Close the connection
+						close_connection(client_socket, "The file was correctly read, close the connection, bye", (struct sockaddr*)&destination, write_init_audio);
+						break;
 					
-					// If error during the reading
-					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
-
-					// If everything's ok, request the next block
-					clear_packet(&to_server);
-					to_server.type = P_REQ_NEXT_BLOCK;
-
-					// Send the request
-					if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
-						close_connection(client_socket, "Error at requesting a block", (struct sockaddr*)&destination, write_init_audio);
-
-					break;
-
-
-				// --------------- The last block is received, read it ---------------
-				case P_EOF:
-
-					// Read the audio file
-					write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
-
-					// If error during the reading
-					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
-
-					// If everything's ok, request the next block
-					clear_packet(&to_server);
-
-					// Close the connection
-					close_connection(client_socket, "The file was correctly read, close the connection, bye", (struct sockaddr*)&destination, write_init_audio);
-					break;
-				
+				}
 			}
 		}
 
