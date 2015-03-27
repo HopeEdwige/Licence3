@@ -18,7 +18,7 @@
  */
 void create_packet(struct packet* to_init, int type, char* content) {
 	to_init->type = type;
-	strncpy(to_init->message, content, BUFFER_SIZE);
+	memcpy(to_init->message, content, BUFFER_SIZE);
 }
 
 

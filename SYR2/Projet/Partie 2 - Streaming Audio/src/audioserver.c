@@ -87,6 +87,7 @@ int main(int argc, char** args) {
 	struct packet packet_received;
 	struct packet packet_to_send;
 	char buffer[BUFFER_SIZE];
+	char tmp_buf[BUFFER_SIZE];  // A temporary buffer
 	struct sockaddr_in source;
 	struct in_addr current_client;
 	socklen_t source_length = (socklen_t)sizeof(struct sockaddr);
@@ -94,6 +95,7 @@ int main(int argc, char** args) {
 	// Some more variables that we'll need to read the audio file
 	int sample_rate, sample_size, channels;
 	int read_audio, read_init_audio = 0;
+	int nb_blocks, sample_size_byte = 0;
 
 	// Initialize the 
 	memset(&current_client, 0, sizeof(struct in_addr));
@@ -139,8 +141,15 @@ int main(int argc, char** args) {
 
 						// If none
 						else {
+
+							// The size of a sample in byte
+							sample_size_byte = sample_size/8;
+
+							// The number of blocks to put in the buffer
+							nb_blocks = BUFFER_SIZE/sample_size_byte;  // sample_size is in bits
+
 							// Store informations about this file
-							snprintf(buffer, sizeof(buffer), "%d %d %d", sample_rate, sample_size, channels);
+							snprintf(buffer, sizeof(buffer), "%d %d %d %d %d", sample_rate, sample_size, channels, sample_size_byte, nb_blocks);
 
 							// Create the packet to send
 							create_packet(&packet_to_send, P_FILE_HEADER, buffer);
@@ -161,21 +170,27 @@ int main(int argc, char** args) {
 					// --------------- Client requesting another block ---------------
 					case P_REQ_NEXT_BLOCK:
 
-						// The number of blocks to put in the buffer
-						/*int nb_blocks = BUFFER_SIZE/sample_size;
+						// To avoid an error saying that we can't put declaration just after this label
+						;  // Seriously ...
 
 						// Read this number of blocks
-						while (nb_blocks > 0) {
-
-						}*/
-
-						// Simply read each sample of the audio file
-						read_audio = read(read_init_audio, buffer, sample_size);
-
-						// If the EOF is encountered
+						int count = 0;
 						int type = P_BLOCK;
-						if (read_audio != sample_size)
-							type = P_EOF;
+						while ((count < nb_blocks) && (type == P_BLOCK)) {
+
+							// Simply read each sample of the audio file
+							read_audio = read(read_init_audio, tmp_buf, sample_size_byte);
+
+							// Fill the buffer
+							memcpy((char*)(buffer + (sample_size_byte * count)), tmp_buf, sample_size_byte);
+
+							// If the EOF is encountered
+							if (read_audio != sample_size_byte)
+								type = P_EOF;
+
+							// Increments the counter
+							count++;
+						}
 
 						// Create the packet to send
 						create_packet(&packet_to_send, type, buffer);

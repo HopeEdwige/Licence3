@@ -121,11 +121,13 @@ int main(int argc, char** args) {
 	// Parameters for the packet transmission
 	struct packet to_server;
 	struct packet from_server;
+	char tmp_buf[BUFFER_SIZE];  // A temporary buffer
 	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
 
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
 	int write_audio, write_init_audio = 0;
+	int nb_blocks, sample_size_byte;
 
 
 
@@ -173,7 +175,7 @@ int main(int argc, char** args) {
 					// Get the audio parameters
 					char *token = strtok(from_server.message, " ");
 					int i = 0;
-					while ((token != NULL) && (i < 3)) {
+					while ((token != NULL) && (i < 5)) {
 						switch (i) {
 							case 0:
 								sample_rate = atoi(token);
@@ -185,6 +187,14 @@ int main(int argc, char** args) {
 
 							case 2:
 								channels = atoi(token);
+								break;
+
+							case 3:
+								sample_size_byte = atoi(token);
+								break;
+
+							case 4:
+								nb_blocks = atoi(token);
 								break;
 						}
 
@@ -212,8 +222,23 @@ int main(int argc, char** args) {
 				// --------------- A block is received, read it ---------------
 				case P_BLOCK:
 
-					// Just read it
-					write_audio = write(write_init_audio, from_server.message, sample_size);
+					// To avoid an error saying that we can't put declaration just after this label
+					;  // Seriously ...
+
+					// Read this number of blocks
+					int count = 0;
+					do {
+
+						// Fill the temporary buffer
+						memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
+
+						// Just read it
+						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);
+
+						// Increments the counter
+						count++;
+
+					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));
 
 					// If error during the reading
 					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
