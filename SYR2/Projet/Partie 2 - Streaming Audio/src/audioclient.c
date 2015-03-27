@@ -230,16 +230,18 @@ int main(int argc, char** args) {
 					do {
 
 						// Clear the temporary buffer
-						bzero(tmp_buf);
+						bzero(tmp_buf, BUFFER_SIZE);
 
 						// Fill the temporary buffer
-						memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
+						/*memcpy((char*)(from_server.message + (sample_size_byte * count)), tmp_buf, sample_size_byte);
 
 						// Just read it
-						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);
+						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);*/
+						write_audio = write(write_init_audio, from_server.message, sample_size_byte);
 
 						// Increments the counter
-						count++;
+						//count++;
+						count = nb_blocks;
 
 					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));
 
@@ -254,6 +256,41 @@ int main(int argc, char** args) {
 					if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
 						close_connection(client_socket, "Error at requesting a block", (struct sockaddr*)&destination, write_init_audio);
 
+					break;
+
+
+				// --------------- The last block is received, read it ---------------
+				case P_EOF:
+
+					// To avoid an error saying that we can't put declaration just after this label
+					;  // Seriously ...
+
+					// Read this number of blocks
+					int last_count = 0;
+					do {
+
+						// Clear the temporary buffer
+						bzero(tmp_buf, BUFFER_SIZE);
+
+						// Fill the temporary buffer
+						memcpy((char*)(from_server.message + (sample_size_byte * last_count)), tmp_buf, sample_size_byte);
+
+						// Just read it
+						write_audio = write(write_init_audio, tmp_buf, sample_size_byte);
+
+						// Increments the counter
+						last_count++;
+
+					} while ((count < (nb_blocks-1)) && (write_audio == sample_size_byte));
+
+					// If error during the reading
+					if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
+
+					// If everything's ok, request the next block
+					clear_packet(&to_server);
+
+					// Close the connection
+					close_connection(client_socket, "The file was correctly read, close the connection, bye", (struct sockaddr*)&destination, write_init_audio);
 					break;
 				
 			}

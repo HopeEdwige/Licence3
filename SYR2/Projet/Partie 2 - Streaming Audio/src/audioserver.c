@@ -179,20 +179,22 @@ int main(int argc, char** args) {
 						while ((count < nb_blocks) && (type == P_BLOCK)) {
 
 							// Clear the temporary buffer
-							bzero(tmp_buf);
+							bzero(tmp_buf, BUFFER_SIZE);
 
 							// Simply read each sample of the audio file
-							read_audio = read(read_init_audio, tmp_buf, sample_size_byte);
+							read_audio = read(read_init_audio, buffer, sample_size_byte);
+							/*read_audio = read(read_init_audio, tmp_buf, sample_size_byte);
 
 							// Fill the buffer
-							memcpy((char*)(buffer + (sample_size_byte * count)), tmp_buf, sample_size_byte);
+							memcpy((char*)(buffer + (sample_size_byte * count)), tmp_buf, sample_size_byte);*/
 
 							// If the EOF is encountered
 							if (read_audio != sample_size_byte)
 								type = P_EOF;
 
 							// Increments the counter
-							count++;
+							//count++;
+							count = nb_blocks;
 						}
 
 						// Create the packet to send
