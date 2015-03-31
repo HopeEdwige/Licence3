@@ -188,10 +188,10 @@ int main(int argc, char** args) {
 					case P_SERVER_ERROR:
 
 						// Display the error
-						perror(from_server.message);
+						printf("%s\n", from_server.message);
 
 						// Close connection
-						close_connection(client_socket, "Closing due to server error",(struct sockaddr*)&destination, 0);
+						close_connection(client_socket, "Closing due to server error", (struct sockaddr*)&destination, 0);
 						break;
 
 
@@ -280,7 +280,10 @@ int main(int argc, char** args) {
 		}
 
 		// If an error during the receiving of a packet
-		else perror("Error during the receiving of a packet");
+		else {
+			perror("Error during the receiving of a packet, the server may be busy");
+			exit(0);
+		}
 
 	} while (from_server.type != P_CLOSE_TRANSMISSION);
 

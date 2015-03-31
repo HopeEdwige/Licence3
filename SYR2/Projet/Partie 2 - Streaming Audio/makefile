@@ -6,7 +6,7 @@ INCDIR = includes/
 
 
 # Compilations
-all: $(BINDIR)audioserver $(BINDIR)audioclient
+all: $(BINDIR)audioserver $(BINDIR)audioclient $(BINDIR)clean
 
 
 # The components of the compilation
@@ -22,7 +22,16 @@ $(BINDIR)audioserver: $(SRCDIR)audioserver.c $(INCDIR)clientserver.h $(BINDIR)au
 $(BINDIR)audioclient: $(SRCDIR)audioclient.c $(INCDIR)clientserver.h $(BINDIR)audio.o $(BINDIR)packethelper.o
 	gcc $(CFLAGS)  -I $(INCDIR) -o $(BINDIR)audioclient $(SRCDIR)audioclient.c $(BINDIR)packethelper.o $(BINDIR)audio.o
 
+$(BINDIR)clean: $(SRCDIR)clean.c $(INCDIR)clientserver.h
+	gcc $(CFLAGS)  -I $(INCDIR) -o $(BINDIR)clean $(SRCDIR)clean.c
+
 
 # Clean the workspace
 clean:
-	rm $(BINDIR)audioserver $(BINDIR)audioclient $(BINDIR)packethelper.o $(BINDIR)audio.o
+	rm $(BINDIR)audioserver $(BINDIR)audioclient $(BINDIR)packethelper.o $(BINDIR)audio.o $(BINDIR)clean
+
+
+# Run the server (and free the semaphore in the end)
+run: all
+	$(BINDIR)audioserver
+	$(BINDIR)clean
