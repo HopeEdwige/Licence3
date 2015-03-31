@@ -108,12 +108,18 @@ int main(int argc, char** args) {
 
 	/* 	################################################## Parameters check ################################################## */
 	// If there aren't the correct number of arguments
-	if (argc != 3) { perror("Three arguments expected. Run with audioclient [server_host_name] [file_name]"); return 1; }
+	if (argc < 3) { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
 
 	// Check the parameters
-	if (args[1] == NULL) { perror("The first argument is NULL. Run with audioclient [server_host_name] [file_name]"); return 1; }
-	if (args[2] == NULL) { perror("The second argument is NULL. Run with audioclient [server_host_name] [file_name]"); return 1; }
+	if (args[1] == NULL) { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
+	if (args[2] == NULL) { perror("The second argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
 
+
+	/* ##### Get filter ##### */
+	int filter = F_NONE;
+
+
+	/* ##### Network structures ##### */
 	// Initialize the client socket
 	struct sockaddr_in destination;
 	int client_socket = init_socket(args[1], &destination);
@@ -123,11 +129,14 @@ int main(int argc, char** args) {
 	struct packet from_server;
 	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
 
+
+	/* ##### Audio reader parameters ##### */
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
 	int write_audio, write_init_audio = 0;
-	
-	// Parameters for the timeout
+
+
+	/* ##### Timeout parameters ##### */
 	int nb;
 	fd_set watch_over;
 	struct timeval timeout;

@@ -99,6 +99,7 @@ int main(int argc, char** args) {
 	// Initialize the structure to store the current client informations
 	memset(&current_client, 0, sizeof(struct in_addr));
 
+
 	/* ##### Audio reader parameters ##### */
 	// Some more variables that we'll need to read the audio file
 	int sample_rate, sample_size, channels;

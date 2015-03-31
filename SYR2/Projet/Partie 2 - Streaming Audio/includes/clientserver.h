@@ -44,10 +44,11 @@
 
 
 // Filters
-#define F_FORCE_MONO 0
-#define F_UP 1
-#define F_DOWN 2
-#define F_ECHO 3
+#define F_NONE 0
+#define F_FORCE_MONO 1
+#define F_UP 2
+#define F_DOWN 3
+#define F_ECHO 4
 
 
 // Structures
