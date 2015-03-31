@@ -23,7 +23,7 @@ void close_connection(int err_socket, char* err_message, struct sockaddr* err_de
 	perror(err_message);
 
 	// Some parameters
-	socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
+	/*socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
 
 	// Create the packet to send
 	struct packet error_packet;
@@ -36,7 +36,7 @@ void close_connection(int err_socket, char* err_message, struct sockaddr* err_de
 	}
 
 	// If we couldn't send it
-	if (i == NB_TRIES) perror("Error during the client closing connection");
+	if (i == NB_TRIES) perror("Error during the client closing connection");*/
 
 	// Then close the socket
 	if (close(err_socket) == -1) perror("Error during the closing of the client socket");

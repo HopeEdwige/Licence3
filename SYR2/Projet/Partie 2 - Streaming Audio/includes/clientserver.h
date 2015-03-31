@@ -26,8 +26,11 @@
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
 #define NB_TRIES 3        // Trying to send a packet when error happens
-#define FREE 0
-#define BUSY 1
+
+
+// Server status
+#define S_FREE 0
+#define S_BUSY 1
 
 
 // Message types

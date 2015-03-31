@@ -26,7 +26,7 @@ $(BINDIR)audioclient: $(SRCDIR)audioclient.c $(INCDIR)clientserver.h $(BINDIR)au
 
 # Clean the workspace
 clean:
-	rm $(BINDIR)audioserver $(BINDIR)audioclient $(BINDIR)packethelper.o $(BINDIR)audio.o $(BINDIR)clean
+	rm $(BINDIR)audioserver $(BINDIR)audioclient $(BINDIR)packethelper.o $(BINDIR)audio.o
 
 
 # Run the server (and free the semaphore in the end)
