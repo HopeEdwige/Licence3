@@ -16,11 +16,10 @@
  *	 - int err_type  => The error type
  *	 - char* err_message  => The error message
  *   - struct sockaddr* err_destination  => The destination address (client)
- *   - socklen_t destination_length  => The length of a sockaddr structure
- *   - int my_sem  => The fd for the semaphore to put up, -1 if we don't want to free it
+ *   - socklen_t destination_length => The length of a sockaddr structure
  *
  */
-void server_error_encountered(int err_socket, int err_type, char* err_message, struct sockaddr* err_destination, int my_sem) {
+void server_error_encountered(int err_socket, int err_type, char* err_message, struct sockaddr* err_destination) {
 	// Display the error encountered
 	perror(err_message);
 
@@ -30,12 +29,6 @@ void server_error_encountered(int err_socket, int err_type, char* err_message, s
 	// Create the packet to send
 	struct packet error_packet;
 	create_packet(&error_packet, err_type, err_message);
-
-	// Free the server only if asked
-	if (my_sem != -1) {
-		struct sembuf up = {0, 1, 0};
-		if (semop(my_sem, &up, 1) == -1) perror("Error semop UP");
-	}
 
 	// Send an error packet
 	if (sendto(err_socket, &error_packet, sizeof(struct packet), 0, err_destination, destination_length) == -1)
@@ -86,9 +79,9 @@ int main(int argc, char** args) {
 	/* 	################################################## Initialisations ################################################## */
 	// If there are too many arguments
 	if (argc > 1) { perror("There are too many arguments. This program requires none"); return 1; }
-	
 
-	/* 	##### Network structures ##### */
+	
+	/* ##### Network structures ##### */
 	// Socket creation and bind
 	int server_socket = init_socket();
 
@@ -99,36 +92,17 @@ int main(int argc, char** args) {
 
 	// The structure to store the source informations
 	struct sockaddr_in source;
+	struct sockaddr_in current_client;
 	socklen_t source_length = (socklen_t)sizeof(struct sockaddr);
+	int server_state = FREE;
 
+	// Initialize the structure to store the current client informations
+	memset(&current_client, 0, sizeof(struct in_addr));
 
-	/* 	##### Audio reader parameters ##### */
+	/* ##### Audio reader parameters ##### */
 	// Some more variables that we'll need to read the audio file
 	int sample_rate, sample_size, channels;
 	int read_audio, read_init_audio = 0;
-
-
-	/* 	##### Semaphore part ##### */
-	// Create the correct structure for the semaphore implementation
-	struct sembuf up = {0, 1, 0};
-	struct sembuf down = {0, -1, 0};
-
-	// Get the semaphore table
-	key_t key = (key_t)SEM_KEY;
-	int my_sem = semget(key, 1, 0600);
-
-	// If it wasn't created/initialized yet
-	if (my_sem == -1) {
-
-		// Create it
-		my_sem = semget(key, 1, 0600|IPC_CREAT);
-
-		// Initialize the value of it (only one process at a time)
-		if (semctl(my_sem, 0, SETVAL, 1) == -1) { perror("Error semctl"); exit(1); }
-	}
-
-	// If after trying to create it an error was thrown
-	if (my_sem == -1) { perror("Error semget"); exit(1); }
 
 
 
@@ -140,98 +114,120 @@ int main(int argc, char** args) {
 		clear_packet(&packet_received);
 
 		// Wait a packet
-		if (recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr *)&source, &source_length) != -1) {
-			
-			// If busy
-			if (semctl(my_sem, 0, GETVAL) == 0)
-				server_error_encountered(server_socket, P_SERVER_ERROR, "The server is busy for the moment, please try later", (struct sockaddr*)&source, -1);
+		if (recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr*)&source, &source_length) != -1) {
 
-			// In function of the type of the packet received
-			switch (packet_received.type) {
+			// If the server is busy
+			if ((server_state == BUSY) && (memcmp(&source.sin_addr, &current_client, sizeof(struct in_addr)) != 0))
+				server_error_encountered(server_socket, P_SERVER_ERROR, "Server busy for the moment. Please try later", (struct sockaddr*)&source);
 
-				// --------------- Receiving the filename ---------------
-				case P_FILENAME:
+			else {
+				// In function of the type of the packet received
+				switch (packet_received.type) {
 
-					// Put DOWN the semaphore
-					if (semop(my_sem, &down, 1) == -1) { perror("Error semop DOWN"); exit(1); }
+					// --------------- Receiving the filename ---------------
+					case P_FILENAME:
 
-					// Initialize by getting informations about the music to play
-					read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
+						// Put the server busy
+						server_state = BUSY;
+						memcpy(&current_client, &source.sin_addr, sizeof(struct in_addr));
 
-					// If an error happened (maybe the file doesn't exist)
-					if (read_init_audio == -1)
-						server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source, my_sem);
+						// Initialize by getting informations about the music to play
+						read_init_audio = aud_readinit(packet_received.message, &sample_rate, &sample_size, &channels);
 
-					// If none
-					else {
+						// If an error happened (maybe the file doesn't exist)
+						if (read_init_audio == -1) {
 
-						// Store informations about this file
-						snprintf(buffer, sizeof(buffer), "%d %d %d", sample_rate, sample_size, channels);
+							// Send an error message and close connection
+							server_error_encountered(server_socket, P_SERVER_ERROR, "Error at opening the audio file, the file requested may be inexistant", (struct sockaddr*)&source);
+
+							// Free the server
+							server_state = FREE;
+						}
+
+						// If none
+						else {
+
+							// Store informations about this file
+							snprintf(buffer, sizeof(buffer), "%d %d %d", sample_rate, sample_size, channels);
+
+							// Create the packet to send
+							create_packet(&packet_to_send, P_FILE_HEADER, buffer);
+
+							// Send it
+							if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
+
+								// Send an error message and close connection
+								server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source);
+
+								// Free the server
+								server_state = FREE;
+							}
+						}
+						break;
+
+
+					// --------------- Client requesting another block ---------------
+					case P_REQ_NEXT_BLOCK:
+
+						// Fill the buffer
+						read_audio = read(read_init_audio, buffer, BUFFER_SIZE);
+
+						// If the end of file is reached
+						int type = P_BLOCK;
+						if (read_audio != BUFFER_SIZE)
+							type = P_EOF;
 
 						// Create the packet to send
-						create_packet(&packet_to_send, P_FILE_HEADER, buffer);
+						create_packet(&packet_to_send, type, buffer);
 
-						// Send it
-						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1)
-							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source, my_sem);
+						// And send it
+						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
 
-					}
-					break;
+							// Send an error message and close transmission
+							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the next block", (struct sockaddr*)&source);
 
-
-				// --------------- Client requesting another block ---------------
-				case P_REQ_NEXT_BLOCK:
-
-					// Fill the buffer
-					read_audio = read(read_init_audio, buffer, BUFFER_SIZE);
-
-					// The default type
-					int type = P_BLOCK;
-
-					// If the end of file is reached
-					if (read_audio != BUFFER_SIZE)
-						type = P_EOF;
-
-					// Create the packet to send
-					create_packet(&packet_to_send, type, buffer);
-
-					// And send it
-					if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1)
-						server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the next block", (struct sockaddr*)&source, my_sem);
-
-					break;
+							// Free the server
+							server_state = FREE;
+						}
+						break;
 
 
-				// --------------- Client requesting the same packet (if it doesn't received it) ---------------
-				case P_REQ_SAME_PACKET:
+					// --------------- Client requesting the same packet (if it doesn't received it) ---------------
+					case P_REQ_SAME_PACKET:
 
-					// Resend packet previously created
-					if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1)
-						server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the same block", (struct sockaddr*)&source, my_sem);
+						// Resend packet previously created
+						if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1) {
 
-					break;
+							// Send an error message and close transmission
+							server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the same block", (struct sockaddr*)&source);
+
+							// Free the server
+							server_state = FREE;
+						}
+						break;
 
 
-				// --------------- Client received correctly the close transmission ---------------
-				case P_CLOSED:
+					// --------------- Client received correctly the close transmission ---------------
+					case P_CLOSED:
 
-					// Close the descriptor file when it's done
-					if ((read_init_audio > 0) && (close(read_init_audio) != 0)) perror("Error at closing the read file descriptor");
+						// Close the descriptor file when it's done
+						if ((read_init_audio > 0) && (close(read_init_audio) != 0)) perror("Error at closing the read file descriptor");
 
-					// Put UP the semaphore
-					if (semop(my_sem, &up, 1) == -1) { perror("Error semop UP"); exit(1); }
+						// Free the server
+						server_state = FREE;
 
-					break;
+						break;
+				}
 			}
 		}
 
 		// If an error during the receiving of a packet
 		else
-			server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error during the receiving of a packet", (struct sockaddr*)&source, my_sem);
+			server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error during the receiving of a packet", (struct sockaddr*)&source);
 
 	}
 
-	// Then close the socket  (Neveer reached for the moment)
+	// Then close the socket
 	if (close(server_socket) == -1) { perror("Error during the closing of the server socket"); return 1; }
 
 	// If everything's was ok

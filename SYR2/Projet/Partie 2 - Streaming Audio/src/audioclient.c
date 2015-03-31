@@ -196,6 +196,17 @@ int main(int argc, char** args) {
 
 
 					// --------------- An error happened on the server ---------------
+					case P_ERR_TRANSMISSION:
+
+						// Display the error
+						printf("%s\n", from_server.message);
+
+						// Close connection
+						close_connection(client_socket, "Closing due to server error", (struct sockaddr*)&destination, 0);
+						break;
+
+
+					// --------------- An error happened on the server ---------------
 					case P_FILE_HEADER:
 
 						// To avoid an error saying that we can't put declaration just after this label

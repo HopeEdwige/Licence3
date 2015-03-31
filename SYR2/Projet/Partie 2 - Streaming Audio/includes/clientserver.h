@@ -17,8 +17,6 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>
-#include <sys/shm.h>
-#include <sys/sem.h>
 #include <netinet/in.h>
 #include <audio.h>
 #include <netdb.h>
@@ -28,7 +26,9 @@
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
 #define NB_TRIES 3        // Trying to send a packet when error happens
-#define SEM_KEY 1234
+#define FREE 0
+#define BUSY 1
+
 
 // Message types
 #define P_ERR_TRANSMISSION 0
@@ -41,6 +41,13 @@
 #define P_EOF 7
 #define P_CLOSE_TRANSMISSION 8
 #define P_CLOSED 9
+
+
+// Filters
+#define F_FORCE_MONO 0
+#define F_UP 1
+#define F_DOWN 2
+#define F_ECHO 3
 
 
 // Structures
