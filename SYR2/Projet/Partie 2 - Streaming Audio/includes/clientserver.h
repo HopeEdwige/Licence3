@@ -25,7 +25,6 @@
 // Constants
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
-#define NB_TRIES 3        // Trying to send a packet when error happens
 
 
 // Timeouts

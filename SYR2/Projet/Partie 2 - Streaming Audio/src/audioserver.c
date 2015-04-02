@@ -116,23 +116,15 @@ int main(int argc, char** args) {
 
 
 
-	/* 	################################################## Put the timeout ################################################## */
-
-	// Clear and initialize the fd set
-	FD_ZERO(&watch_over);
-	FD_SET(server_socket, &watch_over);
-	timeout.tv_sec = TIMEOUT_SERVER;  // 5 sec
-	timeout.tv_usec = 0;
-	nb = select(server_socket+1, &watch_over, NULL, NULL, &timeout);
-
-
-
 	/* 	################################################## Serve clients ################################################## */
 	while (1) {  // Server always running
-
-		// Clear packets
-		clear_packet(&packet_to_send);
-		clear_packet(&packet_received);
+		
+		// Clear and initialize the fd set
+		FD_ZERO(&watch_over);
+		FD_SET(server_socket, &watch_over);
+		timeout.tv_sec = TIMEOUT_SERVER;  // 5 sec
+		timeout.tv_usec = 0;
+		nb = select(server_socket+1, &watch_over, NULL, NULL, &timeout);
 
 		// If error during the select
 		if (nb < 0) {
@@ -147,6 +139,10 @@ int main(int argc, char** args) {
 
 		// If open, just act normally
 		if (FD_ISSET(server_socket, &watch_over)) {
+
+			// Clear packets
+			clear_packet(&packet_to_send);
+			clear_packet(&packet_received);
 
 			// Wait a packet
 			if (recvfrom(server_socket, &packet_received, sizeof(struct packet), 0, (struct sockaddr*)&source, &source_length) != -1) {

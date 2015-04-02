@@ -143,17 +143,6 @@ int main(int argc, char** args) {
 
 
 
-	/* 	################################################## Put the timeout ################################################## */
-
-	// Clear and initialize the fd set
-	FD_ZERO(&watch_over);
-	FD_SET(client_socket, &watch_over);
-	timeout.tv_sec = 0;
-	timeout.tv_usec = TIMEOUT_CLIENT;  // 200ms
-	nb = select(client_socket+1, &watch_over, NULL, NULL, &timeout);
-
-
-
 	/* 	################################################## Sending the filename ################################################## */
 
 	// The first packet to send is the filename
@@ -169,6 +158,13 @@ int main(int argc, char** args) {
 
 	/* 	################################################## Talk with the server ################################################## */
 	do {
+
+		// Clear and reinitialize the fd set
+		FD_ZERO(&watch_over);
+		FD_SET(client_socket, &watch_over);
+		timeout.tv_sec = 0;
+		timeout.tv_usec = TIMEOUT_CLIENT;  // 200ms
+		nb = select(client_socket+1, &watch_over, NULL, NULL, &timeout);
 
 		// Clear packets
 		clear_packet(&to_server);
