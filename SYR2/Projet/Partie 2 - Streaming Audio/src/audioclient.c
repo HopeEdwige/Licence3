@@ -8,6 +8,44 @@
 
 
 /**
+ * The main program
+ *
+ * Parameters:
+ *	 - int argc  => The number of arguments passed
+ *	 - char** args  => The arguments list
+ *
+ * Return:
+ *	 - int  => The result of the execution
+ */
+void process_params(int argc, char** args) {
+	// The filter
+	int filter = F_NONE;
+
+	// If there aren't the correct number of arguments
+	if ((argc < 3) || (args > 5)) { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
+
+	// Check the parameters
+	if (args[1] == NULL) { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
+	if (args[2] == NULL) { perror("The second argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
+
+	// If there's a filter asked
+	if (args[3] != NULL) {
+
+		// If mono
+		if ((strncmp(args[3], "mono", 4)) && (strlen(args[3]) != strlen("mono"))) {
+
+		}
+
+		// If an unknown filter
+		else { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; } 
+	}
+
+	// Return the filter
+	return filter;
+}
+
+
+/**
  * If an error is encountered, close the connection
  *
  * Parameters:
@@ -21,22 +59,6 @@ void close_connection(int err_socket, char* err_message, struct sockaddr* err_de
 
 	// Display error message
 	perror(err_message);
-
-	// Some parameters
-	/*socklen_t destination_length = (socklen_t)sizeof(struct sockaddr);
-
-	// Create the packet to send
-	struct packet error_packet;
-	create_packet(&error_packet, P_CLOSED, "");
-
-	// Try three times
-	int i = 0;
-	while ((sendto(err_socket, &error_packet, sizeof(struct packet), 0, err_destination, destination_length) == -1) && (i < NB_TRIES)) {
-		i++;
-	}
-
-	// If we couldn't send it
-	if (i == NB_TRIES) perror("Error during the client closing connection");*/
 
 	// Then close the socket
 	if (close(err_socket) == -1) perror("Error during the closing of the client socket");
@@ -105,18 +127,8 @@ int init_socket(char* host, struct sockaddr_in* destination) {
  */
 int main(int argc, char** args) {
 
-
-	/* 	################################################## Parameters check ################################################## */
-	// If there aren't the correct number of arguments
-	if (argc < 3) { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
-
-	// Check the parameters
-	if (args[1] == NULL) { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
-	if (args[2] == NULL) { perror("The second argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
-
-
-	/* ##### Get filter ##### */
-	int filter = F_NONE;
+	/* ##### Process parameters and get filter ##### */
+	int filter = process_params(arcs, args);
 
 
 	/* ##### Network structures ##### */
