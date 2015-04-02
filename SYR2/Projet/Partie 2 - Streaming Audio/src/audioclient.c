@@ -143,20 +143,27 @@ int main(int argc, char** args) {
 
 
 
+	/* 	################################################## Put the timeout ################################################## */
+
+	// Clear and initialize the fd set
+	FD_ZERO(&watch_over);
+	FD_SET(client_socket, &watch_over);
+	timeout.tv_sec = 0;
+	timeout.tv_usec = TIMEOUT_CLIENT;  // 200ms
+	nb = select(client_socket+1, &watch_over, NULL, NULL, &timeout);
+
+
+
 	/* 	################################################## Sending the filename ################################################## */
 
 	// The first packet to send is the filename
 	create_packet(&to_server, P_FILENAME, args[2]);
 
 	// Send the packet containing the filename
-	if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) { perror("Error during the sending of the filename packet"); return 1; }
-
-	// Clear and initialize the fd set
-	FD_ZERO(&watch_over);
-	FD_SET(client_socket, &watch_over);
-	timeout.tv_sec = 0;
-	timeout.tv_usec = 200000;  // 200ms
-	nb = select(client_socket+1, &watch_over, NULL, NULL, &timeout);
+	if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
+		perror("Error during the sending of the filename packet");
+		return 1;
+	}
 
 
 
@@ -170,17 +177,15 @@ int main(int argc, char** args) {
 		// If error during the select
 		if (nb < 0) {
 			perror("Can't attach the select to the file descriptor");
-			exit(1);
+			return 1;
 		}
 
 		// Just request the same packet if timeout reached
 		if (nb == 0) {
-
-			clear_packet(&to_server);
 			to_server.type = P_REQ_SAME_PACKET;
 			if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
 				perror("Can't request same packet");
-				exit(1);
+				return 1;
 			}
 		}
 
@@ -302,13 +307,13 @@ int main(int argc, char** args) {
 		// If an error during the receiving of a packet
 		else {
 			perror("Error during the receiving of a packet, the server may be busy");
-			exit(0);
+			return 0;
 		}
 
 	} while (from_server.type != P_CLOSE_TRANSMISSION);
 
 	// Close the connection
-	close_connection(client_socket, "Everything's ok, close connection now", (struct sockaddr*)&destination, write_init_audio);
+	close_connection(client_socket, "The reading is done, close connection now", (struct sockaddr*)&destination, write_init_audio);
 
 	// If everything's was ok (but the server is normally just waiting for clients)
 	return 0;

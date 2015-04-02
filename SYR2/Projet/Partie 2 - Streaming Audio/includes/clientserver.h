@@ -28,6 +28,11 @@
 #define NB_TRIES 3        // Trying to send a packet when error happens
 
 
+// Timeouts
+#define TIMEOUT_CLIENT 200000  // In microseconds
+#define TIMEOUT_SERVER 5  // In seconds
+
+
 // Server status
 #define S_FREE 0
 #define S_BUSY 1
