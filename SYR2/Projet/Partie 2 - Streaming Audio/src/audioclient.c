@@ -17,27 +17,25 @@
  * Return:
  *	 - int  => The result of the execution
  */
-void process_params(int argc, char** args) {
+int process_params(int argc, char** args) {
 	// The filter
 	int filter = F_NONE;
 
-	// If there aren't the correct number of arguments
-	if ((argc < 3) || (args > 5)) { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
-
-	// Check the parameters
-	if (args[1] == NULL) { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
-	if (args[2] == NULL) { perror("The second argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
+	// Check the parameters (between 2 and 4 arguments)
+	if ((args[1] == NULL) || (args[2] == NULL) || (argc < 3) || (argc > 5)) {
+		perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]");
+		exit(1);
+	}
 
 	// If there's a filter asked
 	if (args[3] != NULL) {
 
 		// If mono
-		if ((strncmp(args[3], "mono", 4)) && (strlen(args[3]) != strlen("mono"))) {
-
-		}
+		if ((strncmp(args[3], "mono", 4) == 0) && (strlen(args[3]) == strlen("mono")))
+			filter = F_MONO;
 
 		// If an unknown filter
-		else { perror("The first argument is required. Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; } 
+		else { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; } 
 	}
 
 	// Return the filter
@@ -128,7 +126,7 @@ int init_socket(char* host, struct sockaddr_in* destination) {
 int main(int argc, char** args) {
 
 	/* ##### Process parameters and get filter ##### */
-	int filter = process_params(arcs, args);
+	int filter = process_params(argc, args);
 
 
 	/* ##### Network structures ##### */
@@ -234,21 +232,32 @@ int main(int argc, char** args) {
 						// To avoid an error saying that we can't put declaration just after this label
 						;
 
-						// Get the audio parameters
+						// Get the audio parameters by cutting the message received
 						char *token = strtok(from_server.message, " ");
 						int i = 0;
 						while ((token != NULL) && (i < 3)) {
 							switch (i) {
+
+								// First is the sample rate
 								case 0:
 									sample_rate = atoi(token);
 									break;
 
+								// Second is the sample size
 								case 1:
 									sample_size = atoi(token);
 									break;
 
+								// Third is the number of channels
 								case 2:
-									channels = atoi(token);
+
+									// If mono forced
+									if (filter == F_MONO)
+										channels = 1;
+
+									// If normal behavior
+									else
+										channels = atoi(token);
 									break;
 							}
 
