@@ -42,6 +42,32 @@ int process_params(int argc, char** args) {
 		else if ((strncmp(args[3], F_ECHO_NAME, strlen(F_ECHO_NAME)) == 0) && (strlen(args[3]) == strlen(F_ECHO_NAME)))
 			filter = F_ECHO;
 
+		// If upper volume
+		else if ((strncmp(args[3], F_UP_NAME, strlen(F_UP_NAME)) == 0) && (strlen(args[3]) == strlen(F_UP_NAME))) {
+
+			filter = F_UP;
+
+			// Check the upper parameter
+			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
+				strcat(command_syntax, " / The filter parameter passed isn't correct");
+				fprintf(stderr, "%s\n", command_syntax);
+				exit(1);
+			}
+		}
+
+		// If lower volume
+		else if ((strncmp(args[3], F_DOWN_NAME, strlen(F_DOWN_NAME)) == 0) && (strlen(args[3]) == strlen(F_DOWN_NAME))) {
+
+			filter = F_DOWN;
+
+			// Check the upper parameter
+			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
+				strcat(command_syntax, " / The filter parameter passed isn't correct");
+				fprintf(stderr, "%s\n", command_syntax);
+				exit(1);
+			}
+		}
+
 		// If an unknown filter
 		else {
 
@@ -170,7 +196,7 @@ int main(int argc, char** args) {
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
 	int write_audio, write_init_audio = 0;
-	char echo_buffer[BUFFER_SIZE];
+	char tmp_buffer[BUFFER_SIZE];
 
 
 	/* ##### Timeout parameters ##### */
@@ -312,23 +338,53 @@ int main(int argc, char** args) {
 					// --------------- A block is received, read it ---------------
 					case P_BLOCK:
 
-						// Read the music on the audio output
-						write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+						// Read the music on the audio output (in function of the filter passed)
+						switch (filter) {
+
+							// If none (or mono too)
+							case F_NONE:
+							case F_MONO:
+								write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+								break;
+
+							// If echo
+							case F_ECHO:
+
+								// Read the content of the echo buffer
+								if (write(write_init_audio, tmp_buffer, BUFFER_SIZE) == -1)
+									close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
+
+								// Then clear it and store the current buffer
+								bzero(tmp_buffer, BUFFER_SIZE);
+								memcpy(tmp_buffer, from_server.message, BUFFER_SIZE);
+								break;
+
+							// If upper volume
+							case F_UP:
+
+								// To avoid an error saying that we can't put declaration just after this label
+								;
+
+								// Put each integer in the tmp buffer and multiply them
+								//int a_sample = (int)from_server.message[0] + (int)from_server.message[1] + (int)from_server.message[2] + (int)from_server.message[3];
+
+								//fprintf(stderr, "%d\n", a_sample);
+
+								break;
+
+							// If lower volume
+							case F_DOWN:
+								break;
+
+							// If an unknown filter, error!
+							default:
+								close_connection(client_socket, "Filter passed unknown", write_init_audio);
+								break;
+
+						}
 
 						// If error during the reading
 						if (write_audio == -1) close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
-
-						// If echo filter is activated, read the echo and store the last value
-						if (filter == F_ECHO) {
-
-							// Read the content of the echo buffer
-							if (write(write_init_audio, echo_buffer, BUFFER_SIZE) == -1)
-								close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
-
-							// Then clear it and store the current buffer
-							bzero(echo_buffer, BUFFER_SIZE);
-							memcpy(echo_buffer, from_server.message, BUFFER_SIZE);
-						}
 
 						// If everything's ok, request the next block
 						clear_packet(&to_server);
