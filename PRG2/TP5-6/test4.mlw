@@ -1,0 +1,11 @@
+{a>=0 && b>=0}
+begin
+  res:=1;
+  i:=0;
+  while (![i=b]) do {invariant res=(a*i)}
+      begin
+	i:= i+1;
+	res:= res*a
+      end
+  done 
+end {res=(a*b)}

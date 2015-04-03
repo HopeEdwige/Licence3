@@ -1,0 +1,7 @@
+
+
+begin
+  x:=1;
+  if (x=1) then x:=x+1 else x:=x+2 endif
+end
+{x=2}

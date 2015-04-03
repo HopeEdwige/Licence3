@@ -1,0 +1,11 @@
+{a >=1}
+begin
+  i:=1;
+  j:=1;
+  while (i<=a) do {invariant i=j}
+      begin
+	i:=i+1;
+	j:=j+1
+      end
+  done 
+end {i=j}

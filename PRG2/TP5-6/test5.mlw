@@ -1,0 +1,7 @@
+{x=x0 && y=y0}
+begin
+  x:=x+y;
+  y:=x-y;
+  x:=x-y
+end
+{x=y0 && y=x0}
