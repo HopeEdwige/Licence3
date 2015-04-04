@@ -282,41 +282,10 @@ int main(int argc, char** args) {
 					// --------------- An error happened on the server ---------------
 					case P_FILE_HEADER:
 
-						// To avoid an error saying that we can't put declaration just after this label
-						;
-
-						// Get the audio parameters by cutting the message received
-						char *token = strtok(from_server.message, " ");
-						int i = 0;
-						while ((token != NULL) && (i < 3)) {
-							switch (i) {
-
-								// First is the sample rate
-								case 0:
-									sample_rate = atoi(token);
-									break;
-
-								// Second is the sample size
-								case 1:
-									sample_size = atoi(token);
-									break;
-
-								// Third is the number of channels
-								case 2:
-
-									// If mono forced
-									if (filter == F_MONO)
-										channels = 1;
-
-									// If normal behavior
-									else
-										channels = atoi(token);
-									break;
-							}
-
-							token = strtok(NULL, " ");
-							i++;
-						}
+						// Get the informations about the audio file
+						sample_rate = *((int*)(from_server.message));
+						sample_size = *((int*)(from_server.message + BUFFER_SPACE));
+						channels = *((int*)(from_server.message + 2*BUFFER_SPACE));
 
 						// Initialize the write end
 						write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
@@ -366,9 +335,9 @@ int main(int argc, char** args) {
 								;
 
 								// Put each integer in the tmp buffer and multiply them
-								//int a_sample = (int)from_server.message[0] + (int)from_server.message[1] + (int)from_server.message[2] + (int)from_server.message[3];
+								int* a_sample = (int*)from_server.message;
 
-								//fprintf(stderr, "%d\n", a_sample);
+								fprintf(stderr, "%d\n", *a_sample);
 
 								break;
 

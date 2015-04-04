@@ -79,7 +79,6 @@ whileInversion:
 			# Saut si fin du while (si i >= j)
 			bge		r17, r16, finInversion
 			
-			# Choppe 
 			# i*4
 			slli 	r19, r17, 2
 			# adresse de tableau[i]

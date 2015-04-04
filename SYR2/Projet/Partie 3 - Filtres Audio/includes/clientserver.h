@@ -25,6 +25,7 @@
 // Constants
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
+#define BUFFER_SPACE 64  // Space between each int put in the buffer (sizeof(int) can be different from a machine to another)
 #define COMMAND_SYNTAX "Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"
 
 

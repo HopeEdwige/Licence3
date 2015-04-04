@@ -174,7 +174,9 @@ int main(int argc, char** args) {
 							else {
 
 								// Store informations about this file
-								snprintf(buffer, sizeof(buffer), "%d %d %d", sample_rate, sample_size, channels);
+								*((int*)(buffer)) = sample_rate;
+								*((int*)(buffer + BUFFER_SPACE)) = sample_size;
+								*((int*)(buffer + 2*BUFFER_SPACE)) = channels;
 
 								// Create the packet to send
 								create_packet(&packet_to_send, P_FILE_HEADER, buffer);
