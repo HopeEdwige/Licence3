@@ -48,7 +48,7 @@ int process_params(int argc, char** args) {
 			filter = F_UP;
 
 			// Check the upper parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
+			if ((args[4] == NULL) || (atoi(args[4]) < 1) || (atoi(args[4]) > 5)) {
 				strcat(command_syntax, " / The filter parameter passed isn't correct");
 				fprintf(stderr, "%s\n", command_syntax);
 				exit(1);
@@ -60,8 +60,8 @@ int process_params(int argc, char** args) {
 
 			filter = F_DOWN;
 
-			// Check the upper parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
+			// Check the lower parameter
+			if ((args[4] == NULL) || (atoi(args[4]) < 1) || (atoi(args[4]) > 5)) {
 				strcat(command_syntax, " / The filter parameter passed isn't correct");
 				fprintf(stderr, "%s\n", command_syntax);
 				exit(1);
@@ -205,6 +205,10 @@ int main(int argc, char** args) {
 	struct timeval timeout;
 
 
+	/* ##### Filter parameters ##### */
+	int upper_lower_value;
+
+
 
 	/* 	################################################## Sending the filename ################################################## */
 
@@ -257,7 +261,8 @@ int main(int argc, char** args) {
 				// In function of the type of the packet received
 				switch (from_server.type) {
 
-					// --------------- An error happened on the server ---------------
+					// --------------- An server error happened on the server ---------------
+					case P_ERR_TRANSMISSION:
 					case P_SERVER_ERROR:
 
 						// Display the error
@@ -268,24 +273,18 @@ int main(int argc, char** args) {
 						break;
 
 
-					// --------------- An error happened on the server ---------------
-					case P_ERR_TRANSMISSION:
-
-						// Display the error
-						printf("%s\n", from_server.message);
-
-						// Close connection
-						close_connection(client_socket, "Closing due to server error", 0);
-						break;
-
-
-					// --------------- An error happened on the server ---------------
+					// --------------- The first response from the server is received ---------------
 					case P_FILE_HEADER:
 
 						// Get the informations about the audio file
 						sample_rate = *((int*)(from_server.message));
 						sample_size = *((int*)(from_server.message + BUFFER_SPACE));
-						channels = *((int*)(from_server.message + 2*BUFFER_SPACE));
+
+						// The channels number can be forced to 1 if mono filter
+						if (filter == F_MONO)
+							channels = 1;
+						else
+							channels = *((int*)(from_server.message + 2*BUFFER_SPACE));
 
 						// Initialize the write end
 						write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
@@ -300,6 +299,24 @@ int main(int argc, char** args) {
 						// Send the request
 						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
 							close_connection(client_socket, "Error at requesting the first block", write_init_audio);
+
+						// ----- Filters initialisation -----
+						switch (filter) {
+
+							// If none, do nothing
+							case F_NONE:
+								break;
+
+							// If up, get the value of the filter parameter
+							case F_UP:
+								upper_lower_value = atoi(args[4]);
+								break;
+
+							// If down, get the value of the filter parameter
+							case F_DOWN:
+								upper_lower_value = 1/atoi(args[4]);
+								break;
+						}
 
 						break;
 
@@ -328,21 +345,31 @@ int main(int argc, char** args) {
 								memcpy(tmp_buffer, from_server.message, BUFFER_SIZE);
 								break;
 
-							// If upper volume
+							// If upper or lower volume
+							case F_DOWN:
 							case F_UP:
 
 								// To avoid an error saying that we can't put declaration just after this label
 								;
 
-								// Put each integer in the tmp buffer and multiply them
-								int* a_sample = (int*)from_server.message;
+								// Variables used in the loop
+								int* a_sample;  // The variable to store a pointer to the current sample
+								int i;  // The increment var
 
-								fprintf(stderr, "%d\n", *a_sample);
+								// Get each sample and multiply its value
+								for (i = 0; i < (BUFFER_SIZE/(sample_size/8)); ++i) {
 
-								break;
+									// Get a pointer to the current sample to process
+									a_sample = (int*)(from_server.message + i*sizeof(int));
 
-							// If lower volume
-							case F_DOWN:
+									// Multiply the value of the sample and store it directly
+									*a_sample = *a_sample * upper_lower_value;
+								}
+
+								// And in the end, read the whole buffer
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+									close_connection(client_socket, "Error at writing a volume changed block on audio output", write_init_audio);
+
 								break;
 
 							// If an unknown filter, error!
@@ -380,6 +407,12 @@ int main(int argc, char** args) {
 
 						// Close the connection
 						close_connection(client_socket, "The file was correctly read, close the connection, bye", write_init_audio);
+						break;
+
+
+					// --------------- Unknown type ---------------
+					default:
+						close_connection(client_socket, "Packet type unknown", write_init_audio);
 						break;
 					
 				}

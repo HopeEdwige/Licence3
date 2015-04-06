@@ -183,7 +183,7 @@ int main(int argc, char** args) {
 
 								// Send it
 								if (sendto(server_socket, &packet_to_send, sizeof(struct packet), 0, (struct sockaddr*)&source, source_length) == -1)
-									server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Error at sending the file header", (struct sockaddr*)&source, &server_state);
+									server_error_encountered(server_socket, P_SERVER_ERROR, "Error at sending the file header", (struct sockaddr*)&source, &server_state);
 							}
 						}
 						break;
@@ -229,6 +229,18 @@ int main(int argc, char** args) {
 						// Free the server
 						server_state = S_FREE;
 
+						break;
+
+
+					// --------------- Transmission error received (normally never receive this) ---------------
+					case P_ERR_TRANSMISSION:
+						server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Transmission error received from the client", (struct sockaddr*)&source, &server_state);
+						break;
+
+
+					// --------------- Unknown type ---------------
+					default:
+						server_error_encountered(server_socket, P_ERR_TRANSMISSION, "Packet type unknown", (struct sockaddr*)&source, &server_state);
 						break;
 				}
 			}

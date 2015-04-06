@@ -31,7 +31,7 @@
 
 // Timeouts
 #define TIMEOUT_CLIENT 200000  // In microseconds
-#define TIMEOUT_SERVER 5  // In seconds
+#define TIMEOUT_SERVER 3  // In seconds
 
 
 // Server status
