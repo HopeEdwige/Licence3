@@ -178,7 +178,7 @@ int main(int argc, char** args) {
 	/* ##### Audio reader parameters ##### */
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
-	int write_audio, write_init_audio = 0;
+	int write_init_audio = 0;
 
 
 	/* ##### Timeout parameters ##### */
@@ -188,8 +188,12 @@ int main(int argc, char** args) {
 
 
 	/* ##### Filter parameters ##### */
+	// For volume filter
 	int volume_value;
-	char tmp_buffer[BUFFER_SIZE];
+
+	// For echo filter
+	int nb_buffers_per_second, current_buffer_position, to_read_position;
+	char* echo_buffer;
 
 
 
@@ -262,44 +266,73 @@ int main(int argc, char** args) {
 						// Get the informations about the audio file
 						sample_rate = *((int*)(from_server.message));
 						sample_size = *((int*)(from_server.message + BUFFER_SPACE));
+						channels = *((int*)(from_server.message + 2*BUFFER_SPACE));
 
-						// The channels number can be forced to 1 if mono filter
-						if (filter == F_MONO)
-							channels = 1;
-						else
-							channels = *((int*)(from_server.message + 2*BUFFER_SPACE));
-
-						// Initialize the write end
-						write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
-
-						// If an error happened
-						if (write_init_audio < 1) close_connection(client_socket, "Error at getting the audio output device", 0);
-
-						// If everything's ok, request the first block
-						clear_packet(&to_server);
-						to_server.type = P_REQ_NEXT_BLOCK;
-
-						// Send the request
-						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
-							close_connection(client_socket, "Error at requesting the first block", write_init_audio);
 
 						// ----- Filters initialisation -----
 						switch (filter) {
 
-							// If none or mono, do nothing
+							// If none do nothing
 							case F_NONE:
-							case F_MONO:
 								break;
 
-							// If up, get the value of the filter parameter
+							// If mono, just force the channel to one
+							case F_MONO:
+								channels = 1;
+								break;
+
+							// If volume, get the value of the filter parameter
 							case F_VOLUME:
 								volume_value = atoi(args[4]);
+								break;
+
+							// If echo, allocate the echo buffer
+							case F_ECHO:
+
+								// Calculate the number of bytes needed for one second
+								nb_buffers_per_second = (int)((sample_rate * (sample_size/8)) / BUFFER_SIZE);
+
+								// Allocate the table of buffers
+								echo_buffer = malloc((int)(nb_buffers_per_second / BUFFER_SIZE));
+
+								// The buffer position and the buffer to read put to 0
+								current_buffer_position = 0;
+								to_read_position = 0;
+
 								break;
 
 							// If unknown
 							default:
 								close_connection(client_socket, "Unknown filter", write_init_audio);
 								break;
+						}
+
+
+						// Initialize the write end
+						write_init_audio = aud_writeinit(sample_rate, sample_size, channels);
+
+						// If an error happened
+						if (write_init_audio < 1) {
+
+							// If echo filter, free the buffer
+							if (filter == F_ECHO) free(echo_buffer);
+
+							// Close the connection
+							close_connection(client_socket, "Error at getting the audio output device", 0);
+						}
+
+						// If everything's ok, request the first block
+						clear_packet(&to_server);
+						to_server.type = P_REQ_NEXT_BLOCK;
+
+						// Send the request
+						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
+							
+							// If echo filter, free the buffer
+							if (filter == F_ECHO) free(echo_buffer);
+
+							// Close the connection
+							close_connection(client_socket, "Error at requesting the first block", write_init_audio);
 						}
 
 						break;
@@ -314,19 +347,49 @@ int main(int argc, char** args) {
 							// If none (or mono too)
 							case F_NONE:
 							case F_MONO:
-								write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
 								break;
 
 							// If echo
 							case F_ECHO:
 
-								// Read the content of the echo buffer
-								if (write(write_init_audio, tmp_buffer, BUFFER_SIZE) == -1)
-									close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
+								// Read the content of the buffer received
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1) {
 
-								// Then clear it and store the current buffer
-								bzero(tmp_buffer, BUFFER_SIZE);
-								memcpy(tmp_buffer, from_server.message, BUFFER_SIZE);
+									// Echo filter so free the buffer
+									free(echo_buffer);
+
+									// Close connection
+									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
+								}
+
+								// Then put this buffer into the echo buffer if the buffer isn't full
+								if (current_buffer_position < nb_buffers_per_second) {
+									memcpy(echo_buffer + current_buffer_position*BUFFER_SIZE, from_server.message, BUFFER_SIZE);
+									++current_buffer_position;
+								}
+
+								// If the echo buffer is full
+								else {
+
+									// Read the current buffer position
+									if (write(write_init_audio, echo_buffer + to_read_position*BUFFER_SIZE, BUFFER_SIZE) == -1) {
+
+										// Echo filter so free the buffer
+										free(echo_buffer);
+
+										// Close connection
+										close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
+									}
+
+									// And replace it with the new one
+									memcpy(echo_buffer + to_read_position*BUFFER_SIZE, from_server.message, BUFFER_SIZE);
+
+									// Increment it
+									to_read_position = (to_read_position+1)%nb_buffers_per_second;
+
+								}
 								break;
 
 							// If upper or lower volume
@@ -340,7 +403,7 @@ int main(int argc, char** args) {
 								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
-								for (i = 0; i < (BUFFER_SIZE/(sample_size/8)); ++i) {
+								for (i = 0; i < (int)(BUFFER_SIZE/(sample_size/8)); ++i) {
 
 									// Get a pointer to the current sample to process
 									a_sample = (int*)(from_server.message + i*sizeof(int));
@@ -348,7 +411,7 @@ int main(int argc, char** args) {
 									// Multiply the value of the sample
 									tmp = *a_sample;
 									//tmp = (int)((float)((float)tmp / 100) * (float)volume_value);
-									tmp = tmp / 100 * volume_value;
+									tmp = (int)(tmp / 100 * volume_value);
 
 									// Then change the value now
 									*a_sample = tmp;
@@ -367,16 +430,19 @@ int main(int argc, char** args) {
 
 						}
 
-						// If error during the reading
-						if (write_audio == -1) close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
-
 						// If everything's ok, request the next block
 						clear_packet(&to_server);
 						to_server.type = P_REQ_NEXT_BLOCK;
 
 						// Send the request
-						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1)
+						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
+
+							// If echo filter, free the buffer
+							if (filter == F_ECHO) free(echo_buffer);
+
+							// Close connection
 							close_connection(client_socket, "Error at requesting a block", write_init_audio);
+						}
 
 						break;
 
@@ -384,13 +450,83 @@ int main(int argc, char** args) {
 					// --------------- The last block is received, read it ---------------
 					case P_EOF:
 
-						// Read the audio file
-						write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
+						// Read the music on the audio output (in function of the filter passed)
+						switch (filter) {
 
-						// If error during the reading
-						if (write_audio == -1) close_connection(client_socket, "Error at writing a block", write_init_audio);
+							// If none (or mono too)
+							case F_NONE:
+							case F_MONO:
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
+								break;
 
-						// If everything's ok, request the next block
+							// If echo
+							case F_ECHO:
+
+								// Read the content of the buffer received
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1) {
+
+									// Echo filter so free the buffer
+									free(echo_buffer);
+
+									// Close connection
+									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
+								}
+
+								// And in the end, just read the whole echo buffer left
+								if (write(write_init_audio, echo_buffer + to_read_position*BUFFER_SIZE, (current_buffer_position - to_read_position)*BUFFER_SIZE) == -1) {
+									
+									// Echo filter so free the buffer
+									free(echo_buffer);
+
+									// Close connection
+									close_connection(client_socket, "Error at writing the last echo block on audio output", write_init_audio);
+								}
+
+								// Free the echo_buffer in the end
+								free(echo_buffer);
+
+								break;
+
+							// If upper or lower volume
+							case F_VOLUME:
+
+								// To avoid an error saying that we can't put declaration just after this label
+								;
+
+								// Variables used in the loop
+								int* a_sample;  // The variable to store a pointer to the current sample
+								int i, tmp;  // The increment var and a temporary value
+
+								// Get each sample and multiply its value
+								for (i = 0; i < (int)(BUFFER_SIZE/(sample_size/8)); ++i) {
+
+									// Get a pointer to the current sample to process
+									a_sample = (int*)(from_server.message + i*sizeof(int));
+
+									// Multiply the value of the sample
+									tmp = *a_sample;
+									//tmp = (int)((float)((float)tmp / 100) * (float)volume_value);
+									tmp = (int)(tmp / 100 * volume_value);
+
+									// Then change the value now
+									*a_sample = tmp;
+								}
+
+								// And in the end, read the whole buffer
+								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+									close_connection(client_socket, "Error at writing a volume changed block on audio output", write_init_audio);
+
+								break;
+
+							// If an unknown filter, error!
+							default:
+								close_connection(client_socket, "Filter passed unknown", write_init_audio);
+								break;
+
+						}
+
+						// If everything's ok, send the last packet
 						clear_packet(&to_server);
 
 						// Close the connection
@@ -409,6 +545,11 @@ int main(int argc, char** args) {
 
 		// If an error during the receiving of a packet
 		else {
+									
+			// If echo filter, free the buffer
+			if (filter == F_ECHO) free(echo_buffer);
+
+			// Close connection
 			perror("Error during the receiving of a packet, the server may be busy");
 			return 0;
 		}
