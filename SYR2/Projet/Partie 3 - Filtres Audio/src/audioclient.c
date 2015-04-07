@@ -354,16 +354,20 @@ int main(int argc, char** args) {
 
 								// Variables used in the loop
 								int* a_sample;  // The variable to store a pointer to the current sample
-								int i;  // The increment var
+								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
-								for (i = 0; i < (BUFFER_SIZE/(sample_size/8)); ++i) {
+								for (i = 0; i < ((BUFFER_SIZE/(sample_size/8))-1); ++i) {
 
 									// Get a pointer to the current sample to process
 									a_sample = (int*)(from_server.message + i*sizeof(int));
 
-									// Multiply the value of the sample and store it directly
-									*a_sample = *a_sample * upper_lower_value;
+									// Multiply the value of the sample
+									tmp = *a_sample;
+									tmp = tmp * upper_lower_value;
+
+									// Then change the value now
+									*a_sample = tmp;
 								}
 
 								// And in the end, read the whole buffer
