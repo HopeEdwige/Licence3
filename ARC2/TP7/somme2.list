@@ -1,0 +1,26 @@
+                    	.equ	adress 	0x8000
+0000: 00000000 	    	.word 	save	0
+                    
+                    	
+                    boucle:
+0004: 000014 00		call	lireclavier
+0008: 06 05 0000 17	ldw	r5, 0(r6)
+000C: 00 06 0000 17	ldw	r6, save(r0)
+0010: FFF0 06		br	boucle
+                    	
+                    lireclavier:
+0014: 00 06 0000 15	stw	r6, save(r0)
+0018: 00 06 8000 04	addi	r6, r0, adress
+001C: 00 00 05 00 3A	ret
+
+Table des symboles :
+
+Symbole	Adr hex	Adr dec
+save	0	0 
+boucle	4	4 
+lireclavier	14	20 
+
+Table des equ's :
+
+Symbole	Val hex	Val dec
+adress	8000	32768 

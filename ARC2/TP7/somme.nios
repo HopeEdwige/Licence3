@@ -1,0 +1,17 @@
+	.equ	adress 	0x8000
+
+init:
+		ldw		r5, 0(r0)
+		ldw		r6, 0(r0)
+	
+	
+debut:
+		call 	lectureclavier
+		add 	r5, r5, r6
+		stw 	r5, 1024(r0)
+		br debut
+
+
+lectureclavier:
+		addi 	r6, r0, adress
+		ret
