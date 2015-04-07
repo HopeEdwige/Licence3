@@ -42,26 +42,13 @@ int process_params(int argc, char** args) {
 		else if ((strncmp(args[3], F_ECHO_NAME, strlen(F_ECHO_NAME)) == 0) && (strlen(args[3]) == strlen(F_ECHO_NAME)))
 			filter = F_ECHO;
 
-		// If upper volume
-		else if ((strncmp(args[3], F_UP_NAME, strlen(F_UP_NAME)) == 0) && (strlen(args[3]) == strlen(F_UP_NAME))) {
+		// If volume modification
+		else if ((strncmp(args[3], F_VOLUME_NAME, strlen(F_VOLUME_NAME)) == 0) && (strlen(args[3]) == strlen(F_VOLUME_NAME))) {
 
-			filter = F_UP;
+			filter = F_VOLUME;
 
 			// Check the upper parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 1) || (atoi(args[4]) > 5)) {
-				strcat(command_syntax, " / The filter parameter passed isn't correct");
-				fprintf(stderr, "%s\n", command_syntax);
-				exit(1);
-			}
-		}
-
-		// If lower volume
-		else if ((strncmp(args[3], F_DOWN_NAME, strlen(F_DOWN_NAME)) == 0) && (strlen(args[3]) == strlen(F_DOWN_NAME))) {
-
-			filter = F_DOWN;
-
-			// Check the lower parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 1) || (atoi(args[4]) > 5)) {
+			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
 				strcat(command_syntax, " / The filter parameter passed isn't correct");
 				fprintf(stderr, "%s\n", command_syntax);
 				exit(1);
@@ -77,13 +64,9 @@ int process_params(int argc, char** args) {
 			strcat(command_syntax, "\n	- ");
 			strcat(command_syntax, F_ECHO_NAME);
 			strcat(command_syntax, "\n	- ");
-			strcat(command_syntax, F_UP_NAME);
+			strcat(command_syntax, F_VOLUME_NAME);
 			strcat(command_syntax, " ");
-			strcat(command_syntax, F_UP_DOWN_PARAMETER_NAME);
-			strcat(command_syntax, "\n	- ");
-			strcat(command_syntax, F_DOWN_NAME);
-			strcat(command_syntax, " ");
-			strcat(command_syntax, F_UP_DOWN_PARAMETER_NAME);
+			strcat(command_syntax, F_VOLUME_PARAMETER_NAME);
 
 			// Display it and quit
 			fprintf(stderr, "%s\n", command_syntax);
@@ -196,7 +179,6 @@ int main(int argc, char** args) {
 	// Some more variables that we'll need for reading audio files
 	int sample_rate, sample_size, channels;
 	int write_audio, write_init_audio = 0;
-	char tmp_buffer[BUFFER_SIZE];
 
 
 	/* ##### Timeout parameters ##### */
@@ -206,7 +188,8 @@ int main(int argc, char** args) {
 
 
 	/* ##### Filter parameters ##### */
-	int upper_lower_value;
+	int volume_value;
+	char tmp_buffer[BUFFER_SIZE];
 
 
 
@@ -303,18 +286,19 @@ int main(int argc, char** args) {
 						// ----- Filters initialisation -----
 						switch (filter) {
 
-							// If none, do nothing
+							// If none or mono, do nothing
 							case F_NONE:
+							case F_MONO:
 								break;
 
 							// If up, get the value of the filter parameter
-							case F_UP:
-								upper_lower_value = atoi(args[4]);
+							case F_VOLUME:
+								volume_value = atoi(args[4]);
 								break;
 
-							// If down, get the value of the filter parameter
-							case F_DOWN:
-								upper_lower_value = 1/atoi(args[4]);
+							// If unknown
+							default:
+								close_connection(client_socket, "Unknown filter", write_init_audio);
 								break;
 						}
 
@@ -346,8 +330,7 @@ int main(int argc, char** args) {
 								break;
 
 							// If upper or lower volume
-							case F_DOWN:
-							case F_UP:
+							case F_VOLUME:
 
 								// To avoid an error saying that we can't put declaration just after this label
 								;
@@ -357,14 +340,15 @@ int main(int argc, char** args) {
 								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
-								for (i = 0; i < ((BUFFER_SIZE/(sample_size/8))-1); ++i) {
+								for (i = 0; i < (BUFFER_SIZE/(sample_size/8)); ++i) {
 
 									// Get a pointer to the current sample to process
 									a_sample = (int*)(from_server.message + i*sizeof(int));
 
 									// Multiply the value of the sample
 									tmp = *a_sample;
-									tmp = tmp * upper_lower_value;
+									//tmp = (int)((float)((float)tmp / 100) * (float)volume_value);
+									tmp = tmp / 100 * volume_value;
 
 									// Then change the value now
 									*a_sample = tmp;

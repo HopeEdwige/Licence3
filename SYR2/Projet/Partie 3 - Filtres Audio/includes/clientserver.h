@@ -54,18 +54,16 @@
 
 // Filters name
 #define F_MONO_NAME "mono"
-#define F_UP_NAME "up"
-#define F_DOWN_NAME "down"
+#define F_VOLUME_NAME "volume"
 #define F_ECHO_NAME "echo"
-#define F_UP_DOWN_PARAMETER_NAME "[2-5]"
+#define F_VOLUME_PARAMETER_NAME "[0-100]"
 
 
 // Filters
 #define F_NONE 0
 #define F_MONO 1
-#define F_UP 2
-#define F_DOWN 3
-#define F_ECHO 4
+#define F_VOLUME 2
+#define F_ECHO 3
 
 
 // Structures
