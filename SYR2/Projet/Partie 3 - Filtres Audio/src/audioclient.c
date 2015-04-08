@@ -192,7 +192,7 @@ int main(int argc, char** args) {
 	int volume_value;
 
 	// For echo filter
-	int nb_buffers_per_second, current_buffer_position, to_read_position;
+	int nb_buffers_per_echo, nb_samples_per_buffer, current_buffer_position, to_read_position;
 	char* echo_buffer;
 
 
@@ -284,16 +284,17 @@ int main(int argc, char** args) {
 							// If volume, get the value of the filter parameter
 							case F_VOLUME:
 								volume_value = atoi(args[4]);
+								nb_samples_per_buffer = BUFFER_SIZE/(sample_size/8);
 								break;
 
 							// If echo, allocate the echo buffer
 							case F_ECHO:
 
 								// Calculate the number of bytes needed for one second
-								nb_buffers_per_second = (int)((sample_rate * (sample_size/8)) / BUFFER_SIZE);
+								nb_buffers_per_echo = (ECHO_IN_SCDS * sample_rate * (sample_size/8)) / BUFFER_SIZE;
 
 								// Allocate the table of buffers
-								echo_buffer = malloc((int)(nb_buffers_per_second / BUFFER_SIZE));
+								echo_buffer = malloc(nb_buffers_per_echo * BUFFER_SIZE);
 
 								// The buffer position and the buffer to read put to 0
 								current_buffer_position = 0;
@@ -365,8 +366,8 @@ int main(int argc, char** args) {
 								}
 
 								// Then put this buffer into the echo buffer if the buffer isn't full
-								if (current_buffer_position < nb_buffers_per_second) {
-									memcpy(echo_buffer + current_buffer_position*BUFFER_SIZE, from_server.message, BUFFER_SIZE);
+								if (current_buffer_position < nb_buffers_per_echo) {
+									memcpy((echo_buffer + current_buffer_position*BUFFER_SIZE), from_server.message, BUFFER_SIZE);
 									++current_buffer_position;
 								}
 
@@ -384,10 +385,12 @@ int main(int argc, char** args) {
 									}
 
 									// And replace it with the new one
-									memcpy(echo_buffer + to_read_position*BUFFER_SIZE, from_server.message, BUFFER_SIZE);
+									memcpy((echo_buffer + to_read_position*BUFFER_SIZE), from_server.message, BUFFER_SIZE);
 
-									// Increment it
-									to_read_position = (to_read_position+1)%nb_buffers_per_second;
+									// Increment the flag
+									to_read_position = (to_read_position+1)%nb_buffers_per_echo;
+
+									//fprintf(stderr, "trp = %d | cbp = %d\n", to_read_position, current_buffer_position);
 
 								}
 								break;
@@ -403,15 +406,15 @@ int main(int argc, char** args) {
 								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
-								for (i = 0; i < (int)(BUFFER_SIZE/(sample_size/8)); ++i) {
+								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Get a pointer to the current sample to process
 									a_sample = (int*)(from_server.message + i*sizeof(int));
 
 									// Multiply the value of the sample
 									tmp = *a_sample;
-									//tmp = (int)((float)((float)tmp / 100) * (float)volume_value);
-									tmp = (int)(tmp / 100 * volume_value);
+									tmp = (tmp * volume_value) / 100;
+									fprintf(stderr, "%d\n", tmp);
 
 									// Then change the value now
 									*a_sample = tmp;
@@ -474,7 +477,7 @@ int main(int argc, char** args) {
 								}
 
 								// And in the end, just read the whole echo buffer left
-								if (write(write_init_audio, echo_buffer + to_read_position*BUFFER_SIZE, (current_buffer_position - to_read_position)*BUFFER_SIZE) == -1) {
+								if (write(write_init_audio, (echo_buffer + to_read_position*BUFFER_SIZE), ((current_buffer_position - to_read_position)*BUFFER_SIZE)) == -1) {
 									
 									// Echo filter so free the buffer
 									free(echo_buffer);
@@ -499,15 +502,14 @@ int main(int argc, char** args) {
 								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
-								for (i = 0; i < (int)(BUFFER_SIZE/(sample_size/8)); ++i) {
+								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Get a pointer to the current sample to process
 									a_sample = (int*)(from_server.message + i*sizeof(int));
 
 									// Multiply the value of the sample
 									tmp = *a_sample;
-									//tmp = (int)((float)((float)tmp / 100) * (float)volume_value);
-									tmp = (int)(tmp / 100 * volume_value);
+									tmp = (tmp * volume_value) / 100;
 
 									// Then change the value now
 									*a_sample = tmp;
