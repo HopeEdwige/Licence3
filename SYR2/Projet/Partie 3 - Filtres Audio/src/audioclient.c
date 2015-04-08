@@ -194,6 +194,7 @@ int main(int argc, char** args) {
 	// For echo filter
 	int nb_buffers_per_echo, nb_samples_per_buffer, current_buffer_position, to_read_position;
 	char* echo_buffer;
+	char volume_buffer[BUFFER_SIZE];
 
 
 
@@ -398,32 +399,25 @@ int main(int argc, char** args) {
 							// If upper or lower volume
 							case F_VOLUME:
 
-								// To avoid an error saying that we can't put declaration just after this label
-								;
+								// Clear the temporary buffer
+								memset(volume_buffer, 0, BUFFER_SIZE);
 
 								// Variables used in the loop
-								int* a_sample;  // The variable to store a pointer to the current sample
 								int i, tmp;  // The increment var and a temporary value
-								char tmp_buf[BUFFER_SIZE];
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
-									// Get a pointer to the current sample to process
-									a_sample = (int*)(from_server.message + i*sizeof(int));
-
 									// Multiply the value of the sample
-									tmp = *a_sample;
-									tmp = tmp * volume_value;
-									//fprintf(stderr, "%d \n", volume_value);
+									//tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value / 100;
+									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
 
-									// Then change the value now
-									*((int*)(tmp_buf + i*sizeof(int))) = tmp;
-									//*a_sample = tmp;
+									// Then store it in the temporary buffer
+									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
 								}
 
 								// And in the end, read the whole buffer
-								if (write(write_init_audio, tmp_buf, BUFFER_SIZE) == -1)
+								if (write(write_init_audio, volume_buffer, BUFFER_SIZE) == -1)
 									close_connection(client_socket, "Error at writing a volume changed block on audio output", write_init_audio);
 
 								break;
@@ -496,29 +490,25 @@ int main(int argc, char** args) {
 							// If upper or lower volume
 							case F_VOLUME:
 
-								// To avoid an error saying that we can't put declaration just after this label
-								;
+								// Clear the temporary buffer
+								memset(volume_buffer, 0, BUFFER_SIZE);
 
 								// Variables used in the loop
-								int* a_sample;  // The variable to store a pointer to the current sample
 								int i, tmp;  // The increment var and a temporary value
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
-									// Get a pointer to the current sample to process
-									a_sample = (int*)(from_server.message + i*sizeof(int));
-
 									// Multiply the value of the sample
-									tmp = *a_sample;
-									tmp = tmp * volume_value / 100;
+									//tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value / 100;
+									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
 
-									// Then change the value now
-									*a_sample = tmp;
+									// Then store it in the temporary buffer
+									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
 								}
 
 								// And in the end, read the whole buffer
-								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+								if (write(write_init_audio, volume_buffer, BUFFER_SIZE) == -1)
 									close_connection(client_socket, "Error at writing a volume changed block on audio output", write_init_audio);
 
 								break;
