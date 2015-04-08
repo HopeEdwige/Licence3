@@ -404,6 +404,7 @@ int main(int argc, char** args) {
 								// Variables used in the loop
 								int* a_sample;  // The variable to store a pointer to the current sample
 								int i, tmp;  // The increment var and a temporary value
+								char tmp_buf[BUFFER_SIZE];
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
@@ -413,15 +414,16 @@ int main(int argc, char** args) {
 
 									// Multiply the value of the sample
 									tmp = *a_sample;
-									tmp = (tmp * volume_value) / 100;
-									fprintf(stderr, "%d\n", tmp);
+									tmp = tmp * volume_value;
+									//fprintf(stderr, "%d \n", volume_value);
 
 									// Then change the value now
-									*a_sample = tmp;
+									*((int*)(tmp_buf + i*sizeof(int))) = tmp;
+									//*a_sample = tmp;
 								}
 
 								// And in the end, read the whole buffer
-								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
+								if (write(write_init_audio, tmp_buf, BUFFER_SIZE) == -1)
 									close_connection(client_socket, "Error at writing a volume changed block on audio output", write_init_audio);
 
 								break;
@@ -509,7 +511,7 @@ int main(int argc, char** args) {
 
 									// Multiply the value of the sample
 									tmp = *a_sample;
-									tmp = (tmp * volume_value) / 100;
+									tmp = tmp * volume_value / 100;
 
 									// Then change the value now
 									*a_sample = tmp;
