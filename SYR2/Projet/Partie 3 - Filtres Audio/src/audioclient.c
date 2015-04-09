@@ -408,7 +408,7 @@ int main(int argc, char** args) {
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
-									// Multiply the value of the sample
+									// Multiply the value of the sample, get a double value
 									tmp = (double)(*((int*)(from_server.message + i*sizeof(int)))) * (volume_value / 100.);
 
 									// Then store it in the temporary buffer
@@ -499,7 +499,7 @@ int main(int argc, char** args) {
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
-									// Multiply the value of the sample
+									// Multiply the value of the sample, get a double value
 									tmp = *((int*)(from_server.message + i*sizeof(int))) * (volume_value / 100.);
 
 									// Then store it in the temporary buffer
