@@ -368,12 +368,31 @@ int main(int argc, char** args) {
 
 								// Then put this buffer into the echo buffer if the buffer isn't full
 								if (current_buffer_position < nb_buffers_per_echo) {
+
 									memcpy((echo_buffer + current_buffer_position*BUFFER_SIZE), from_server.message, BUFFER_SIZE);
 									++current_buffer_position;
 								}
 
 								// If the echo buffer is full
 								else {
+
+									// Mix the two buffers
+									/*char buffer_mix[BUFFER_SIZE*2];
+									int i, bytes_to_copy = channels * (sample_size/8);
+									for (i = 0; i < (BUFFER_SIZE/bytes_to_copy); ++i) {
+										memcpy(buffer_mix+i, from_server.message+i, bytes_to_copy);
+										memcpy(buffer_mix+2*i, echo_buffer+current_buffer_position*BUFFER_SIZE+i, bytes_to_copy);
+									}
+
+									// Read the current buffer position
+									if (write(write_init_audio, buffer_mix, BUFFER_SIZE*2) == -1) {
+
+										// Echo filter so free the buffer
+										free(echo_buffer);
+
+										// Close connection
+										close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
+									}*/
 
 									// Read the current buffer position
 									if (write(write_init_audio, echo_buffer + to_read_position*BUFFER_SIZE, BUFFER_SIZE) == -1) {
@@ -427,7 +446,7 @@ int main(int argc, char** args) {
 								close_connection(client_socket, "Filter passed unknown", write_init_audio);
 								break;
 
-						}
+						}  // End of filter switch
 
 						// If everything's ok, request the next block
 						clear_packet(&to_server);
