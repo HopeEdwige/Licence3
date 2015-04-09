@@ -48,7 +48,7 @@ int process_params(int argc, char** args) {
 			filter = F_VOLUME;
 
 			// Check the upper parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 100)) {
+			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 500)) {
 				strcat(command_syntax, " / The filter parameter passed isn't correct");
 				fprintf(stderr, "%s\n", command_syntax);
 				exit(1);
@@ -192,7 +192,7 @@ int main(int argc, char** args) {
 	int volume_value;
 
 	// For echo filter
-	int nb_buffers_per_echo, nb_samples_per_buffer, current_buffer_position, to_read_position;
+	int nb_buffers_per_echo = 0, nb_samples_per_buffer, current_buffer_position, to_read_position;
 	char* echo_buffer;
 	char volume_buffer[BUFFER_SIZE];
 
@@ -376,24 +376,6 @@ int main(int argc, char** args) {
 								// If the echo buffer is full
 								else {
 
-									// Mix the two buffers
-									/*char buffer_mix[BUFFER_SIZE*2];
-									int i, bytes_to_copy = channels * (sample_size/8);
-									for (i = 0; i < (BUFFER_SIZE/bytes_to_copy); ++i) {
-										memcpy(buffer_mix+i, from_server.message+i, bytes_to_copy);
-										memcpy(buffer_mix+2*i, echo_buffer+current_buffer_position*BUFFER_SIZE+i, bytes_to_copy);
-									}
-
-									// Read the current buffer position
-									if (write(write_init_audio, buffer_mix, BUFFER_SIZE*2) == -1) {
-
-										// Echo filter so free the buffer
-										free(echo_buffer);
-
-										// Close connection
-										close_connection(client_socket, "Error at writing an echo block on audio output", write_init_audio);
-									}*/
-
 									// Read the current buffer position
 									if (write(write_init_audio, (echo_buffer + to_read_position*BUFFER_SIZE), BUFFER_SIZE) == -1) {
 
@@ -410,8 +392,6 @@ int main(int argc, char** args) {
 									// Increment the flag
 									to_read_position = (to_read_position+1)%nb_buffers_per_echo;
 
-									//fprintf(stderr, "trp = %d | cbp = %d\n", to_read_position, current_buffer_position);
-
 								}
 								break;
 
@@ -422,17 +402,17 @@ int main(int argc, char** args) {
 								memset(volume_buffer, 0, BUFFER_SIZE);
 
 								// Variables used in the loop
-								int i, tmp;  // The increment var and a temporary value
+								int i;  // The increment var and a temporary value
+								double tmp;  // Temporary var
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Multiply the value of the sample
-									//tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value / 100;
-									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
+									tmp = (double)(*((int*)(from_server.message + i*sizeof(int)))) * (volume_value / 100.);
 
 									// Then store it in the temporary buffer
-									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
+									*((int*)(volume_buffer + i*sizeof(int))) = (int)tmp;
 								}
 
 								// And in the end, read the whole buffer
@@ -446,12 +426,11 @@ int main(int argc, char** args) {
 								close_connection(client_socket, "Filter passed unknown", write_init_audio);
 								break;
 
-						}  // End of filters switch
+						}  // End of filter's switch
 
 						// If everything's ok, request the next block
 						clear_packet(&to_server);
 						to_server.type = P_REQ_NEXT_BLOCK;
-						fprintf(stderr, "%d\n", (int)destination_length);
 
 						// Send the request
 						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
@@ -514,17 +493,17 @@ int main(int argc, char** args) {
 								memset(volume_buffer, 0, BUFFER_SIZE);
 
 								// Variables used in the loop
-								int i, tmp;  // The increment var and a temporary value
+								int i;  // The increment var and a temporary value
+								double tmp;  // Temporary var
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Multiply the value of the sample
-									//tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value / 100;
-									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
+									tmp = *((int*)(from_server.message + i*sizeof(int))) * (volume_value / 100.);
 
 									// Then store it in the temporary buffer
-									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
+									*((int*)(volume_buffer + i*sizeof(int))) = (int)tmp;
 								}
 
 								// And in the end, read the whole buffer
@@ -560,8 +539,8 @@ int main(int argc, char** args) {
 		// If an error during the receiving of a packet
 		else {
 									
-			// If echo filter, free the buffer
-			if (filter == F_ECHO) free(echo_buffer);
+			// If echo filter, free the buffer (only if it has been initialized)
+			if ((filter == F_ECHO) && (nb_buffers_per_echo > 0)) free(echo_buffer);
 
 			// Close connection
 			perror("Error during the receiving of a packet, the server may be busy");

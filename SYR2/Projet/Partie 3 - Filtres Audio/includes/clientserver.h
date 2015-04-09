@@ -57,7 +57,7 @@
 #define F_MONO_NAME "mono"
 #define F_VOLUME_NAME "volume"
 #define F_ECHO_NAME "echo"
-#define F_VOLUME_PARAMETER_NAME "[0-100]"
+#define F_VOLUME_PARAMETER_NAME "[0-500]"
 
 
 // Filters
