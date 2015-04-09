@@ -244,7 +244,7 @@ int main(int argc, char** args) {
 		if (FD_ISSET(client_socket, &watch_over)) {
 
 			// Wait a packet
-			if (recvfrom(client_socket, &from_server, sizeof(struct packet), 0, (struct sockaddr *)&destination, &destination_length) != -1) {
+			if (recvfrom(client_socket, &from_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, &destination_length) != -1) {
 
 				// In function of the type of the packet received
 				switch (from_server.type) {
@@ -395,7 +395,7 @@ int main(int argc, char** args) {
 									}*/
 
 									// Read the current buffer position
-									if (write(write_init_audio, echo_buffer + to_read_position*BUFFER_SIZE, BUFFER_SIZE) == -1) {
+									if (write(write_init_audio, (echo_buffer + to_read_position*BUFFER_SIZE), BUFFER_SIZE) == -1) {
 
 										// Echo filter so free the buffer
 										free(echo_buffer);
@@ -446,11 +446,12 @@ int main(int argc, char** args) {
 								close_connection(client_socket, "Filter passed unknown", write_init_audio);
 								break;
 
-						}  // End of filter switch
+						}  // End of filters switch
 
 						// If everything's ok, request the next block
 						clear_packet(&to_server);
 						to_server.type = P_REQ_NEXT_BLOCK;
+						fprintf(stderr, "%d\n", (int)destination_length);
 
 						// Send the request
 						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {

@@ -15,7 +15,6 @@
 #include <strings.h>
 #include <unistd.h>
 #include <netdb.h>
-#include <math.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/select.h>

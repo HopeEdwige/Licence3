@@ -31,5 +31,5 @@ void create_packet(struct packet* to_init, int type, char* content) {
  */
 void clear_packet(struct packet* to_clear) {
 	to_clear->type = P_ERR_TRANSMISSION;
-	bzero(to_clear->message, BUFFER_SIZE);
+	memset(to_clear->message, 0, BUFFER_SIZE);
 }
