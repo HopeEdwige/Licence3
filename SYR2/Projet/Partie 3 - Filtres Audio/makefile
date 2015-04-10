@@ -30,5 +30,39 @@ clean:
 
 
 # Run the server (and free the semaphore in the end)
-run: all
+server: $(BINDIR)audioserver
 	$(BINDIR)audioserver
+
+# Run the client
+client: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav
+
+client-mono: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav mono
+
+client-echo: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav echo
+
+client-volume-mute: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav volume 0
+
+client-volume-same: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav volume 1
+
+client-volume-up: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav volume 3
+
+client-volume-highest: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav volume 5
+
+client-speed-same: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav speed 1
+
+client-speed-twice: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav speed 2
+
+client-speed-up: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav speed 3
+
+client-speed-fastest: $(BINDIR)audioclient
+	padsp $(BINDIR)audioclient localhost test.wav speed 4

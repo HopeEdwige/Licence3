@@ -26,8 +26,6 @@
 #define SERVER_PORT 2096  // Server Port
 #define BUFFER_SIZE 1024  // Buffer Size
 #define BUFFER_SPACE 64  // Space between each int put in the buffer (sizeof(int) can be different from a machine to another)
-#define COMMAND_SYNTAX "Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"
-#define ECHO_IN_SCDS 1  // The number of seconds for the echo
 
 
 // Timeouts
@@ -57,7 +55,9 @@
 #define F_MONO_NAME "mono"
 #define F_VOLUME_NAME "volume"
 #define F_ECHO_NAME "echo"
-#define F_VOLUME_PARAMETER_NAME "[0-500]"
+#define F_SPEED_NAME "speed"
+#define F_VOLUME_PARAMETER_NAME "[0 - 5]"
+#define F_SPEED_PARAMETER_NAME "[1 - 4]"
 
 
 // Filters
@@ -65,6 +65,17 @@
 #define F_MONO 1
 #define F_VOLUME 2
 #define F_ECHO 3
+#define F_SPEED 4
+
+
+// Filters parameters
+#define F_VOLUME_PARAMETER_MIN 0
+#define F_VOLUME_PARAMETER_MAX 5
+#define F_SPEED_PARAMETER_MIN 1
+#define F_SPEED_PARAMETER_MAX 4
+#define COMMAND_SYNTAX "Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"
+#define ECHO_IN_SCDS 1  // The number of seconds for the echo
+
 
 
 // Structures

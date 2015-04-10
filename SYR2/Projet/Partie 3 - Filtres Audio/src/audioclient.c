@@ -48,9 +48,22 @@ int process_params(int argc, char** args) {
 			filter = F_VOLUME;
 
 			// Check the upper parameter
-			if ((args[4] == NULL) || (atoi(args[4]) < 0) || (atoi(args[4]) > 500)) {
+			if ((args[4] == NULL) || (atoi(args[4]) < F_VOLUME_PARAMETER_MIN) || (atoi(args[4]) > F_VOLUME_PARAMETER_MAX)) {
 				strcat(command_syntax, " / The filter parameter passed isn't correct");
-				fprintf(stderr, "%s\n", command_syntax);
+				fprintf(stderr, "%s must be between %d and %d\n", command_syntax, F_VOLUME_PARAMETER_MIN, F_VOLUME_PARAMETER_MAX);
+				exit(1);
+			}
+		}
+
+		// If speed modification
+		else if ((strncmp(args[3], F_SPEED_NAME, strlen(F_SPEED_NAME)) == 0) && (strlen(args[3]) == strlen(F_SPEED_NAME))) {
+
+			filter = F_SPEED;
+
+			// Check the upper parameter
+			if ((args[4] == NULL) || (atoi(args[4]) < F_SPEED_PARAMETER_MIN) || (atoi(args[4]) > F_SPEED_PARAMETER_MAX)) {
+				strcat(command_syntax, " / The filter parameter passed isn't correct");
+				fprintf(stderr, "%s must be between %d and %d\n", command_syntax, F_SPEED_PARAMETER_MIN, F_SPEED_PARAMETER_MAX);
 				exit(1);
 			}
 		}
@@ -67,6 +80,10 @@ int process_params(int argc, char** args) {
 			strcat(command_syntax, F_VOLUME_NAME);
 			strcat(command_syntax, " ");
 			strcat(command_syntax, F_VOLUME_PARAMETER_NAME);
+			strcat(command_syntax, "\n	- ");
+			strcat(command_syntax, F_SPEED_NAME);
+			strcat(command_syntax, " ");
+			strcat(command_syntax, F_SPEED_PARAMETER_NAME);
 
 			// Display it and quit
 			fprintf(stderr, "%s\n", command_syntax);
@@ -300,7 +317,13 @@ int main(int argc, char** args) {
 								// The buffer position and the buffer to read put to 0
 								current_buffer_position = 0;
 								to_read_position = 0;
+								break;
 
+							// If speed
+							case F_SPEED:
+
+								// Multiply the framerate
+								sample_rate = sample_rate * atoi(args[4]);
 								break;
 
 							// If unknown
@@ -346,9 +369,10 @@ int main(int argc, char** args) {
 						// Read the music on the audio output (in function of the filter passed)
 						switch (filter) {
 
-							// If none (or mono too)
+							// If none, mono or speed
 							case F_NONE:
 							case F_MONO:
+							case F_SPEED:
 								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
 									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
 								break;
@@ -403,16 +427,16 @@ int main(int argc, char** args) {
 
 								// Variables used in the loop
 								int i;  // The increment var and a temporary value
-								double tmp;  // Temporary var
+								int tmp;  // Temporary var
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Multiply the value of the sample, get a double value
-									tmp = (double)(*((int*)(from_server.message + i*sizeof(int)))) * (volume_value / 100.);
+									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
 
 									// Then store it in the temporary buffer
-									*((int*)(volume_buffer + i*sizeof(int))) = (int)tmp;
+									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
 								}
 
 								// And in the end, read the whole buffer
@@ -451,9 +475,10 @@ int main(int argc, char** args) {
 						// Read the music on the audio output (in function of the filter passed)
 						switch (filter) {
 
-							// If none (or mono too)
+							// If none, mono or speed
 							case F_NONE:
 							case F_MONO:
+							case F_SPEED:
 								if (write(write_init_audio, from_server.message, BUFFER_SIZE) == -1)
 									close_connection(client_socket, "Error at writing a block on audio output", write_init_audio);
 								break;
@@ -494,16 +519,16 @@ int main(int argc, char** args) {
 
 								// Variables used in the loop
 								int i;  // The increment var and a temporary value
-								double tmp;  // Temporary var
+								int tmp;  // Temporary var
 
 								// Get each sample and multiply its value
 								for (i = 0; i < nb_samples_per_buffer; ++i) {
 
 									// Multiply the value of the sample, get a double value
-									tmp = *((int*)(from_server.message + i*sizeof(int))) * (volume_value / 100.);
+									tmp = *((int*)(from_server.message + i*sizeof(int))) * volume_value;
 
 									// Then store it in the temporary buffer
-									*((int*)(volume_buffer + i*sizeof(int))) = (int)tmp;
+									*((int*)(volume_buffer + i*sizeof(int))) = tmp;
 								}
 
 								// And in the end, read the whole buffer
