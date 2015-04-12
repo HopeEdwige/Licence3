@@ -1,3 +1,12 @@
+			########################
+			#   ANDRIAMILANTO T.   #
+			#	 NGUYEN NHON B.    #
+			#					   #
+			#	L3INFO - TP6 ARC2  #
+			# 	 Recherche dicho   #
+			########################
+
+
 			.equ PRINT_INT,		1
 			.equ PRINT_STRING,	4
 			.equ READ_INT,		5

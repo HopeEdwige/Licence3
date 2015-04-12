@@ -1,4 +1,7 @@
 			########################
+			#	ANDRIAMILANTO T.   #
+			#	 NGUYEN NHON B.	   #
+			#					   #
 			#	L3INFO - TP ARC2   #
 			# 	 Calcul de PGCD    #
 			########################
