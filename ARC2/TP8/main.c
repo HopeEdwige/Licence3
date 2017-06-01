@@ -24,10 +24,10 @@ void activer_interruptions() {
 	// Get the current status
 	unsigned int status;
 	NIOS2_READ_STATUS(status);
-	
+
 	// The mask to put the first bit to 1
 	unsigned int bit_a_un = 1;
-	
+
 	// Write new value
 	NIOS2_WRITE_STATUS(bit_a_un | status);
 }
@@ -41,10 +41,10 @@ void activer_interruption(int num) {
 
 	// The mask used here
 	unsigned int mask = 1;
-	
+
 	// Put the mask at the right position
 	mask = mask << num;
-	
+
 	// Write the new value
 	NIOS2_WRITE_IENABLE(mask | ienable);
 }
@@ -57,17 +57,17 @@ void tick() {
 }
 
 static void TIMER_ISR(void *context, alt_u32 id) {
-	
+
 	// Call the function to update the animation
 	tick();
-	
+
 	// Interruption received
 	*TIMER_STATUS = 0;
 }
 
 // Question 4.2
 static void MOUSE_ISR(void *context, alt_u32 id)  {
-	
+
 	// Parameters
 	int current_mouse_data = 0;
 	int mouse_data[3];
@@ -79,7 +79,7 @@ static void MOUSE_ISR(void *context, alt_u32 id)  {
 		mouse_data[current_mouse_data] = tmp & 0x0001;
 		++current_mouse_data;
 	}
-	
+
 	// If we have the whole information
 	x_pos = MOD(x_pos + mouse_data[1], 320);
 	y_pos = MOD(y_pos - mouse_data[2], 240);
@@ -87,23 +87,23 @@ static void MOUSE_ISR(void *context, alt_u32 id)  {
 
 int main() {
 	init();
-	
+
 	// Question 1.3
 	activer_interruptions();
-	
+
 	// Question 2.2
 	*TIMER_CTRL = 7;
-	
+
 	// Question 2.3
 	activer_interruption(INTERVAL_TIMER_IRQ);
-	
+
 	// Question 4.1
 	activer_interruption(PS2_PORT_IRQ);
-	
+
 	// Enregistrement des routines d'interruption.
 	alt_irq_register ( INTERVAL_TIMER_IRQ, 0, TIMER_ISR );
 	alt_irq_register( PS2_PORT_IRQ, 0, MOUSE_ISR );
-	
+
 	while(1) {
 		clear_screen();
 		draw_image((unsigned short *)nuages_img, 320, 240, middle_pos-320, 0);

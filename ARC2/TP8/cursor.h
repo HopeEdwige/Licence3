@@ -17,6 +17,6 @@ void draw_piou(int x, int y) {
 	for (i=0; i<31; i++)
 		for (j=0; j<31; j++)
 			if (oiseau_img[i][j] != 65535)
-				put_pixel(j+x-16, i+y-16, oiseau_img[i][j]);	
+				put_pixel(j+x-16, i+y-16, oiseau_img[i][j]);
 }
 #endif

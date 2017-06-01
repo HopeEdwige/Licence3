@@ -18,16 +18,16 @@ alt_up_ps2_dev *init_mouse() {
 	alt_up_ps2_clear_fifo(mouse);
 
 	alt_up_ps2_write_data_byte(mouse, 0xFF);
-	
+
 	int state = INIT;
 	int status;
-	
+
 	while (state != ERROR && state != MSG1) {
 		unsigned char data;
 		do {
 			status = alt_up_ps2_read_data_byte(mouse, &data);
 		} while (status < 0);
-		
+
 		switch (state) {
 			case INIT:
 				if (data == 0xF4) {
@@ -36,7 +36,7 @@ alt_up_ps2_dev *init_mouse() {
 				} else if (data == 0xAA) {
 					state = OK;
 					alt_printf("Mouse skipped ACK (0xF4).");
-				} else { 
+				} else {
 					if (data == 0xFC) {
 						state = ERROR;
 						alt_printf("Mouse replied with an error message (0xFC).\n");
@@ -72,9 +72,9 @@ alt_up_ps2_dev *init_mouse() {
 				break;
 		}
 	}
-	
+
 	if (state == ERROR)
 		return 0;
-	
+
 	return mouse;
 }

@@ -33,33 +33,33 @@ void clear_screen() {
 void draw_image(unsigned short *src, int w, int h, int x, int y) {
 	int left_bound, right_bound;
 	int top_bound, bottom_bound;
-	
+
 	int last_x = x+w-1;
 	int last_y = y+h-1;
-	
+
 	int i,j;
 
 	// Quick check to see if the image is off screen.
 	if (last_y < 0 || last_x < 0 || x > 319 || y > 239) return;
-		
+
 	// Compute intersection between [0, 319] and [x, last_x]
 	// left_bound = max(0, x);
 	if (x < 0) left_bound = 0;
 	else left_bound = x;
-	
+
 	// right_bound = min(last_x, 319);
 	if (319 < last_x) right_bound = 319;
 	else right_bound = last_x;
-	
+
 	// Compute intersection between [0,239] and [y, last_y];
 	// top_bound = max(0, y);
 	if (y < 0) top_bound = 0;
 	else top_bound = y;
-	
+
 	// bottom_bound = min(last_y, 239);
 	if (239 < last_y) bottom_bound = 319;
 	else bottom_bound = last_y;
-	
+
 	// Copying each line.
 	for (i=top_bound; i<=bottom_bound; i++) {
 		memcpy(
