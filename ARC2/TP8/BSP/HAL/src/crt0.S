@@ -259,7 +259,7 @@ _start:
     /* Log that the stack pointer is about to be setup. */
     ALT_LOG_PUTS(alt_log_msg_stackpointer)
 
-#if (NIOS2_NUM_OF_SHADOW_REG_SETS == 0)    
+#if (NIOS2_NUM_OF_SHADOW_REG_SETS == 0)
     /*
      * Now that the caches are initialized, set up the stack pointer.
      * The value provided by the linker is assumed to be correctly aligned.
@@ -277,56 +277,56 @@ _start:
      * Set up the GP and SP in all shadow register sets.
      */
 
-    /* 
-     * Check current register set number, if CPU resets into a shadow register 
-     * set, switch register set to 0 by writing zero to SSTATUS register and 
-     * execute an ERET instruction that just jumps to the next PC address 
+    /*
+     * Check current register set number, if CPU resets into a shadow register
+     * set, switch register set to 0 by writing zero to SSTATUS register and
+     * execute an ERET instruction that just jumps to the next PC address
      * (use the NEXTPC instruction to get this).
      */
-    
+
     rdctl r2, status
-    
+
     /* Get the current register set number (STATUS.CRS). */
     andi r3, r2, NIOS2_STATUS_CRS_MSK
-    
+
     /* Skip switch register set if STATUS.CRS is 0.  */
     beq r3, zero, .Lskip_switch_reg_set
-    
+
     .set nobreak
-    
+
     /* Current register set is non-zero, set SSTATUS to 0. */
     mov sstatus, zero
-    
+
     /* Get next pc and store in ea. */
     nextpc ea
-    
+
     /* Point to instruction after eret. */
     addi ea, ea, 8
-    
-    /* 
-     * Execute ERET instruction that just jumps to the next PC address 
+
+    /*
+     * Execute ERET instruction that just jumps to the next PC address
      */
     eret
-    
-.Lskip_switch_reg_set:    
+
+.Lskip_switch_reg_set:
     mov r2, zero
-    
+
     /* Reset STATUS register */
     wrctl status, r2
 
     movui r3, NIOS2_NUM_OF_SHADOW_REG_SETS
-    
+
     /* Set up the stack pointer in register set 0. */
     movhi sp, %hi(__alt_stack_pointer)
     ori sp, sp, %lo(__alt_stack_pointer)
-    
+
     /* Set up the global pointer in register set 0. */
     movhi gp, %hi(_gp)
-    ori gp, gp, %lo(_gp)     
+    ori gp, gp, %lo(_gp)
 
 .Lsetup_sp_and_gp_loop:
-    /* 
-     * Setup GP and SP for shadow register set 
+    /*
+     * Setup GP and SP for shadow register set
      * from NIOS2_NUM_OF_SHADOW_REG_SETS to 0
      */
 

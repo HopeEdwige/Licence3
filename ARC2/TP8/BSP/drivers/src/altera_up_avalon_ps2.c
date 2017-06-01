@@ -113,7 +113,7 @@ void alt_up_ps2_init(alt_up_ps2_dev *ps2)
 void alt_up_ps2_enable_read_interrupt(alt_up_ps2_dev *ps2)
 {
 	unsigned int ctrl_reg;
-	ctrl_reg = IORD_ALT_UP_PS2_PORT_CTRL_REG(ps2->base); 
+	ctrl_reg = IORD_ALT_UP_PS2_PORT_CTRL_REG(ps2->base);
 	// set RE to 1 while maintaining other bits the same
 	ctrl_reg |= ALT_UP_PS2_PORT_CTRL_REG_RE_MSK;
 	IOWR_ALT_UP_PS2_PORT_CTRL_REG(ps2->base, ctrl_reg);
@@ -122,7 +122,7 @@ void alt_up_ps2_enable_read_interrupt(alt_up_ps2_dev *ps2)
 void alt_up_ps2_disable_read_interrupt(alt_up_ps2_dev *ps2)
 {
 	unsigned int ctrl_reg;
-	ctrl_reg = IORD_ALT_UP_PS2_PORT_CTRL_REG(ps2->base); 
+	ctrl_reg = IORD_ALT_UP_PS2_PORT_CTRL_REG(ps2->base);
 	// set RE to 0 while maintaining other bits the same
 	ctrl_reg &= ~ALT_UP_PS2_PORT_CTRL_REG_RE_MSK;
 	IOWR_ALT_UP_PS2_PORT_CTRL_REG(ps2->base, ctrl_reg);
@@ -149,13 +149,13 @@ int alt_up_ps2_wait_for_ack(alt_up_ps2_dev *ps2)
 	unsigned char status = 0;
 	do
 	{
-		status = alt_up_ps2_read_data_byte_timeout(ps2, &data); 
+		status = alt_up_ps2_read_data_byte_timeout(ps2, &data);
 		if ( status == 0)
 		{
 			if (data == PS2_ACK)
 				return 0;
 		}
-		else 
+		else
 		{
 			return status;
 		}
@@ -176,7 +176,7 @@ int alt_up_ps2_write_data_byte_with_ack(alt_up_ps2_dev *ps2, unsigned char byte)
 
 int alt_up_ps2_read_data_byte_timeout(alt_up_ps2_dev *ps2, unsigned char *byte)
 {
-	unsigned int data_reg = 0; 
+	unsigned int data_reg = 0;
 	unsigned int count = 0;
 	do {
 		count++;
@@ -196,7 +196,7 @@ int alt_up_ps2_read_data_byte_timeout(alt_up_ps2_dev *ps2, unsigned char *byte)
 
 int alt_up_ps2_read_data_byte(alt_up_ps2_dev *ps2, unsigned char *byte)
 {
-	unsigned int data_reg = 0; 
+	unsigned int data_reg = 0;
 	data_reg = IORD_ALT_UP_PS2_PORT_DATA_REG(ps2->base);
 	if (read_data_valid(data_reg))
 	{
@@ -234,7 +234,7 @@ int alt_up_ps2_read_fd (alt_fd* fd, char* ptr, int len)
 		if (status!=0)
 			return count;
 		count++;
-	} 
+	}
 	return count;
 }
 
@@ -255,12 +255,11 @@ int alt_up_ps2_write_fd (alt_fd* fd, const char* ptr, int len)
 
 alt_up_ps2_dev* alt_up_ps2_open_dev(const char* name)
 {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_ps2_dev *dev = (alt_up_ps2_dev*)alt_find_dev(name, &alt_dev_list);
 
   return dev;
 }
-

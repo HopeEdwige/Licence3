@@ -4,8 +4,8 @@
 #define SCAN_CODE_NUM  102
 
 ////////////////////////////////////////////////////////////////////
-// Table of scan code, make code and their corresponding values 
-// These data are useful for developing more features for the keyboard 
+// Table of scan code, make code and their corresponding values
+// These data are useful for developing more features for the keyboard
 //
 char *key_table[SCAN_CODE_NUM] = { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "`", "-", "=", "\\", "BKSP", "SPACE", "TAB", "CAPS", "L SHFT", "L CTRL", "L GUI", "L ALT", "R SHFT", "R CTRL", "R GUI", "R ALT", "APPS", "ENTER", "ESC", "F1", "F2", "F3", "F4", "F5", "F6", "F7", "F8", "F9", "F10", "F11", "F12", "SCROLL", "[", "INSERT", "HOME", "PG UP", "DELETE", "END", "PG DN", "U ARROW", "L ARROW", "D ARROW", "R ARROW", "NUM", "KP /", "KP *", "KP -", "KP +", "KP ENTER", "KP .", "KP 0", "KP 1", "KP 2", "KP 3", "KP 4", "KP 5", "KP 6", "KP 7", "KP 8", "KP 9", "]", ";", "'", ",", ".", "/" };
 
@@ -16,14 +16,14 @@ alt_u8 single_byte_make_code[SCAN_CODE_NUM] = { 0x1C, 0x32, 0x21, 0x23, 0x24, 0x
 alt_u8 multi_byte_make_code[SCAN_CODE_NUM] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x1F, 0, 0, 0x14, 0x27, 0x11, 0x2F, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0x70, 0x6C, 0x7D, 0x71, 0x69, 0x7A, 0x75, 0x6B, 0x72, 0x74, 0, 0x4A, 0, 0, 0, 0x5A, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 ////////////////////////////////////////////////////////////////////
 
-// States for the Keyboard Decode FSM 
+// States for the Keyboard Decode FSM
 typedef enum
 {
 	STATE_INIT,
 	STATE_LONG_CODE,
 	STATE_BREAK_CODE ,
 	STATE_LONG_BREAK_CODE ,
-	STATE_DONE 
+	STATE_DONE
 } DECODE_STATE;
 
 //helper function for get_next_state
@@ -54,7 +54,7 @@ unsigned get_single_byte_make_code_index(alt_u8 code)
 /* FSM Diagram (Main transitions)
  * Normal bytes: bytes that are not 0xF0 or 0xE0
   +--<--+
-  |     |                                   
+  |     |
   |     |
   V    INIT ------ 0xF0 ----> BREAK CODE
   |     |                         |
@@ -79,7 +79,7 @@ DECODE_STATE get_next_state(DECODE_STATE state, alt_u8 byte, KB_CODE_TYPE *decod
 	{
 		case STATE_INIT:
 			if ( byte == 0xE0 )
-			{	
+			{
 				// this could be a long break code or a long make code
 				next_state = STATE_LONG_CODE;
 			}
@@ -98,7 +98,7 @@ DECODE_STATE get_next_state(DECODE_STATE state, alt_u8 byte, KB_CODE_TYPE *decod
 					*ascii = ascii_codes[idx];
 					*buf = byte;
 				}
-				else 
+				else
 				{
 					*decode_mode = KB_BINARY_MAKE_CODE;
 					*buf = byte;
@@ -162,7 +162,7 @@ int decode_scancode(alt_up_ps2_dev *ps2, KB_CODE_TYPE *decode_mode, alt_u8 *buf,
 	{
 		status_read = alt_up_ps2_read_data_byte(ps2, &byte);
 		//FIXME: When the user press the keyboard extremely fast, data may get
-		//occasionally get lost 
+		//occasionally get lost
 
 		if (status_read != 0)
 			return status_read;
@@ -213,7 +213,7 @@ alt_u32 reset_keyboard(alt_up_ps2_dev *ps2)
 {
 	alt_u8 byte;
 	// send out the reset command
-	int status = alt_up_ps2_write_data_byte_with_ack(ps2, 0xff); 
+	int status = alt_up_ps2_write_data_byte_with_ack(ps2, 0xff);
 	if ( status == 0)
 	{
 		// received the ACK for reset, now check the BAT result
@@ -227,7 +227,6 @@ alt_u32 reset_keyboard(alt_up_ps2_dev *ps2)
 			// BAT failed
 			status = -1;
 		}
-	}	
+	}
 	return status;
 }
-

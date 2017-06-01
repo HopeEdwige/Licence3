@@ -36,7 +36,7 @@
 #define IOWR_ALT_UP_AV_CONFIG_ADDR(base, addr, data)  		\
         IOWR(base, addr, data)
 /*
- * Control Register 
+ * Control Register
  */
 #define ALT_UP_AV_CONFIG_CONTROL_REG	0
 
@@ -71,7 +71,7 @@
 											ALT_UP_AV_CONFIG_CONTROL_DEVICE_OFST)
 
 /*
- * Status Register 
+ * Status Register
  */
 #define ALT_UP_AV_CONFIG_STATUS_REG		1
 
@@ -96,7 +96,7 @@
 											ALT_UP_AV_CONFIG_STATUS_AIS_MSK |	\
 											ALT_UP_AV_CONFIG_STATUS_CFG_MSK)
 /*
- * Address Register 
+ * Address Register
  */
 #define ALT_UP_AV_CONFIG_ADDRESS_REG	2
 
@@ -113,7 +113,7 @@
 #define ALT_UP_AV_CONFIG_ADDRESS_VALID_MSK  		(ALT_UP_AV_CONFIG_ADDRESS_ADDR_MSK)
 
 /*
- * Data Register 
+ * Data Register
  */
 #define ALT_UP_AV_CONFIG_DATA_REG		3
 

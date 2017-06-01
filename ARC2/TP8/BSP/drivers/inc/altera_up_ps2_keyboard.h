@@ -15,7 +15,7 @@ typedef enum
 {
 	/** @brief Make code that corresponds to an ASCII character. For example, the ASCII make code for key <tt>[ A ] </tt> is 1C.
 	 */
-	KB_ASCII_MAKE_CODE = 1, 
+	KB_ASCII_MAKE_CODE = 1,
 	/** @brief Make code that corresponds to a non-ASCII character. For example, the binary (non-ASCII) make code for key <tt> [Left Alt]</tt> is 11.
 	 */
 	KB_BINARY_MAKE_CODE = 2,
@@ -40,7 +40,7 @@ typedef enum
  * @param decode_mode -- indicates which type of code (Make Code, Break Code, etc.) is received from the keyboard when the key is pressed.
  * @param buf  -- points to the location that stores the make/break code of the key pressed.
  * @param ascii -- pointer to the memory location to store the pressed ASCII character. If a non-ASCII key is pressed, \em ascii will be set to 0
- * 
+ *
  * @note For \c KB_LONG_BINARY_MAKE_CODE and \c KB_BREAK_CODE, only the second byte is returned. For \c KB_LONG_BREAK_CODE, only the third byte is returned.
  *
  * @return 0 for success, or negative errno for corresponding errors.
@@ -52,7 +52,7 @@ int decode_scancode(alt_up_ps2_dev *ps2, KB_CODE_TYPE *decode_mode, alt_u8 *buf,
  *
  * @param rate -- an 8-bit number that represents the repeat/delay rate of the keyboard.
  *
- * @return 0 on success, negative value on error. 
+ * @return 0 on success, negative value on error.
  **/
 alt_u32 set_keyboard_rate(alt_up_ps2_dev *ps2, alt_u8 rate);
 
@@ -61,7 +61,7 @@ alt_u32 set_keyboard_rate(alt_up_ps2_dev *ps2, alt_u8 rate);
  *
  * @param decode_mode -- the type of the make code (ASCII, binary, or long binary)
  * @param makecode -- the last byte of the make code (if the make code has multiple bytes)
- * @param str -- the pointer to the memory location to store the description string 
+ * @param str -- the pointer to the memory location to store the description string
  *
  **/
 void translate_make_code(KB_CODE_TYPE decode_mode, alt_u8 makecode, char *str);

@@ -35,10 +35,10 @@ rechercheDichotomique:
 			mov 	r19, r7
 			addi	r20, zero, -1
 			# pos initialisee a -1
-			
+
 			# Si debut > fin, retour
 			bgt		r18, r19, retourRechDicho
-			
+
 			# debut + (fin - debut) / 2 sauvegardee dans r20
 			sub		r20, r19, r18
 			addi	r5, zero, 2
@@ -50,19 +50,19 @@ rechercheDichotomique:
 
 			# Recupere un pointeur sur tab[pos] stockee ensuite dans r21
 			add 	r21, r21, r20
-			
+
 			# Enfin, stocke la valeur situee a tab[pos] dans r21
 			ldw 	r21, 0(r21)
-			
+
 			# Si cette valeur etait celle recherchee
 			beq 	r21, r16, retourRechDicho
-			
+
 			# Si plus petite, recherche dans l'ensemble superieure
 			blt 	r21, r16, plusPetite
-			
+
 			# Sinon plus grande
 			br 		plusGrande
-			
+
 
 plusPetite:
 			# Place les parametres
@@ -71,7 +71,7 @@ plusPetite:
 			mov 	r6, r20
 			addi 	r6, r6, 1
 			mov 	r7, r19
-			
+
 			# Replace le contenu des registres utilisees par la fonction
 			ldw		ra, 24(sp)
 			ldw 	r16, 20(sp)
@@ -81,14 +81,14 @@ plusPetite:
 			ldw 	r20, 4(sp)
 			ldw 	r21, 0(sp)
 			addi 	sp, sp, 28
-			
+
 			# Appelle la fonction
 			call 	rechercheDichotomique
-			
+
 			# Retour
 			ret
-			
-			
+
+
 plusGrande:
 			# Si plus grande, recherche dans l'ensemble inferieure
 			mov		r4, r16
@@ -96,7 +96,7 @@ plusGrande:
 			mov		r6, r18
 			mov 	r7, r20
 			subi	r7, r7, 1
-			
+
 			# Replace le contenu des registres utilisees par la fonction
 			ldw		ra, 24(sp)
 			ldw 	r16, 20(sp)
@@ -106,14 +106,14 @@ plusGrande:
 			ldw 	r20, 4(sp)
 			ldw 	r21, 0(sp)
 			addi 	sp, sp, 28
-			
+
 			# Appelle la fonction
 			call 	rechercheDichotomique
-			
+
 			# Retour
 			ret
-			
-			
+
+
 
 # Retourne la valeur et replace le contenu des variables
 retourRechDicho:
@@ -132,19 +132,19 @@ retourRechDicho:
 			# Retour
 			ret
 
-			
-			
+
+
 			##############################
 			#       Fonction main()      #
 			##############################
 			.globl main
-main:		
+main:
 boucle:
 			# Imprime "Entrez un nombre: "
 			movia	r4, msgNb
 			addi	r2, zero, PRINT_STRING
 			trap
-			
+
 			# Lit un nombre
 			addi	r2, zero, READ_INT
 			trap
@@ -154,14 +154,14 @@ boucle:
 			movia 	r5, tableau
 			addi	r6, zero, 0
 			addi	r7, zero, 99
-			
+
 			# Lance la fonction et stocke la valeur de retour
 			call 	rechercheDichotomique
 			mov 	r7, r2
-			
+
 			# Si non trouve
 			blt 		r7, zero, nonTrouve
-			
+
 			# Si trouve, affiche la valeur
 			movia 	r4, msgPos
 			addi	r2, zero, PRINT_STRING
@@ -169,24 +169,24 @@ boucle:
 			mov 	r4, r7
 			addi	r2, zero, PRINT_INT
 			trap
-	
+
 			# Boucle
 			br	boucle
-			
-	
+
+
 # Si position non trouvee
 nonTrouve:
 			# Affiche juste un message
 			movia 	r4, msgErreur
 			addi	r2, zero, PRINT_STRING
 			trap
-			
+
 			# Retour a la boucle ensuite
 			br boucle
-	
+
 
 			.data
-	
+
 msgNb:		.asciz "Entrez un nombre: \n"
 msgErreur:	.asciz "Nombre non trouve.\n"
 msgPos:		.asciz "La position du nombre est: "

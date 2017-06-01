@@ -1,17 +1,17 @@
 # -----  ARC2 - TP7  -----
 # ANDRIAMILANTO Tompoariniaina
-# NGUYEN NHON Bérenger
-	
+# NGUYEN NHON Bï¿½renger
+
 	.equ	adress 	0x8000
 	.word 	save	0
 
-	
+
 boucle:
 	call lireclavier
 	ldw		r5, 0(r6)
 	ldw		r6, save(r0)
 	br boucle
-	
+
 lireclavier:
 	stw		r6, save(r0)
 	addi	r6, r0, adress

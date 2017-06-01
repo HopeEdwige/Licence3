@@ -23,7 +23,7 @@ extern "C"
  * of these structures to hold its associated state.
  */
 typedef struct alt_up_pixel_buffer_dma_dev {
-	/// @brief character mode device structure 
+	/// @brief character mode device structure
 	/// @sa Developing Device Drivers for the HAL in Nios II Software Developer's Handbook
 	alt_dev dev;
 	/// @brief the pixel buffer's slave base address
@@ -32,13 +32,13 @@ typedef struct alt_up_pixel_buffer_dma_dev {
 	unsigned int buffer_start_address;
 	/// @brief the memory back buffer's start address
 	unsigned int back_buffer_start_address;
-	/// @brief the addressing mode 
+	/// @brief the addressing mode
 	unsigned int addressing_mode;
-	/// @brief the color mode 
+	/// @brief the color mode
 	unsigned int color_mode;
-	/// @brief the resolution in x direction 
+	/// @brief the resolution in x direction
 	unsigned int x_resolution;
-	/// @brief the resolution in y direction 
+	/// @brief the resolution in y direction
 	unsigned int y_resolution;
 	/// @brief the x/y coordinate offset/masks
 	unsigned int x_coord_offset;
@@ -58,7 +58,7 @@ typedef struct alt_up_pixel_buffer_dma_dev {
 /**
  * @brief Opens the pixel buffer device specified by <em> name </em>
  *
- * @param name -- the pixel buffer component name in SOPC Builder. 
+ * @param name -- the pixel buffer component name in SOPC Builder.
  *
  * @return The corresponding device structure, or NULL if the device is not found
  **/
@@ -100,7 +100,7 @@ int alt_up_pixel_buffer_dma_swap_buffers(alt_up_pixel_buffer_dma_dev *pixel_buff
  *
  * @param pixel_buffer -- the pointer to the VGA structure
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 int alt_up_pixel_buffer_dma_check_swap_buffers_status(alt_up_pixel_buffer_dma_dev *pixel_buffer);
 
@@ -110,7 +110,7 @@ int alt_up_pixel_buffer_dma_check_swap_buffers_status(alt_up_pixel_buffer_dma_de
  * @param pixel_buffer -- the pointer to the VGA structure
  * @param backbuffer -- set to 1 to clear the back buffer, otherwise set to 0 to clear the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_clear_screen(alt_up_pixel_buffer_dma_dev *pixel_buffer, int backbuffer);
 
@@ -122,7 +122,7 @@ void alt_up_pixel_buffer_dma_clear_screen(alt_up_pixel_buffer_dma_dev *pixel_buf
  * @param color -- color of the box to be drawn
  * @param backbuffer -- set to 1 to select the back buffer, otherwise set to 0 to select the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_draw_box(alt_up_pixel_buffer_dma_dev *pixel_buffer, int x0, int y0, int x1, int y1, int color, int backbuffer);
 
@@ -134,7 +134,7 @@ void alt_up_pixel_buffer_dma_draw_box(alt_up_pixel_buffer_dma_dev *pixel_buffer,
  * @param color -- color of the line to be drawn
  * @param backbuffer -- set to 1 to select the back buffer, otherwise set to 0 to select the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_draw_hline(alt_up_pixel_buffer_dma_dev *pixel_buffer, int x0, int x1, int y, int color, int backbuffer);
 
@@ -146,7 +146,7 @@ void alt_up_pixel_buffer_dma_draw_hline(alt_up_pixel_buffer_dma_dev *pixel_buffe
  * @param color -- color of the line to be drawn
  * @param backbuffer -- set to 1 to select the back buffer, otherwise set to 0 to select the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_draw_vline(alt_up_pixel_buffer_dma_dev *pixel_buffer, int x, int y0, int y1, int color, int backbuffer);
 
@@ -158,7 +158,7 @@ void alt_up_pixel_buffer_dma_draw_vline(alt_up_pixel_buffer_dma_dev *pixel_buffe
  * @param color -- color of the rectangle to be drawn
  * @param backbuffer -- set to 1 to select the back buffer, otherwise set to 0 to select the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_draw_rectangle(alt_up_pixel_buffer_dma_dev *pixel_buffer, int x0, int y0, int x1, int y1, int color, int backbuffer);
 
@@ -170,12 +170,12 @@ void alt_up_pixel_buffer_dma_draw_rectangle(alt_up_pixel_buffer_dma_dev *pixel_b
  * @param color -- color of the line to be drawn
  * @param backbuffer -- set to 1 to select the back buffer, otherwise set to 0 to select the current screen.
  *
- * @return 0 if complete, 1 if still processing 
+ * @return 0 if complete, 1 if still processing
  **/
 void alt_up_pixel_buffer_dma_draw_line(alt_up_pixel_buffer_dma_dev *pixel_buffer, int x0, int y0, int x1, int y1, int color, int backbuffer);
 
 ///////////////////////////////////////////////////////////////////////////////
-// Macros used by alt_sys_init 
+// Macros used by alt_sys_init
 #define ALTERA_UP_AVALON_VIDEO_PIXEL_BUFFER_DMA_INSTANCE(name, device)	\
 static alt_up_pixel_buffer_dma_dev device =							\
 {															 	\
@@ -247,5 +247,3 @@ static alt_up_pixel_buffer_dma_dev device =							\
 #endif /* __cplusplus */
 
 #endif /* __ALTERA_UP_AVALON_VIDEO_PIXEL_BUFFER_DMA_H__ */
-
-

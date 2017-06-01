@@ -38,9 +38,9 @@
 #define ABS(x)	((x >= 0) ? (x) : (-(x)))
 
 alt_up_pixel_buffer_dma_dev* alt_up_pixel_buffer_dma_open_dev(const char* name) {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_pixel_buffer_dma_dev *dev = (alt_up_pixel_buffer_dma_dev*)alt_find_dev(name, &alt_dev_list);
 
@@ -112,7 +112,7 @@ void alt_up_pixel_buffer_dma_clear_screen(alt_up_pixel_buffer_dma_dev *pixel_buf
 {
 	register unsigned int addr;
 	register unsigned int limit_x, limit_y;
-	
+
 	/* Set up the address to start clearing from and the screen boundaries. */
 	if (backbuffer == 1)
 		addr = pixel_buffer->back_buffer_start_address;
@@ -124,7 +124,7 @@ void alt_up_pixel_buffer_dma_clear_screen(alt_up_pixel_buffer_dma_dev *pixel_buf
 		limit_x = limit_x << 1;
 	} else {
 		limit_x = limit_x << 2;
-	}	
+	}
 	limit_y = pixel_buffer->y_resolution;
 
 	if (pixel_buffer->addressing_mode == ALT_UP_PIXEL_BUFFER_XY_ADDRESS_MODE) {
@@ -144,7 +144,7 @@ void alt_up_pixel_buffer_dma_clear_screen(alt_up_pixel_buffer_dma_dev *pixel_buf
 	} else {
 		/* Clear the screen when the VGA is set up in a linear addressing mode. */
 		register int x;
-		limit_y = limit_x*limit_y;	
+		limit_y = limit_x*limit_y;
 
 		for (x = 0; x < limit_y; x = x + 4)
 		{
@@ -165,7 +165,7 @@ void alt_up_pixel_buffer_dma_draw_box(alt_up_pixel_buffer_dma_dev *pixel_buffer,
 	register unsigned int t_y = y0;
 	register unsigned int b_y = y1;
 	register unsigned int local_color = color;
-	
+
 	/* Check coordinates */
 	if (l_x > r_x)
 	{
@@ -215,7 +215,7 @@ void alt_up_pixel_buffer_dma_draw_box(alt_up_pixel_buffer_dma_dev *pixel_buffer,
 		register unsigned int offset_y;
 		offset_y = pixel_buffer->y_coord_offset;
 		addr = addr + (t_y << offset_y);
-		
+
 		/* This portion of the code is purposefully replicated. This is because having a text for
 		 * the mode would unnecessarily slow down the drawing of a box. */
 		if (pixel_buffer->color_mode == ALT_UP_8BIT_COLOR_MODE) {
@@ -302,7 +302,7 @@ void alt_up_pixel_buffer_dma_draw_hline(alt_up_pixel_buffer_dma_dev *pixel_buffe
 	register unsigned int r_x = x1;
 	register unsigned int line_y = y;
 	register unsigned int local_color = color;
-	
+
 	/* Check coordinates */
 	if (l_x > r_x)
 	{
@@ -338,7 +338,7 @@ void alt_up_pixel_buffer_dma_draw_hline(alt_up_pixel_buffer_dma_dev *pixel_buffe
 		register unsigned int offset_y;
 		offset_y = pixel_buffer->y_coord_offset;
 		addr = addr + (line_y << offset_y);
-		
+
 		/* This portion of the code is purposefully replicated. This is because having a text for
 		 * the mode would unnecessarily slow down the drawing of a horizontal line. */
 		if (pixel_buffer->color_mode == ALT_UP_8BIT_COLOR_MODE) {
@@ -404,7 +404,7 @@ void alt_up_pixel_buffer_dma_draw_vline(alt_up_pixel_buffer_dma_dev *pixel_buffe
 	register unsigned int t_y = y0;
 	register unsigned int b_y = y1;
 	register unsigned int local_color = color;
-	
+
 	/* Check coordinates */
 	if (t_y > b_y)
 	{
@@ -440,7 +440,7 @@ void alt_up_pixel_buffer_dma_draw_vline(alt_up_pixel_buffer_dma_dev *pixel_buffe
 		register unsigned int offset_y;
 		offset_y = pixel_buffer->y_coord_offset;
 		addr = addr + (t_y << offset_y);
-		
+
 		/* This portion of the code is purposefully replicated. This is because having a text for
 		 * the mode would unnecessarily slow down the drawing of a box. */
 		if (pixel_buffer->color_mode == ALT_UP_8BIT_COLOR_MODE) {
@@ -564,7 +564,7 @@ void alt_up_pixel_buffer_dma_draw_line(alt_up_pixel_buffer_dma_dev *pixel_buffer
 	/* Setup local variables */
 	deltax = x_1 - x_0;
 	deltay = ABS(y_1 - y_0);
-	error = -(deltax / 2); 
+	error = -(deltax / 2);
 	y = y_0;
 	if (y_0 < y_1)
 		ystep = 1;
@@ -596,4 +596,3 @@ void alt_up_pixel_buffer_dma_draw_line(alt_up_pixel_buffer_dma_dev *pixel_buffer
 		}
 	}
 }
-

@@ -11,4 +11,3 @@ cycle			PC		IR				bus		MA		res		commande
 3			8		-				0x3C		4		0		add (IMM16>bus, ChC)
 4			8		-				0x3C		0x3C		0		add (C>bus, ChMA)
 5			8		-				0x1C		0x3C		0		add (ChR, selrB, Lec)
-

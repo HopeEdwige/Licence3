@@ -39,12 +39,11 @@
 
 alt_up_parallel_port_dev* alt_up_parallel_port_open_dev(const char* name)
 {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_parallel_port_dev *dev = (alt_up_parallel_port_dev*)alt_find_dev(name, &alt_dev_list);
 
   return dev;
 }
-

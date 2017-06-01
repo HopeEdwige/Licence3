@@ -32,12 +32,12 @@
 #include "system.h"
 
 #include "alt_types.h"
-#include "sys/alt_cache.h" 
+#include "sys/alt_cache.h"
 
 /*
  * Nios II version 1.2 and newer supports the "flush by address" instruction, in
  * addition to the "flush by line" instruction provided by older versions of
- * the core. This newer instruction is used by preference when it is 
+ * the core. This newer instruction is used by preference when it is
  * available.
  */
 
@@ -59,7 +59,7 @@ void alt_dcache_flush (void* start, alt_u32 len)
 #if NIOS2_DCACHE_SIZE > 0
 
   char* i;
-  char* end; 
+  char* end;
 
   /*
    * This is the most we would ever need to flush.
@@ -75,16 +75,16 @@ void alt_dcache_flush (void* start, alt_u32 len)
   }
   #endif
 
-  end = ((char*) start) + len; 
+  end = ((char*) start) + len;
 
   for (i = start; i < end; i+= NIOS2_DCACHE_LINE_SIZE)
-  { 
-    ALT_FLUSH_DATA(i); 
+  {
+    ALT_FLUSH_DATA(i);
   }
 
-  /* 
+  /*
    * For an unaligned flush request, we've got one more line left.
-   * Note that this is dependent on NIOS2_DCACHE_LINE_SIZE to be a 
+   * Note that this is dependent on NIOS2_DCACHE_LINE_SIZE to be a
    * multiple of 2 (which it always is).
    */
 

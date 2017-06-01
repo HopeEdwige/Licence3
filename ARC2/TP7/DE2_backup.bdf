@@ -5,16 +5,16 @@ the Block Editor! File corruption is VERY likely to occur.
 */
 /*
 Copyright (C) 1991-2009 Altera Corporation
-Your use of Altera Corporation's design tools, logic functions 
-and other software and tools, and its AMPP partner logic 
-functions, and any output files from any of the foregoing 
-(including device programming or simulation files), and any 
-associated documentation or information are expressly subject 
-to the terms and conditions of the Altera Program License 
-Subscription Agreement, Altera MegaCore Function License 
-Agreement, or other applicable license agreement, including, 
-without limitation, that your use is for the sole purpose of 
-programming logic devices manufactured by Altera and sold by 
+Your use of Altera Corporation's design tools, logic functions
+and other software and tools, and its AMPP partner logic
+functions, and any output files from any of the foregoing
+(including device programming or simulation files), and any
+associated documentation or information are expressly subject
+to the terms and conditions of the Altera Program License
+Subscription Agreement, Altera MegaCore Function License
+Agreement, or other applicable license agreement, including,
+without limitation, that your use is for the sole purpose of
+programming logic devices manufactured by Altera and sold by
 Altera or its authorized distributors.  Please refer to the 
 applicable agreement for further details.
 */
@@ -2062,6 +2062,6 @@ applicable agreement for further details.
 (junction (pt 352 -248))
 (junction (pt 352 -184))
 (junction (pt 352 -152))
-(text "Ne rien modifier à l'intérieur de ce cadre" (rect -40 -648 265 -632)(font "Arial" (color 255 0 0)(font_size 10)(bold)))
-(text "Noms du binôme" (rect -48 -888 105 -869)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
+(text "Ne rien modifier ï¿½ l'intï¿½rieur de ce cadre" (rect -40 -648 265 -632)(font "Arial" (color 255 0 0)(font_size 10)(bold)))
+(text "Noms du binï¿½me" (rect -48 -888 105 -869)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
 (rectangle (rect -48 -848 1104 -624))

@@ -5,14 +5,14 @@
 #include <alt_types.h>
 
 
-/* 
- * Data Register 
+/*
+ * Data Register
  */
 #define ALT_UP_PS2_PORT_DATA_REG					0
 #define IOADDR_ALT_UP_PS2_PORT_DATA_REG(base)		\
 		__IO_CALC_ADDRESS_NATIVE(base, ALT_UP_PS2_PORT_DATA_REG)
 #define IORD_ALT_UP_PS2_PORT_DATA_REG(base)			\
-		IORD(base, ALT_UP_PS2_PORT_DATA_REG) 
+		IORD(base, ALT_UP_PS2_PORT_DATA_REG)
 #define IOWR_ALT_UP_PS2_PORT_DATA_REG(base, data)	\
 		IOWR(base, ALT_UP_PS2_PORT_DATA_REG, data)
 
@@ -27,7 +27,7 @@
 #define IOADDR_ALT_UP_PS2_PORT_DATA(base)			\
 		__IO_CALC_ADDRESS_DYNAMIC(base, ALT_UP_PS2_PORT_DATA)
 #define IORD_ALT_UP_PS2_PORT_DATA(base)		 		\
-		IORD_8DIRECT(base, ALT_UP_PS2_PORT_DATA) 
+		IORD_8DIRECT(base, ALT_UP_PS2_PORT_DATA)
 #define IOWR_ALT_UP_PS2_PORT_DATA(base, data)		\
 		IOWR_8DIRECT(base, ALT_UP_PS2_PORT_DATA, data)
 
@@ -38,7 +38,7 @@
 #define IOADDR_ALT_UP_PS2_PORT_RVALID(base)			\
 		__IO_CALC_ADDRESS_DYNAMIC(base, ALT_UP_PS2_PORT_RVALID)
 #define IORD_ALT_UP_PS2_PORT_RVALID(base)		 	\
-		IORD_8DIRECT(base, ALT_UP_PS2_PORT_RVALID) 
+		IORD_8DIRECT(base, ALT_UP_PS2_PORT_RVALID)
 #define IOWR_ALT_UP_PS2_PORT_RVALID(base, data)		\
 		IOWR_8DIRECT(base, ALT_UP_PS2_PORT_RVALID, data)
 
@@ -49,7 +49,7 @@
 #define IOADDR_ALT_UP_PS2_PORT_RAVAIL(base)			\
 		__IO_CALC_ADDRESS_DYNAMIC(base, ALT_UP_PS2_PORT_RAVAIL)
 #define IORD_ALT_UP_PS2_PORT_RAVAIL(base)			\
-		IORD_16DIRECT(base, ALT_UP_PS2_PORT_RAVAIL) 
+		IORD_16DIRECT(base, ALT_UP_PS2_PORT_RAVAIL)
 #define IOWR_ALT_UP_PS2_PORT_RAVAIL(base, data)		\
 		IOWR_16DIRECT(base, ALT_UP_PS2_PORT_RAVAIL, data)
 
@@ -57,7 +57,7 @@
 #define ALT_UP_PS2_PORT_RAVAIL_OFST					(0)
 
 /*
- * Control Register 
+ * Control Register
  */
 #define ALT_UP_PS2_PORT_CTRL_REG					1
 #define IOADDR_ALT_UP_PS2_PORT_CTRL_REG(base)		\

@@ -76,8 +76,8 @@ unsigned char get_DDRAM_addr(unsigned x_pos, unsigned y_pos)
 /**
  * @brief send a command to the Instruction Register of the LCD controller
  *
- * @param lcd -- struct for the LCD Controller device 
- * @param cmd -- the command bits 
+ * @param lcd -- struct for the LCD Controller device
+ * @param cmd -- the command bits
  *
  * @return nothing
  **/
@@ -89,7 +89,7 @@ void alt_up_character_lcd_send_cmd(alt_up_character_lcd_dev *lcd, unsigned char 
 
 ////////////////////////////////////////////////////////////////////////////
 /*
- * Interface Functions : 
+ * Interface Functions :
  * The interface of these functions are provided to the user. See the header
  * file for a detailed description of each function
  */
@@ -98,15 +98,15 @@ void alt_up_character_lcd_send_cmd(alt_up_character_lcd_dev *lcd, unsigned char 
 void alt_up_character_lcd_init(alt_up_character_lcd_dev *lcd)
 {
 	IOWR_ALT_UP_CHARACTER_LCD_COMMAND(lcd->base, ALT_UP_CHARACTER_LCD_COMM_CLEAR_DISPLAY);
-	// register the device 
+	// register the device
 	// see "Developing Device Drivers for the HAL" in "Nios II Software Developer's Handbook"
 }
 
 alt_up_character_lcd_dev* alt_up_character_lcd_open_dev(const char* name)
 {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_character_lcd_dev *dev = (alt_up_character_lcd_dev*)alt_find_dev(name, &alt_dev_list);
 
@@ -138,7 +138,7 @@ int alt_up_character_lcd_write_fd(alt_fd *fd, const char *ptr, int len)
 	return 0;
 }
 
-int alt_up_character_lcd_set_cursor_pos(alt_up_character_lcd_dev *lcd, unsigned x_pos, 
+int alt_up_character_lcd_set_cursor_pos(alt_up_character_lcd_dev *lcd, unsigned x_pos,
 	 unsigned y_pos)
 {
 	//boundary check
@@ -154,15 +154,15 @@ int alt_up_character_lcd_set_cursor_pos(alt_up_character_lcd_dev *lcd, unsigned 
 
 void alt_up_character_lcd_shift_cursor(alt_up_character_lcd_dev *lcd, int x_right_shift_offset)
 {
-	if (x_right_shift_offset == 0) 
-		// don't ask me to do nothing 
+	if (x_right_shift_offset == 0)
+		// don't ask me to do nothing
 		return;
 
 	// see shift right or left
-	unsigned char shift_cmd = (x_right_shift_offset > 0) ? 
+	unsigned char shift_cmd = (x_right_shift_offset > 0) ?
 		ALT_UP_CHARACTER_LCD_COMM_CURSOR_SHIFT_RIGHT : ALT_UP_CHARACTER_LCD_COMM_CURSOR_SHIFT_LEFT;
 	// see how many to shift
-	unsigned char num_offset = (x_right_shift_offset > 0) ? x_right_shift_offset : 
+	unsigned char num_offset = (x_right_shift_offset > 0) ? x_right_shift_offset :
 		-x_right_shift_offset;
 	// do the shift
 	while (num_offset-- > 0)
@@ -171,15 +171,15 @@ void alt_up_character_lcd_shift_cursor(alt_up_character_lcd_dev *lcd, int x_righ
 
 void alt_up_character_lcd_shift_display(alt_up_character_lcd_dev *lcd, int x_right_shift_offset)
 {
-	if (x_right_shift_offset == 0) 
-		// don't ask me to do nothing 
+	if (x_right_shift_offset == 0)
+		// don't ask me to do nothing
 		return;
 
 	// see shift right or left
-	unsigned char shift_cmd = (x_right_shift_offset > 0) ? 
+	unsigned char shift_cmd = (x_right_shift_offset > 0) ?
 		ALT_UP_CHARACTER_LCD_COMM_DISPLAY_SHIFT_RIGHT : ALT_UP_CHARACTER_LCD_COMM_DISPLAY_SHIFT_LEFT;
 	// see how many to shift
-	unsigned char num_offset = (x_right_shift_offset > 0) ? x_right_shift_offset : 
+	unsigned char num_offset = (x_right_shift_offset > 0) ? x_right_shift_offset :
 		-x_right_shift_offset;
 	// do the shift
 	while (num_offset-- > 0)
@@ -210,4 +210,3 @@ void alt_up_character_lcd_cursor_blink_on(alt_up_character_lcd_dev *lcd)
 {
 	alt_up_character_lcd_send_cmd(lcd, ALT_UP_CHARACTER_LCD_COMM_CURSOR_BLINK_ON);
 }
-

@@ -46,26 +46,26 @@ void alt_up_char_buffer_init(alt_up_char_buffer_dev *char_buffer) {
 			break;
 		}
 	}
-	
+
 	return;
 }
 
 alt_up_char_buffer_dev* alt_up_char_buffer_open_dev(const char* name) {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_char_buffer_dev *dev = (alt_up_char_buffer_dev *)alt_find_dev(name, &alt_dev_list);
 
   return dev;
 }
 
-int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char ch, 
+int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char ch,
 	unsigned int x, unsigned int y) {
 	// boundary check
 	if (x >= char_buffer->x_resolution || y >= char_buffer->y_resolution )
 		return -1;
-	
+
 	unsigned int addr = 0;
 	addr |= ((x & char_buffer->x_coord_mask) << char_buffer->x_coord_offset);
 	addr |= ((y & char_buffer->y_coord_mask) << char_buffer->y_coord_offset);
@@ -74,12 +74,12 @@ int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char c
 	return 0;
 }
 
-int alt_up_char_buffer_string(alt_up_char_buffer_dev *char_buffer, const char *ptr, 
+int alt_up_char_buffer_string(alt_up_char_buffer_dev *char_buffer, const char *ptr,
 	unsigned int x, unsigned int y) {
 	// boundary check
 	if (x >= char_buffer->x_resolution || y >= char_buffer->y_resolution )
 		return -1;
-	
+
 	unsigned int offset = 0;
 	offset = (y << char_buffer->y_coord_offset) + x;
 
@@ -99,4 +99,3 @@ int alt_up_char_buffer_clear(alt_up_char_buffer_dev *char_buffer) {
 	while ((IORD_ALT_UP_CHAR_BUFFER_CLR_SCRN(char_buffer->ctrl_reg_base) & ALT_UP_CHAR_BUFFER_CLR_SCRN_MSK) >> ALT_UP_CHAR_BUFFER_CLR_SCRN_OFST);
 	return 0;
 }
-

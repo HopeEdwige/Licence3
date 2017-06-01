@@ -49,7 +49,7 @@
 /* ------------------------- FAST DRIVER --------------------- */
 /* ----------------------------------------------------------- */
 
-int 
+int
 altera_avalon_jtag_uart_ioctl(altera_avalon_jtag_uart_state* sp, int req,
   void* arg)
 {

@@ -36,7 +36,7 @@
 #define IOWR_ALT_UP_RS232_ADDR(base, addr, data)  \
 		IOWR(base, addr, data)
 /*
- * Data Register 
+ * Data Register
  */
 #define ALT_UP_RS232_DATA_REG			   0
 
@@ -66,7 +66,7 @@
 											| ALT_UP_RS232_DATA_PE_MSK 	\
 											| ALT_UP_RS232_DATA_RAVAIL_MSK)
 /*
- * Control Register 
+ * Control Register
  */
 #define ALT_UP_RS232_CONTROL_REG				1
 
@@ -93,4 +93,4 @@
 												| ALT_UP_RS232_CONTROL_RI_MSK 	\
 												| ALT_UP_RS232_CONTROL_WI_MSK 	\
 												| ALT_UP_RS232_CONTROL_WSPACE_MSK)
-#endif /*__ALT_UP_RS232_REGS_H__*/	
+#endif /*__ALT_UP_RS232_REGS_H__*/

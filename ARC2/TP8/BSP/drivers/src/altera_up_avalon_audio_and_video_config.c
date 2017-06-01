@@ -38,9 +38,9 @@
 
 alt_up_av_config_dev* alt_up_av_config_open_dev(const char* name)
 {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_av_config_dev *dev = (alt_up_av_config_dev*)alt_find_dev(name, &alt_dev_list);
   dev->type = (IORD_ALT_UP_AV_CONFIG_STATUS(dev->base) & ALT_UP_AV_CONFIG_STATUS_CFG_MSK) >> ALT_UP_AV_CONFIG_STATUS_CFG_OFST;
@@ -51,8 +51,8 @@ alt_up_av_config_dev* alt_up_av_config_open_dev(const char* name)
 /**
  * @brief Send data to the device
  *
- * @param av_config -- the device data structure 
- * @param addr -- the address of the destination device register 
+ * @param av_config -- the device data structure
+ * @param addr -- the address of the destination device register
  * @param data --  the data to be sent
  *
  * @return 0 for success
@@ -60,10 +60,10 @@ alt_up_av_config_dev* alt_up_av_config_open_dev(const char* name)
 int alt_up_av_config_write_data(alt_up_av_config_dev *av_config, alt_u32 addr, alt_u32 data)
 {
 	// set the register address in the Address register
-	IOWR_ALT_UP_AV_CONFIG_ADDRESS(av_config->base, addr & ALT_UP_AV_CONFIG_ADDRESS_VALID_MSK); 
+	IOWR_ALT_UP_AV_CONFIG_ADDRESS(av_config->base, addr & ALT_UP_AV_CONFIG_ADDRESS_VALID_MSK);
 
 	// write data to the device Data register
-	IOWR_ALT_UP_AV_CONFIG_DATA(av_config->base, data & ALT_UP_AV_CONFIG_DATA_VALID_MSK); 
+	IOWR_ALT_UP_AV_CONFIG_DATA(av_config->base, data & ALT_UP_AV_CONFIG_DATA_VALID_MSK);
 
 	return 0;
 }
@@ -71,8 +71,8 @@ int alt_up_av_config_write_data(alt_up_av_config_dev *av_config, alt_u32 addr, a
 /**
  * @brief Reads data from the device
  *
- * @param av_config -- the device data structure 
- * @param addr -- the address of the source device register 
+ * @param av_config -- the device data structure
+ * @param addr -- the address of the source device register
  * @param data -- a pointer to the location where the read data should be stored
  *
  * @return 0 for success or -1 for failure
@@ -80,10 +80,10 @@ int alt_up_av_config_write_data(alt_up_av_config_dev *av_config, alt_u32 addr, a
 int alt_up_av_config_read_data(alt_up_av_config_dev *av_config, alt_u32 addr, alt_u32 * data)
 {
 	// set the register address in the Address register
-	IOWR_ALT_UP_AV_CONFIG_ADDRESS(av_config->base, addr & ALT_UP_AV_CONFIG_ADDRESS_VALID_MSK); 
+	IOWR_ALT_UP_AV_CONFIG_ADDRESS(av_config->base, addr & ALT_UP_AV_CONFIG_ADDRESS_VALID_MSK);
 
 	// write data to the device Data register
-	*(data) = IORD_ALT_UP_AV_CONFIG_DATA(av_config->base); 
+	*(data) = IORD_ALT_UP_AV_CONFIG_DATA(av_config->base);
 
 	// check acknowledge is 0
 	if (alt_up_av_config_read_acknowledge(av_config))
@@ -197,7 +197,7 @@ int alt_up_av_config_read_D5M_cfg_register(alt_up_av_config_dev *av_config, alt_
 {
 	if (av_config->type != TRDB_D5M_CONFIG)
 		return -EINVAL;
-	
+
 	return alt_up_av_config_read_data(av_config, addr, data);
 }
 
@@ -205,7 +205,7 @@ int alt_up_av_config_write_D5M_cfg_register(alt_up_av_config_dev *av_config, alt
 {
 	if (av_config->type != TRDB_D5M_CONFIG)
 		return -EINVAL;
-	
+
 	return alt_up_av_config_write_data(av_config, addr, data);
 }
 
@@ -224,4 +224,3 @@ int alt_up_av_config_write_LTM_cfg_register(alt_up_av_config_dev *av_config, alt
 
 	return alt_up_av_config_write_data(av_config, addr, data);
 }
-

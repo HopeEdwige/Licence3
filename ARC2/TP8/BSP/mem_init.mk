@@ -138,17 +138,17 @@ flash2dat_extra_args = $(mem_pad_flag) $(mem_reloc_input_flag)
 #-------------------------------------
 
 
-# The following TYPE comment allows tools to identify the 'type' of target this 
-# makefile is associated with. 
+# The following TYPE comment allows tools to identify the 'type' of target this
+# makefile is associated with.
 # TYPE: BSP_MEMINIT_MAKEFILE
 
-# This following VERSION comment indicates the version of the tool used to 
-# generate this makefile. A makefile variable is provided for VERSION as well. 
+# This following VERSION comment indicates the version of the tool used to
+# generate this makefile. A makefile variable is provided for VERSION as well.
 # ACDS_VERSION: 12.1sp1
 ACDS_VERSION := 12.1sp1
 
-# This following BUILD_NUMBER comment indicates the build number of the tool 
-# used to generate this makefile. 
+# This following BUILD_NUMBER comment indicates the build number of the tool
+# used to generate this makefile.
 # BUILD_NUMBER: 243
 
 # Optimize for simulation

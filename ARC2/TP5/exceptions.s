@@ -35,7 +35,7 @@ handle_exception:
 	stw		r21, 80(sp)
 	stw		r22, 84(sp)
 	stw		r23, 88(sp)
-	
+
 	ldw		r8, -4(ea)
 	/* Mov "trap" opode into register */
 	movhi	r9, 0x003b
@@ -69,7 +69,7 @@ NOT_READ_INT:
 	call	read_string
 	br		done
 NOT_READ_STRING:
-	
+
 #  PRINT_CHAR
 	movi	r8, PRINT_CHAR
 	bne		r2, r8, NOT_PRINT_CHAR
@@ -83,7 +83,7 @@ NOT_PRINT_CHAR:
 	call	print_char
 	br		done
 NOT_READ_CHAR:
-	
+
 	movi	r8, EXIT
 	bne		r2, r8, NOT_EXIT
 	break
@@ -92,13 +92,13 @@ NOT_EXIT:
 
 	/* Unknown trap code. */
 	break
-	
+
 not_trap:
 	/* No exception handling code ! */
 	break
-	
+
 done:
-		
+
 	ldw		ra, 0(sp)
 	#ldw		r2, 4(sp)
 	ldw		r3, 8(sp)
@@ -122,6 +122,6 @@ done:
 	ldw		r21, 80(sp)
 	ldw		r22, 84(sp)
 	ldw		r23, 88(sp)
-	
+
 	addi	sp, sp, 92
 	eret

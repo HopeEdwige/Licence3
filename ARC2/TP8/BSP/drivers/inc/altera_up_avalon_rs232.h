@@ -48,7 +48,7 @@ extern "C"
  * of these structures to hold its associated state.
  */
 typedef struct alt_up_rs232_dev {
-	/// @brief character mode device structure 
+	/// @brief character mode device structure
 	/// @sa Developing Device Drivers for the HAL in Nios II Software Developer's Handbook
 	alt_dev dev;
 	/// @brief the base address of the device
@@ -137,7 +137,7 @@ int alt_up_rs232_write_fd (alt_fd* fd, const char* ptr, int len);
 // direct operation functions
 
 /**
- * @brief Open the RS232 device according to device name 
+ * @brief Open the RS232 device according to device name
  *
  * @param name -- the device name in SOPC Builder
  *
@@ -146,7 +146,7 @@ int alt_up_rs232_write_fd (alt_fd* fd, const char* ptr, int len);
 alt_up_rs232_dev* alt_up_rs232_open_dev(const char* name);
 
 /*
- * Macros used by alt_sys_init 
+ * Macros used by alt_sys_init
  */
 #define ALTERA_UP_AVALON_RS232_INSTANCE(name, device)	\
   static alt_up_rs232_dev device =		\
@@ -178,5 +178,3 @@ alt_up_rs232_dev* alt_up_rs232_open_dev(const char* name);
 #endif /* __cplusplus */
 
 #endif /* __ALTERA_UP_AVALON_RS232_H__ */
-
-

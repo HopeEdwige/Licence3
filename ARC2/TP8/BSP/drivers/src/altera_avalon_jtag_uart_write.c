@@ -60,7 +60,7 @@
  * one FIFOs worth of data.  But you said you didn't want to use interrupts :-)
  */
 
-int altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp, 
+int altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
   const char * ptr, int count, int flags)
 {
   unsigned int base = sp->base;
@@ -80,8 +80,8 @@ int altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
 /* ------------------------- FAST DRIVER --------------------- */
 /* ----------------------------------------------------------- */
 
-int 
-altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp, 
+int
+altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
   const char * ptr, int count, int flags)
 {
   /* Remove warning at optimisation level 03 by seting out to 0 */
@@ -127,20 +127,20 @@ altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
     }
 
     /*
-     * If interrupts are disabled then we could transmit here, we only need 
+     * If interrupts are disabled then we could transmit here, we only need
      * to enable interrupts if there is no space left in the FIFO
      *
-     * For now kick the interrupt routine every time to make it transmit 
-     * the data 
+     * For now kick the interrupt routine every time to make it transmit
+     * the data
      */
     context = alt_irq_disable_all();
     sp->irq_enable |= ALTERA_AVALON_JTAG_UART_CONTROL_WE_MSK;
     IOWR_ALTERA_AVALON_JTAG_UART_CONTROL(sp->base, sp->irq_enable);
     alt_irq_enable_all(context);
 
-    /* 
-     * If there is any data left then either return now or block until 
-     * some has been sent 
+    /*
+     * If there is any data left then either return now or block until
+     * some has been sent
      */
     /* consider: test whether there is anything there while doing this and delay for at most 2s. */
     if (count > 0)

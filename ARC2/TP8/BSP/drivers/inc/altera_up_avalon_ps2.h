@@ -60,7 +60,7 @@ typedef enum {
  * of these structures to hold its associated state.
  */
 typedef struct alt_up_ps2_dev {
-	/// @brief character mode device structure. 
+	/// @brief character mode device structure.
 	/// @sa Developing Device Drivers for the HAL in Nios II Software Developer's Handbook.
 	alt_dev dev;
 	/// @brief the base address of the device.
@@ -78,10 +78,10 @@ typedef struct alt_up_ps2_dev {
 // HAL system functions
 
 /**
- * @brief Initialize the PS/2 device and detect device type (mouse or keyboard). 
+ * @brief Initialize the PS/2 device and detect device type (mouse or keyboard).
  *
  * @param ps2 -- the PS/2 device structure.
- * 
+ *
  * @note The function will set the \c device_type field of \em ps2 to \c
  * PS2_MOUSE or \c PS2_KEYBOARD upon successful initialization, otherwise the
  * intialization is unsuccessful.
@@ -191,14 +191,14 @@ int alt_up_ps2_write_fd (alt_fd* fd, const char* ptr, int len);
 /**
  * @brief Open a PS/2 device structure with \em name in SOPC Builder
  *
- * @param name the specified name of the device in SOPC Builder 
+ * @param name the specified name of the device in SOPC Builder
  *
  * @return the PS/2 device structure
  **/
 alt_up_ps2_dev* alt_up_ps2_open_dev(const char* name);
 
 /*
- * Macros used by alt_sys_init 
+ * Macros used by alt_sys_init
  */
 #define ALTERA_UP_AVALON_PS2_INSTANCE(name, device)	\
   static alt_up_ps2_dev device =		\
@@ -234,5 +234,3 @@ alt_up_ps2_dev* alt_up_ps2_open_dev(const char* name);
 #endif /* __cplusplus */
 
 #endif /* __ALTERA_UP_AVALON_PS2_H__ */
-
-

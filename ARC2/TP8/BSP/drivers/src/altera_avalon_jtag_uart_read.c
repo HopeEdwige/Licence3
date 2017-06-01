@@ -61,8 +61,8 @@
  * interrupts.
  */
 
-int 
-altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp, 
+int
+altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
   char* buffer, int space, int flags)
 {
   unsigned int base = sp->base;
@@ -79,8 +79,8 @@ altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
     else if (ptr != buffer)
       break;
     else if(flags & O_NONBLOCK)
-      break;   
-    
+      break;
+
   }
 
   if (ptr != buffer)
@@ -97,8 +97,8 @@ altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
 /* ----------------------- FAST DRIVER ----------------------- */
 /* ----------------------------------------------------------- */
 
-int 
-altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp, 
+int
+altera_avalon_jtag_uart_read(altera_avalon_jtag_uart_state* sp,
   char * buffer, int space, int flags)
 {
   char * ptr = buffer;

@@ -15,16 +15,16 @@ extern "C"
  * of these structures to hold its associated state.
  */
 typedef struct alt_up_char_buffer_dev {
-	/// @brief character mode device structure 
+	/// @brief character mode device structure
 	/// @sa Developing Device Drivers for the HAL in Nios II Software Developer's Handbook
 	alt_dev dev;
 	/// @brief the control register's slave base address
 	unsigned int ctrl_reg_base;
 	/// @brief the character buffer's slave base address
 	unsigned int buffer_base;
-	/// @brief the character resolution in x direction 
+	/// @brief the character resolution in x direction
 	alt_u32 x_resolution;
-	/// @brief the character resolution in y direction 
+	/// @brief the character resolution in y direction
 	alt_u32 y_resolution;
 	/// @brief the x/y coordinate offset/masks
 	alt_u32 x_coord_offset;
@@ -38,7 +38,7 @@ typedef struct alt_up_char_buffer_dev {
 /**
  * @brief Initialize the name of the alt_up_char_buffer_dev structure
  *
- * @param char_buffer -- struct for the character buffer device 
+ * @param char_buffer -- struct for the character buffer device
  *
  **/
 void alt_up_char_buffer_init(alt_up_char_buffer_dev *char_buffer);
@@ -52,7 +52,7 @@ void alt_up_char_buffer_init(alt_up_char_buffer_dev *char_buffer);
 /**
  * @brief Opens the character buffer device specified by <em> name </em>
  *
- * @param name -- the character buffer component name in SOPC Builder. 
+ * @param name -- the character buffer component name in SOPC Builder.
  *
  * @return The corresponding device structure, or NULL if the device is not found
  **/
@@ -68,7 +68,7 @@ alt_up_char_buffer_dev* alt_up_char_buffer_open_dev(const char* name);
  *
  * @return 0 for success, -1 for error (such as out of bounds)
  **/
-int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char ch, 
+int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char ch,
 	unsigned int x, unsigned int y);
 
 /**
@@ -80,7 +80,7 @@ int alt_up_char_buffer_draw(alt_up_char_buffer_dev *char_buffer, unsigned char c
  *
  * @return 0 for success, -1 for error (such as out of bounds)
  **/
-int alt_up_char_buffer_string(alt_up_char_buffer_dev *char_buffer, const char *ptr, 
+int alt_up_char_buffer_string(alt_up_char_buffer_dev *char_buffer, const char *ptr,
 	unsigned int x, unsigned int y);
 
 /**
@@ -91,7 +91,7 @@ int alt_up_char_buffer_string(alt_up_char_buffer_dev *char_buffer, const char *p
 int alt_up_char_buffer_clear(alt_up_char_buffer_dev *char_buffer);
 
 ///////////////////////////////////////////////////////////////////////////////
-// Macros used by alt_sys_init 
+// Macros used by alt_sys_init
 #define ALTERA_UP_AVALON_VIDEO_CHARACTER_BUFFER_WITH_DMA_INSTANCE(name, device)\
 static alt_up_char_buffer_dev device =							\
 {															 	\
@@ -144,5 +144,3 @@ static alt_up_char_buffer_dev device =							\
 #endif /* __cplusplus */
 
 #endif /* __ALTERA_UP_AVALON_VIDEO_CHARACTER_BUFFER_WITH_DMA_H__ */
-
-

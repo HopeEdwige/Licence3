@@ -42,7 +42,7 @@
 void alt_up_rs232_enable_read_interrupt(alt_up_rs232_dev *rs232)
 {
 	alt_u32 ctrl_reg;
-	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base); 
+	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base);
 	// set RE to 1 while maintaining other bits the same
 	ctrl_reg |= ALT_UP_RS232_CONTROL_RE_MSK;
 	IOWR_ALT_UP_RS232_CONTROL(rs232->base, ctrl_reg);
@@ -51,7 +51,7 @@ void alt_up_rs232_enable_read_interrupt(alt_up_rs232_dev *rs232)
 void alt_up_rs232_disable_read_interrupt(alt_up_rs232_dev *rs232)
 {
 	alt_u32 ctrl_reg;
-	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base); 
+	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base);
 	// set RE to 0 while maintaining other bits the same
 	ctrl_reg &= ~ALT_UP_RS232_CONTROL_RE_MSK;
 	IOWR_ALT_UP_RS232_CONTROL(rs232->base, ctrl_reg);
@@ -61,8 +61,8 @@ unsigned alt_up_rs232_get_used_space_in_read_FIFO(alt_up_rs232_dev *rs232)
 {
 	alt_u16 ravail = 0;
 	// we can only read the 16 bits for RAVAIL --- a read of DATA will discard the data
-//	ravail = IORD_16DIRECT(IOADDR_ALT_UP_RS232_DATA(rs232->base), 2); 
-	ravail = IORD_ALT_UP_RS232_RAVAIL(rs232->base); 
+//	ravail = IORD_16DIRECT(IOADDR_ALT_UP_RS232_DATA(rs232->base), 2);
+	ravail = IORD_ALT_UP_RS232_RAVAIL(rs232->base);
 //	return ravail;
 	return (ravail & ALT_UP_RS232_RAVAIL_MSK) >> ALT_UP_RS232_RAVAIL_OFST;
 }
@@ -70,7 +70,7 @@ unsigned alt_up_rs232_get_used_space_in_read_FIFO(alt_up_rs232_dev *rs232)
 unsigned alt_up_rs232_get_available_space_in_write_FIFO(alt_up_rs232_dev *rs232)
 {
 	alt_u32 ctrl_reg;
-	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base); 
+	ctrl_reg = IORD_ALT_UP_RS232_CONTROL(rs232->base);
 	return (ctrl_reg & ALT_UP_RS232_CONTROL_WSPACE_MSK) >> ALT_UP_RS232_CONTROL_WSPACE_OFST;
 }
 
@@ -134,12 +134,11 @@ int alt_up_rs232_write_fd (alt_fd* fd, const char* ptr, int len)
 
 alt_up_rs232_dev* alt_up_rs232_open_dev(const char* name)
 {
-  // find the device from the device list 
-  // (see altera_hal/HAL/inc/priv/alt_file.h 
-  // and altera_hal/HAL/src/alt_find_dev.c 
+  // find the device from the device list
+  // (see altera_hal/HAL/inc/priv/alt_file.h
+  // and altera_hal/HAL/src/alt_find_dev.c
   // for details)
   alt_up_rs232_dev *dev = (alt_up_rs232_dev*)alt_find_dev(name, &alt_dev_list);
 
   return dev;
 }
-

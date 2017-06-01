@@ -44,7 +44,7 @@ extern "C"
 {
 #endif /* __cplusplus */
 
-/* 
+/*
  * If the user wants all drivers to be small rather than fast then make sure
  * this one is marked as needing to be small.
  */
@@ -64,10 +64,10 @@ extern "C"
 #endif
 
 /*
- * ALT_JTAG_UART_READ_RDY and ALT_JTAG_UART_WRITE_RDY are the bitmasks 
+ * ALT_JTAG_UART_READ_RDY and ALT_JTAG_UART_WRITE_RDY are the bitmasks
  * that define uC/OS-II event flags that are releated to this device.
  *
- * ALT_JTAG_UART_READ_RDY indicates that there is read data in the buffer 
+ * ALT_JTAG_UART_READ_RDY indicates that there is read data in the buffer
  * ready to be processed. ALT_JTAG_UART_WRITE_RDY indicates that the transmitter is
  * ready for more data.
  */
@@ -85,7 +85,7 @@ typedef struct altera_avalon_jtag_uart_state_s
   unsigned int base;
 
 #ifndef ALTERA_AVALON_JTAG_UART_SMALL
- 
+
   unsigned int  timeout; /* Timeout until host is assumed inactive */
   alt_alarm     alarm;
   unsigned int  irq_enable;
@@ -94,7 +94,7 @@ typedef struct altera_avalon_jtag_uart_state_s
   ALT_SEM      (read_lock)
   ALT_SEM      (write_lock)
   ALT_FLAG_GRP (events)
-  
+
   /* The variables below are volatile because they are modified by the
    * interrupt routine.  Making them volatile and reading them atomically
    * means that we don't need any large critical sections.
@@ -136,7 +136,7 @@ typedef struct altera_avalon_jtag_uart_state_s
 /*
  * Externally referenced routines
  */
-extern void altera_avalon_jtag_uart_init(altera_avalon_jtag_uart_state* sp, 
+extern void altera_avalon_jtag_uart_init(altera_avalon_jtag_uart_state* sp,
                                         int irq_controller_id, int irq);
 
 #define ALTERA_AVALON_JTAG_UART_STATE_INIT(name, state)                      \

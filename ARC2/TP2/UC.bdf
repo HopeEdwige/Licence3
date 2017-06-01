@@ -5,17 +5,17 @@ the Block Editor! File corruption is VERY likely to occur.
 */
 /*
 Copyright (C) 1991-2009 Altera Corporation
-Your use of Altera Corporation's design tools, logic functions 
+Your use of Altera Corporation's design tools, logic functions
 and other software and tools, and its AMPP partner logic 
-functions, and any output files from any of the foregoing 
-(including device programming or simulation files), and any 
-associated documentation or information are expressly subject 
-to the terms and conditions of the Altera Program License 
-Subscription Agreement, Altera MegaCore Function License 
-Agreement, or other applicable license agreement, including, 
-without limitation, that your use is for the sole purpose of 
-programming logic devices manufactured by Altera and sold by 
-Altera or its authorized distributors.  Please refer to the 
+functions, and any output files from any of the foregoing
+(including device programming or simulation files), and any
+associated documentation or information are expressly subject
+to the terms and conditions of the Altera Program License
+Subscription Agreement, Altera MegaCore Function License
+Agreement, or other applicable license agreement, including,
+without limitation, that your use is for the sole purpose of
+programming logic devices manufactured by Altera and sold by
+Altera or its authorized distributors.  Please refer to the
 applicable agreement for further details.
 */
 //#pragma file_not_in_maxplusii_format
@@ -8806,8 +8806,8 @@ applicable agreement for further details.
 (text "Commandes chargement" (rect 1376 256 1602 275)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
 (text "Commandes diverses" (rect 1912 256 2107 275)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
 (text "Commandes UAL" (rect 1704 1072 1862 1091)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
-(text "Décodage OP" (rect 80 424 203 443)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
-(text "Décodage OPX" (rect 360 424 496 443)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
+(text "Dï¿½codage OP" (rect 80 424 203 443)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
+(text "Dï¿½codage OPX" (rect 360 424 496 443)(font "Arial" (color 255 0 0)(font_size 12)(bold)))
 (rectangle (rect 16 1632 680 1824))
 (rectangle (rect 784 1056 1344 1832))
 (rectangle (rect 600 248 1096 1024))

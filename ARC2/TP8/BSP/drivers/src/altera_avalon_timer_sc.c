@@ -41,13 +41,13 @@
 #include "alt_types.h"
 #include "sys/alt_log_printf.h"
 
-/* 
- * alt_avalon_timer_sc_irq() is the interrupt handler used for the system 
- * clock. This is called periodically when a timer interrupt occurs. The 
- * function first clears the interrupt condition, and then calls the 
+/*
+ * alt_avalon_timer_sc_irq() is the interrupt handler used for the system
+ * clock. This is called periodically when a timer interrupt occurs. The
+ * function first clears the interrupt condition, and then calls the
  * alt_tick() function to notify the system that a timer tick has occurred.
  *
- * alt_tick() increments the system tick count, and updates any registered 
+ * alt_tick() increments the system tick count, and updates any registered
  * alarms, see alt_tick.c for further details.
  */
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
@@ -57,11 +57,11 @@ static void alt_avalon_timer_sc_irq (void* base, alt_u32 id)
 #endif
 {
   alt_irq_context cpu_sr;
-  
+
   /* clear the interrupt */
   IOWR_ALTERA_AVALON_TIMER_STATUS (base, 0);
-  
-  /* 
+
+  /*
    * Dummy read to ensure IRQ is negated before the ISR returns.
    * The control register is read because reading the status
    * register has side-effects per the register map documentation.
@@ -71,8 +71,8 @@ static void alt_avalon_timer_sc_irq (void* base, alt_u32 id)
   /* ALT_LOG - see altera_hal/HAL/inc/sys/alt_log_printf.h */
   ALT_LOG_SYS_CLK_HEARTBEAT();
 
-  /* 
-   * Notify the system of a clock tick. disable interrupts 
+  /*
+   * Notify the system of a clock tick. disable interrupts
    * during this time to safely support ISR preemption
    */
   cpu_sr = alt_irq_disable_all();
@@ -81,30 +81,30 @@ static void alt_avalon_timer_sc_irq (void* base, alt_u32 id)
 }
 
 /*
- * alt_avalon_timer_sc_init() is called to initialise the timer that will be 
- * used to provide the periodic system clock. This is called from the 
+ * alt_avalon_timer_sc_init() is called to initialise the timer that will be
+ * used to provide the periodic system clock. This is called from the
  * auto-generated alt_sys_init() function.
  */
 
-void alt_avalon_timer_sc_init (void* base, alt_u32 irq_controller_id, 
+void alt_avalon_timer_sc_init (void* base, alt_u32 irq_controller_id,
                                 alt_u32 irq, alt_u32 freq)
 {
   /* set the system clock frequency */
-  
+
   alt_sysclk_init (freq);
-  
+
   /* set to free running mode */
-  
-  IOWR_ALTERA_AVALON_TIMER_CONTROL (base, 
+
+  IOWR_ALTERA_AVALON_TIMER_CONTROL (base,
             ALTERA_AVALON_TIMER_CONTROL_ITO_MSK  |
             ALTERA_AVALON_TIMER_CONTROL_CONT_MSK |
             ALTERA_AVALON_TIMER_CONTROL_START_MSK);
 
   /* register the interrupt handler, and enable the interrupt */
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-  alt_ic_isr_register(irq_controller_id, irq, alt_avalon_timer_sc_irq, 
+  alt_ic_isr_register(irq_controller_id, irq, alt_avalon_timer_sc_irq,
                       base, NULL);
 #else
   alt_irq_register (irq, base, alt_avalon_timer_sc_irq);
-#endif  
+#endif
 }

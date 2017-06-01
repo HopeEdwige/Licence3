@@ -34,7 +34,7 @@ int alt_up_ps2_mouse_reset(alt_up_ps2_dev *ps2);
  * @param ps2 -- the PS/2 mouse device strcture
  * @param byte -- the byte representing the mode (see macro definitions for details).
  *
- * @sa PS/2 Mouse document 
+ * @sa PS/2 Mouse document
  *
  * @return 0 on receiving acknowledgment, or negative number for errors.
  **/

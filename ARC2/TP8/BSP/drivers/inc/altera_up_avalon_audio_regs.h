@@ -36,7 +36,7 @@
 #define IOWR_ALT_UP_AUDIO_ADDR(base, addr, data)  \
         IOWR(base, addr, data)
 /*
- * Control Register 
+ * Control Register
  */
 #define ALT_UP_AUDIO_CONTROL_REG               0
 
@@ -67,7 +67,7 @@
 											| ALT_UP_AUDIO_CONTROL_RI_MSK 	\
 											| ALT_UP_AUDIO_CONTROL_WI_MSK )
 /*
- * Fifospace Register 
+ * Fifospace Register
  */
 #define ALT_UP_AUDIO_FIFOSPACE_REG               1
 
@@ -93,7 +93,7 @@
 												| ALT_UP_AUDIO_FIFOSPACE_WSLC_MSK)
 
 /*
- * Leftdata Register 
+ * Leftdata Register
  */
 #define ALT_UP_AUDIO_LEFTDATA_REG               2
 
@@ -105,7 +105,7 @@
         IOWR(base, ALT_UP_AUDIO_LEFTDATA_REG, data)
 
 /*
- * Rightdata Register 
+ * Rightdata Register
  */
 #define ALT_UP_AUDIO_RIGHTDATA_REG               3
 

@@ -38,7 +38,7 @@ extern int altera_avalon_jtag_uart_write(altera_avalon_jtag_uart_state* sp,
   const char* ptr, int count, int flags);
 extern int altera_avalon_jtag_uart_ioctl(altera_avalon_jtag_uart_state* sp,
   int req, void* arg);
-extern int altera_avalon_jtag_uart_close(altera_avalon_jtag_uart_state* sp, 
+extern int altera_avalon_jtag_uart_close(altera_avalon_jtag_uart_state* sp,
   int flags);
 
 /* ----------------------------------------------------------------------- */
@@ -47,19 +47,19 @@ extern int altera_avalon_jtag_uart_close(altera_avalon_jtag_uart_state* sp,
  *
  */
 
-int 
+int
 altera_avalon_jtag_uart_read_fd(alt_fd* fd, char* buffer, int space)
 {
-    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev; 
+    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev;
 
     return altera_avalon_jtag_uart_read(&dev->state, buffer, space,
       fd->fd_flags);
 }
 
-int 
+int
 altera_avalon_jtag_uart_write_fd(alt_fd* fd, const char* buffer, int space)
 {
-    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev; 
+    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev;
 
     return altera_avalon_jtag_uart_write(&dev->state, buffer, space,
       fd->fd_flags);
@@ -67,15 +67,15 @@ altera_avalon_jtag_uart_write_fd(alt_fd* fd, const char* buffer, int space)
 
 #ifndef ALTERA_AVALON_JTAG_UART_SMALL
 
-int 
+int
 altera_avalon_jtag_uart_close_fd(alt_fd* fd)
 {
-    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev; 
+    altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev;
 
     return altera_avalon_jtag_uart_close(&dev->state, fd->fd_flags);
 }
 
-int 
+int
 altera_avalon_jtag_uart_ioctl_fd(alt_fd* fd, int req, void* arg)
 {
     altera_avalon_jtag_uart_dev* dev = (altera_avalon_jtag_uart_dev*) fd->dev;

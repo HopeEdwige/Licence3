@@ -19,7 +19,7 @@ extern "C"
  * of these structures to hold its associated state.
  */
 typedef struct alt_up_parallel_port_dev {
-	/// @brief device structure 
+	/// @brief device structure
 	/// @sa Developing Device Drivers for the HAL in Nios II Software Developer's Handbook
 	alt_dev dev;
 	/// @brief the base address of the device
@@ -172,7 +172,7 @@ alt_up_parallel_port_dev* alt_up_parallel_port_open_dev(const char* name);
 	IORD_ALT_UP_PARALLEL_PORT_EDGE_CAPTURE((parallel_port)->base))			\
 
 /*
- * Macros used by alt_sys_init 
+ * Macros used by alt_sys_init
  */
 #define ALTERA_UP_AVALON_PARALLEL_PORT_INSTANCE(name, device)	\
 static alt_up_parallel_port_dev device =						\
@@ -202,5 +202,3 @@ static alt_up_parallel_port_dev device =						\
 #endif /* __cplusplus */
 
 #endif /* __ALTERA_UP_AVALON_PARALLEL_PORT_H__ */
-
-

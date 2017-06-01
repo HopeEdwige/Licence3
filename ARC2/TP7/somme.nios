@@ -3,8 +3,8 @@
 init:
 		ldw		r5, 0(r0)
 		ldw		r6, 0(r0)
-	
-	
+
+
 debut:
 		call 	lectureclavier
 		add 	r5, r5, r6

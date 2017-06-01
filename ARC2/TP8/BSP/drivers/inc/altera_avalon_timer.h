@@ -64,12 +64,12 @@ extern "C"
 #endif
 
 /*
- * The function alt_avalon_timer_sc_init() is the initialisation function for 
- * the system clock. It registers the timers interrupt handler, and then calls 
+ * The function alt_avalon_timer_sc_init() is the initialisation function for
+ * the system clock. It registers the timers interrupt handler, and then calls
  * the system clock regestration function, alt_sysclk_init().
  */
 
-extern void alt_avalon_timer_sc_init (void* base, alt_u32 irq_controller_id, 
+extern void alt_avalon_timer_sc_init (void* base, alt_u32 irq_controller_id,
                                       alt_u32 irq, alt_u32 freq);
 
 /*
@@ -81,16 +81,16 @@ extern void*   altera_avalon_timer_ts_base;
 extern alt_u32 altera_avalon_timer_ts_freq;
 
 /*
- * ALTERA_AVALON_TIMER_INSTANCE is the macro used by alt_sys_init() to 
- * allocate any per device memory that may be required. In this case no 
+ * ALTERA_AVALON_TIMER_INSTANCE is the macro used by alt_sys_init() to
+ * allocate any per device memory that may be required. In this case no
  * allocation is necessary.
- */ 
+ */
 
 #define ALTERA_AVALON_TIMER_INSTANCE(name, dev) extern int alt_no_storage
 
 /*
- * Macro used to calculate the timer interrupt frequency. Although this is 
- * somewhat fearsome, when compiled with -O2 it will be resolved at compile 
+ * Macro used to calculate the timer interrupt frequency. Although this is
+ * somewhat fearsome, when compiled with -O2 it will be resolved at compile
  * time to a constant value.
  */
 
@@ -101,7 +101,7 @@ extern alt_u32 altera_avalon_timer_ts_freq;
         ((freq + (period - 1))/period)                \
       : 1)                                            \
     : (1000 + (period - 1))/period)                   \
-  : ((1000000 + (period - 1))/period)         
+  : ((1000000 + (period - 1))/period)
 
 /*
  * Construct macros which contain the base address of the system clock and the
@@ -116,7 +116,7 @@ extern alt_u32 altera_avalon_timer_ts_freq;
 #define ALT_TIMESTAMP_CLK_BASE _ALT_CLK_BASE(ALT_TIMESTAMP_CLK)
 
 /*
- * If there is no system clock, then the above macro will result in 
+ * If there is no system clock, then the above macro will result in
  * ALT_SYS_CLK_BASE being set to none_BASE. We therefore need to provide an
  * invalid value for this, so that no timer is wrongly identified as the system
  * clock.
@@ -131,16 +131,16 @@ extern alt_u32 altera_avalon_timer_ts_freq;
  * if it has the name "sysclk".
  *
  * If the device is not the system clock, then it is used to provide the
- * timestamp facility. 
+ * timestamp facility.
  *
- * To ensure as much as possible is evaluated at compile time, rather than 
+ * To ensure as much as possible is evaluated at compile time, rather than
  * compare the name of the device to "/dev/sysclk" using strcmp(), the base
  * address of the device is compared to SYSCLK_BASE to determine whether it's
  * the system clock. Since the base address of a device must be unique, these
  * two aproaches are equivalent.
  *
  * This macro performs a sanity check to ensure that the interrupt has been
- * connected for this device. If not, then an apropriate error message is 
+ * connected for this device. If not, then an apropriate error message is
  * generated at build time.
  */
 

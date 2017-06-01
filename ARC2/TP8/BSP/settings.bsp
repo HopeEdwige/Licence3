@@ -4,9 +4,9 @@
         <BspVersion>default</BspVersion>
         <BspGeneratedTimeStamp>20 mars 2015 08:24:12</BspGeneratedTimeStamp>
         <BspGeneratedUnixTimeStamp>1426836253022</BspGeneratedUnixTimeStamp>
-        <BspGeneratedLocation>H:\windows\bureau\TP8-bis\BSP</BspGeneratedLocation>
-        <BspSettingsFile>H:\windows\bureau\TP8-bis\BSP\settings.bsp</BspSettingsFile>
-        <SopcDesignFile>C:\altera\12.1sp1\University_Program\NiosII_Computer_Systems\DE2\DE2_Media_Computer\verilog\nios_system.sopcinfo</SopcDesignFile>
+        <BspGeneratedLocation>[path_to_put]</BspGeneratedLocation>
+        <BspSettingsFile>[path_to_put]</BspSettingsFile>
+        <SopcDesignFile>[path_to_put]</SopcDesignFile>
         <JdiFile>default</JdiFile>
         <Cpu>CPU</Cpu>
         <SchemaVersion>1.9</SchemaVersion>

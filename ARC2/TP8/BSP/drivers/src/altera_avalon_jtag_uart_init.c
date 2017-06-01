@@ -54,16 +54,16 @@
 static void altera_avalon_jtag_uart_irq(void* context);
 #else
 static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id);
-#endif 
+#endif
 static alt_u32 altera_avalon_jtag_uart_timeout(void* context);
 
-/* 
+/*
  * Driver initialization code.  Register interrupts and start a timer
  * which we can use to check whether the host is there.
  * Return 1 on sucessful IRQ register and 0 on failure.
  */
 
-void altera_avalon_jtag_uart_init(altera_avalon_jtag_uart_state* sp, 
+void altera_avalon_jtag_uart_init(altera_avalon_jtag_uart_state* sp,
                                   int irq_controller_id, int irq)
 {
   ALT_FLAG_CREATE(&sp->events, 0);
@@ -73,35 +73,35 @@ void altera_avalon_jtag_uart_init(altera_avalon_jtag_uart_state* sp,
   /* enable read interrupts at the device */
   sp->irq_enable = ALTERA_AVALON_JTAG_UART_CONTROL_RE_MSK;
 
-  IOWR_ALTERA_AVALON_JTAG_UART_CONTROL(sp->base, sp->irq_enable); 
-  
+  IOWR_ALTERA_AVALON_JTAG_UART_CONTROL(sp->base, sp->irq_enable);
+
   /* register the interrupt handler */
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
-  alt_ic_isr_register(irq_controller_id, irq, altera_avalon_jtag_uart_irq, 
+  alt_ic_isr_register(irq_controller_id, irq, altera_avalon_jtag_uart_irq,
                       sp, NULL);
 #else
   alt_irq_register(irq, sp, altera_avalon_jtag_uart_irq);
-#endif  
+#endif
 
   /* Register an alarm to go off every second to check for presence of host */
   sp->host_inactive = 0;
 
-  if (alt_alarm_start(&sp->alarm, alt_ticks_per_second(), 
+  if (alt_alarm_start(&sp->alarm, alt_ticks_per_second(),
     &altera_avalon_jtag_uart_timeout, sp) < 0)
   {
-    /* If we can't set the alarm then record "don't know if host present" 
+    /* If we can't set the alarm then record "don't know if host present"
      * and behave as though the host is present.
      */
     sp->timeout = INT_MAX;
   }
 
-  /* ALT_LOG - see altera_hal/HAL/inc/sys/alt_log_printf.h */ 
+  /* ALT_LOG - see altera_hal/HAL/inc/sys/alt_log_printf.h */
   ALT_LOG_JTAG_UART_ALARM_REGISTER(sp, sp->base);
 }
 
 /*
  * Interrupt routine
- */ 
+ */
 #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
 static void altera_avalon_jtag_uart_irq(void* context)
 #else
@@ -111,7 +111,7 @@ static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id)
   altera_avalon_jtag_uart_state* sp = (altera_avalon_jtag_uart_state*) context;
   unsigned int base = sp->base;
 
-  /* ALT_LOG - see altera_hal/HAL/inc/sys/alt_log_printf.h */ 
+  /* ALT_LOG - see altera_hal/HAL/inc/sys/alt_log_printf.h */
   ALT_LOG_JTAG_UART_ISR_FUNCTION(base, sp);
 
   for ( ; ; )
@@ -142,7 +142,7 @@ static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id)
          * are any more characters remaining.
          */
         data = IORD_ALTERA_AVALON_JTAG_UART_DATA(base);
-        
+
         if ((data & ALTERA_AVALON_JTAG_UART_DATA_RVALID_MSK) == 0)
           break;
 
@@ -155,12 +155,12 @@ static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id)
 
       if (data & ALTERA_AVALON_JTAG_UART_DATA_RAVAIL_MSK)
       {
-        /* If there is still data available here then the buffer is full 
+        /* If there is still data available here then the buffer is full
          * so turn off receive interrupts until some space becomes available.
          */
         sp->irq_enable &= ~ALTERA_AVALON_JTAG_UART_CONTROL_RE_MSK;
         IOWR_ALTERA_AVALON_JTAG_UART_CONTROL(base, sp->irq_enable);
-        
+
         /* Dummy read to ensure IRQ is cleared prior to ISR completion */
         IORD_ALTERA_AVALON_JTAG_UART_CONTROL(base);
       }
@@ -188,7 +188,7 @@ static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id)
         /* If we don't have any more data available then turn off the TX interrupt */
         sp->irq_enable &= ~ALTERA_AVALON_JTAG_UART_CONTROL_WE_MSK;
         IOWR_ALTERA_AVALON_JTAG_UART_CONTROL(sp->base, sp->irq_enable);
-        
+
         /* Dummy read to ensure IRQ is cleared prior to ISR completion */
         IORD_ALTERA_AVALON_JTAG_UART_CONTROL(base);
       }
@@ -200,8 +200,8 @@ static void altera_avalon_jtag_uart_irq(void* context, alt_u32 id)
  * Timeout routine is called every second
  */
 
-static alt_u32 
-altera_avalon_jtag_uart_timeout(void* context) 
+static alt_u32
+altera_avalon_jtag_uart_timeout(void* context)
 {
   altera_avalon_jtag_uart_state* sp = (altera_avalon_jtag_uart_state *) context;
 
@@ -214,7 +214,7 @@ altera_avalon_jtag_uart_timeout(void* context)
   }
   else if (sp->host_inactive < INT_MAX - 2) {
     sp->host_inactive++;
-    
+
     if (sp->host_inactive >= sp->timeout) {
       /* Post an event to indicate host is inactive (for jtag_uart_read */
       ALT_FLAG_POST (sp->events, ALT_JTAG_UART_TIMEOUT, OS_FLAG_SET);
@@ -230,23 +230,23 @@ altera_avalon_jtag_uart_timeout(void* context)
  * emptied unless a timeout from host-activity occurs. If the driver flags
  * have been set to non-blocking mode, this routine will exit immediately if
  * any data remains. This routine should be called indirectly (i.e. though
- * the C library close() routine) so that the file descriptor associated 
+ * the C library close() routine) so that the file descriptor associated
  * with the relevant stream (i.e. stdout) can be closed as well. This routine
  * does not manage file descriptors.
- * 
+ *
  * The close routine is not implemented for the small driver; instead it will
  * map to null. This is because the small driver simply waits while characters
- * are transmitted; there is no interrupt-serviced buffer to empty 
+ * are transmitted; there is no interrupt-serviced buffer to empty
  */
 int altera_avalon_jtag_uart_close(altera_avalon_jtag_uart_state* sp, int flags)
 {
-  /* 
+  /*
    * Wait for all transmit data to be emptied by the JTAG UART ISR, or
    * for a host-inactivity timeout, in which case transmit data will be lost
    */
   while ( (sp->tx_out != sp->tx_in) && (sp->host_inactive < sp->timeout) ) {
     if (flags & O_NONBLOCK) {
-      return -EWOULDBLOCK; 
+      return -EWOULDBLOCK;
     }
   }
 
