@@ -1,6 +1,6 @@
 
-public interface Iterator <T> 
-{	
+public interface Iterator <T>
+{
     public void goLeft();
     public void goRight();
     public void goUp();

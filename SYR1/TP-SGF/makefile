@@ -1,5 +1,5 @@
 NAME = dupond-dupont
-CC = gcc 
+CC = gcc
 CFLAGS = -g -Wall -I./include
 LOG = resultats.txt
 EXPORT_DIR = /dev/null
@@ -17,16 +17,16 @@ PROGS = \
 	bin/test_read \
 	bin/test_write \
 	bin/simple_read \
-	bin/simple_write 
+	bin/simple_write
 
 
 INC_FILES = \
 	include/physical_io.h \
 	include/syr1_file.h \
-	include/directory.h 
+	include/directory.h
 
-all: 
-	@echo "==============================================================" 
+all:
+	@echo "=============================================================="
 	@echo "usage : make [progs] [modules] [listing] [run_test] [clean] [format]"
 	@echo "  "
 	@echo "  progs       : Compilation et EdL des programmes de tests"
@@ -34,10 +34,10 @@ all:
 	@echo "  listing     : Génère un fichier pdf (imprimable) des sources"
 	@echo "  clean       : efface les fichiers objets (*.o) et binaires"
 	@echo "  init_fs     : regénère un systeme de fichier 'complet'"
-	@echo "  inspect     : ouvre le disque virtuel avec l'éditeur héxadécimal" 
+	@echo "  inspect     : ouvre le disque virtuel avec l'éditeur héxadécimal"
 	@echo "  test_read   : lance le test de lecture avec simple_read"
 	@echo "  test_write  : lance le test d'écriture avec simple_write"
-	@echo "==============================================================" 
+	@echo "=============================================================="
 	@echo "  "
 
 progs : $(PROGS)
@@ -62,16 +62,16 @@ obj/file_write.o : student/file_write.c $(INC_FILES)
 #
 
 bin/simple_read: tests/simple_read.c $(OBJ) $(INC_FILES)
-	$(CC) -o  bin/simple_read  $(CFLAGS) $(OBJ) tests/simple_read.c 
+	$(CC) -o  bin/simple_read  $(CFLAGS) $(OBJ) tests/simple_read.c
 
 bin/simple_write : tests/simple_write.c $(OBJ) $(INC_FILES)
-	$(CC) -o bin/simple_write $(CFLAGS) $(OBJ) tests/simple_write.c 
+	$(CC) -o bin/simple_write $(CFLAGS) $(OBJ) tests/simple_write.c
 
 bin/test_read: tests/test_read.c $(OBJ) $(INC_FILES)
-	$(CC) -o bin/test_read  $(CFLAGS) $(OBJ) tests/test_read.c 
+	$(CC) -o bin/test_read  $(CFLAGS) $(OBJ) tests/test_read.c
 
 bin/test_write : tests/test_write.c $(OBJ) $(INC_FILES)
-	$(CC) -o bin/test_write $(CFLAGS) $(OBJ) tests/test_write.c 
+	$(CC) -o bin/test_write $(CFLAGS) $(OBJ) tests/test_write.c
 
 #
 # Regénération du SGF
@@ -96,7 +96,7 @@ test_read: $(PROGS)
 	./bin/simple_read
 
 
-# test de l'écriture 
+# test de l'écriture
 test_write: $(PROGS)
 	./bin/simple_write
 

@@ -12,12 +12,12 @@ public class Vin {
     private static TextArea fenTrace ; // traces : etats, item, action
 
     private static void afficherEtatAnalyse(int numact, int arrivee) {
-	String mess = 
+	String mess =
 	    "d?art=" + etat + "  item=" + Lexvin.item[code] +
-	    "  arrivee=" + arrivee + "  numact=" + numact + "\n";    
+	    "  arrivee=" + arrivee + "  numact=" + numact + "\n";
 	fenTrace.append(mess) ;
     } // afficherEtatAnalyse
- 
+
    private static void interpreteur() {
 	int arrivee, numact=0 ;
 	Lexvin.debutAnalyse(fenEntree) ;
@@ -31,7 +31,7 @@ public class Vin {
 	    Actvin.executer(numact) ;
 	    if (errcontr) break ;
 	    etat = Autovin.transit[etat][code] ;
-	    if (etat==Autovin.FINAL) break ;  
+	    if (etat==Autovin.FINAL) break ;
 	}
 	while (true) ;
 	Lexvin.finAnalyse() ;
@@ -49,14 +49,11 @@ public class Vin {
        fenTrace = new TextArea("ETATS, ITEM, ACTION\n",10,80) ;
        fenTrace.append("-------------------\n") ;
        fenTrace.setFont(new Font("Courier",Font.PLAIN,12)) ;
-       fenTrace.setEditable(false) ; 
+       fenTrace.setEditable(false) ;
        fenAffichage.add(fenTrace,"South") ;
-       fenAffichage.pack() ; 
+       fenAffichage.pack() ;
        fenAffichage.setVisible(true) ;
        interpreteur() ;
        System.exit(0) ;
-    } 
+    }
 } // class Vin
-
-	
-

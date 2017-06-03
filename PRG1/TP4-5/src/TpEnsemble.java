@@ -1,5 +1,5 @@
 import java.awt.Frame;
-import java.awt.Font; 
+import java.awt.Font;
 import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -16,27 +16,27 @@ public class TpEnsemble {
 	"E[n1] <-- E[n2]",
 	"E[n1] <-- ensemble vide",
 	"afficher le contenu de E[n1]",
-	"ajouter une valeur à E[n1]",
-	"ajouter un intervalle de valeurs à E[n1]",
-	"déterminer si x appartient à E[n1]",
+	"ajouter une valeur ï¿½ E[n1]",
+	"ajouter un intervalle de valeurs ï¿½ E[n1]",
+	"dï¿½terminer si x appartient ï¿½ E[n1]",
 	"afficher le cardinal de E[n1]",
-	"E[n1] <-- complémentaire(E[n1])",
-	"E[n1] <-- différence(E[n1],E[n2])",
-	"E[n1] <-- différenceSymétrique(E[n1],E[n2])",
-	"déterminer si E[n1] et E[n2] sont égaux",
-	"déterminer si E[n1] est inclus dans E[n2]",
+	"E[n1] <-- complï¿½mentaire(E[n1])",
+	"E[n1] <-- diffï¿½rence(E[n1],E[n2])",
+	"E[n1] <-- diffï¿½renceSymï¿½trique(E[n1],E[n2])",
+	"dï¿½terminer si E[n1] et E[n2] sont ï¿½gaux",
+	"dï¿½terminer si E[n1] est inclus dans E[n2]",
 	"E[n1] <-- intersection(E[n1],E[n2])",
-	"retirer une valeur à E[n1]",
-	"retirer un intervalle de valeurs à E[n1]",
+	"retirer une valeur ï¿½ E[n1]",
+	"retirer un intervalle de valeurs ï¿½ E[n1]",
 	"E[n1] <-- union(E[n1],E[n2])",
-	"déterminer si E[n1] est vide",
-	"arrêt de l'exécution"
+	"dï¿½terminer si E[n1] est vide",
+	"arrï¿½t de l'exï¿½cution"
     };
 
     private static String[] nomBouton =
     {"Affecter", "AffecterVide", "Afficher", "Ajouter", "AjouterIntervalle",
-     "Appartient", "Cardinal", "Complémentaire", "Différence",
-     "DifférenceSymétrique", "Egal", "InclusDans", "Intersection",
+     "Appartient", "Cardinal", "Complï¿½mentaire", "Diffï¿½rence",
+     "Diffï¿½renceSymï¿½trique", "Egal", "InclusDans", "Intersection",
      "Oter", "RetirerIntervalle", "Union", "Vide", "Quitter"};
 
     private static Frame menu = new Frame();
@@ -64,7 +64,7 @@ public class TpEnsemble {
 	menu.setLocation(LOCX, LOCY);
 	menu.setLayout(null);
 	for (int i = 0; i < nomBouton.length; ++i) {
-	                       // création des boutons du menu
+	                       // crï¿½ation des boutons du menu
 	    Button bouton = new Button(nomBouton[i]);
 	    bouton.addActionListener(new Action(i));
 	    bouton.setLocation(0,25 + HAUTEURBOUTON * i);
@@ -75,13 +75,13 @@ public class TpEnsemble {
 	menu.setVisible(true);
     } // main
 
-    private static void executer(int i) { // traitements associés aux boutons
+    private static void executer(int i) { // traitements associï¿½s aux boutons
 	System.out.println("* "+texteCommande[i]);
 	switch (i) {
 	case  0 : E[lireN(1)] = E[lireN(2)].copy(); break;
 	case  1 : E[lireN(1)].clear(); break;
 	case  2 : System.out.println(E[lireN(1)]); break;
-	case  3 : E[lireN(1)].add(lireVal("valeur à ajouter : ")); break;
+	case  3 : E[lireN(1)].add(lireVal("valeur ï¿½ ajouter : ")); break;
 	case  4 : E[lireN(1)].addInterval(lireVal("deb intervalle : "),
 					  lireVal("fin intervalle : "));
 	    break;
@@ -96,7 +96,7 @@ public class TpEnsemble {
 	case 11 : System.out.println(E[lireN(1)].isIncludedIn(E[lireN(2)]));
 	    break;
 	case 12 : E[lireN(1)].intersection(E[lireN(2)]); break;
-	case 13 : E[lireN(1)].remove(lireVal("valeur à retirer : "));
+	case 13 : E[lireN(1)].remove(lireVal("valeur ï¿½ retirer : "));
 	    break;
 	case 14 : E[lireN(1)].removeInterval(lireVal("deb intervalle : "),
 					     lireVal("fin intervalle : "));
@@ -114,13 +114,13 @@ public class TpEnsemble {
 	boolean b;
 	do {
 	    b = true;
-	    x = 0;	
+	    x = 0;
 	    System.out.print(s);
 	    try {
 		x = standardInput.nextInt();
 	    }
-	    catch (NumberFormatException e) { 
-		b = false; 
+	    catch (NumberFormatException e) {
+		b = false;
 	    }
 	    b = b && x>=d && x<=f;
 	    if (!b) {
@@ -131,7 +131,7 @@ public class TpEnsemble {
     }
 
     private static int lireN(int i) {
-	return lireEnt("  numéro d'ensemble n" + i + " : ", 0, MAXENS - 1);
+	return lireEnt("  numï¿½ro d'ensemble n" + i + " : ", 0, MAXENS - 1);
     }
 
     private static int lireVal(String s) {

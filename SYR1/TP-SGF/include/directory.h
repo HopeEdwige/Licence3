@@ -28,8 +28,8 @@
 #define FILENAME_SIZE 16
 #define MAX_BLOCK_PER_FILE ((IO_BLOCK_SIZE-8-FILENAME_SIZE)/sizeof(int))
 
-/* Définition de la structure permettant de stocker les 
- * les informations permanentes d'un fichier (descripteur 
+/* Définition de la structure permettant de stocker les
+ * les informations permanentes d'un fichier (descripteur
  * de fichier)
  */
 
@@ -39,7 +39,7 @@ typedef struct {
   int alloc[MAX_BLOCK_PER_FILE]; // Table d'allocation des blocs de données
 } file_descriptor;
 
-/* Définition de la stucture modélisant une entrée 
+/* Définition de la stucture modélisant une entrée
  * du catalogue
  */
 
@@ -110,13 +110,13 @@ int create_entry(char* name, file_descriptor* desc);
  * SYNOPSYS :
  * 	 int remove_entry(char* name)
  * DESCRIPTION :
- *   Suppresion (sur le disque) de l'entrée catalogue d'un fichier 
+ *   Suppresion (sur le disque) de l'entrée catalogue d'un fichier
  *   dont le nom externe est passé en paramètre. Les blocs de données
  *   alloués a ce fichier sont libérés.
  * PARAMETRES :
  *   name     : nom externe du fichier à créer dan le catalogue
  * RESULTAT :
- *     0 : suppression réussie 
+ *     0 : suppression réussie
  *    -1 : le fichier n'existe pas
  *    -2 : Erreur d'entrée/sortie sur le périphérique de stockage
  *    -3 : Incohérence dans la table des blocs libres/occupés
@@ -178,5 +178,3 @@ int free_allocation_unit(int data_block_id);
 
 
 #endif /*DIRECTORY_H_*/
-
-

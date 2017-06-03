@@ -14,26 +14,26 @@ public class TpListe {
 	private static ArrayList<OurSet> listSet = new ArrayList<OurSet>(MAX_SET);
 
 	private final static String[] COMMAND_TEXTS = {
-			"afficher les entiers appartenant à l'ensemble numéro n1",
-			"afficher les rangs présents dans l'ensemble numéro n1",
-			"ajouter des valeurs à l'ensemble numéro n1",
-			"déterminer si x appartient à l'ensemble numéro n1",
-			"afficher le cardinal de l'ensemble numéro n1",
-			"l'ensemble numéro n1 <-- différence l'ensemble numéro n1 \\ l'ensemble numéro n2)",
-			"l'ensemble numéro n1 <-- différence symétrique de l'ensemble numéro n1 et l'ensemble numéro n2",
-			"déterminer si l'ensemble numéro n1 et l'ensemble numéro n2 sont égaux",
-			"déterminer si l'ensemble numéro n1 est inclus dans l'ensemble numéro n2",
-			"l'ensemble numéro n1 <-- intersection de l'ensemble numéro n1 et l'ensemble numéro n2",
-			"réinitialiser l'ensemble numéro n1 à partir d'un fichier",
-			"retirer des valeurs à l'ensemble numéro n1",
-			"sauvegarder l'ensemble numéro n1 dans un fichier",
-			"l'ensemble numéro n1 <-- union de l'ensemble numéro n1 et l'ensemble numéro n2",
-			"arrêt de l'exécution" };
+			"afficher les entiers appartenant ï¿½ l'ensemble numï¿½ro n1",
+			"afficher les rangs prï¿½sents dans l'ensemble numï¿½ro n1",
+			"ajouter des valeurs ï¿½ l'ensemble numï¿½ro n1",
+			"dï¿½terminer si x appartient ï¿½ l'ensemble numï¿½ro n1",
+			"afficher le cardinal de l'ensemble numï¿½ro n1",
+			"l'ensemble numï¿½ro n1 <-- diffï¿½rence l'ensemble numï¿½ro n1 \\ l'ensemble numï¿½ro n2)",
+			"l'ensemble numï¿½ro n1 <-- diffï¿½rence symï¿½trique de l'ensemble numï¿½ro n1 et l'ensemble numï¿½ro n2",
+			"dï¿½terminer si l'ensemble numï¿½ro n1 et l'ensemble numï¿½ro n2 sont ï¿½gaux",
+			"dï¿½terminer si l'ensemble numï¿½ro n1 est inclus dans l'ensemble numï¿½ro n2",
+			"l'ensemble numï¿½ro n1 <-- intersection de l'ensemble numï¿½ro n1 et l'ensemble numï¿½ro n2",
+			"rï¿½initialiser l'ensemble numï¿½ro n1 ï¿½ partir d'un fichier",
+			"retirer des valeurs ï¿½ l'ensemble numï¿½ro n1",
+			"sauvegarder l'ensemble numï¿½ro n1 dans un fichier",
+			"l'ensemble numï¿½ro n1 <-- union de l'ensemble numï¿½ro n1 et l'ensemble numï¿½ro n2",
+			"arrï¿½t de l'exï¿½cution" };
 
 	private final static String[] ITEM_NAMES = { "AfficherEns",
-			"AfficherRangs", "Ajouter", "Appartient", "Cardinal", "Différence",
-			"DifférenceSymétrique", "Egaux", "Inclus", "Intersection",
-			"Réinitialiser", "Retirer", "Sauvegarder", "Union", "Quitter" };
+			"AfficherRangs", "Ajouter", "Appartient", "Cardinal", "Diffï¿½rence",
+			"Diffï¿½renceSymï¿½trique", "Egaux", "Inclus", "Intersection",
+			"Rï¿½initialiser", "Retirer", "Sauvegarder", "Union", "Quitter" };
 
 	private static Frame menu = new Frame();
 	private final static int H = 180, V = 480, LOCX = 800, LOCY = 10;
@@ -72,7 +72,7 @@ public class TpListe {
 				menu.add(button);
 			}
 			menu.setVisible(true);
-		} 
+		}
 		catch (AssertionError e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());
@@ -80,7 +80,7 @@ public class TpListe {
 		}
 	}
 
-	private static void execute(int i) { // traitements associés aux boutons
+	private static void execute(int i) { // traitements associï¿½s aux boutons
 		System.out.println("* " + COMMAND_TEXTS[i]);
 		switch (i) {
 		case 0:
@@ -145,7 +145,7 @@ public class TpListe {
 		do {
 			b = true;
 			number = 0;
-			System.out.print("  numéro d'ensemble n" + i + " (>=0 et <"
+			System.out.print("  numï¿½ro d'ensemble n" + i + " (>=0 et <"
 					+ MAX_SET + ") : ");
 			try {
 				number = standardInput.nextInt();

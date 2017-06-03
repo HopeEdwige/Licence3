@@ -1,8 +1,8 @@
 package rattrapage_java;
 
 public class Monsieur {
-	
-	
+
+
 	public static void main(String[] args){
 
 		int annee =  Integer.valueOf(args[0]);
@@ -14,8 +14,7 @@ public class Monsieur {
 
 
 
-		
+
 		System.out.println("Monsieur "+ prenom+ " "+ nom + ", vous avez " + age +" ans");
 	}
 }
-

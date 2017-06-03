@@ -51,7 +51,7 @@ public class ServeurHTTP {
 				InetAddress ipClient = socket.getInetAddress();
 				response += "<h1>Client</h1><p>IP: " + ipClient.getHostAddress() + "</p>";
 				response += "<p>Requested file: " + splitted[1] + "</p>";
-				
+
 				//Close the html
 				response += "</html>";
 			}

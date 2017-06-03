@@ -6,10 +6,10 @@ import java.util.Scanner;
 
 
 public class ClientTCP {
-	
+
 	private static final int PORT = 1032;
-	
-	public static void main(String[] args) throws Exception {	
+
+	public static void main(String[] args) throws Exception {
 		//Open the socket (create the connection at the same time)
 		Socket socket = new Socket("localhost", PORT);
 
@@ -17,7 +17,7 @@ public class ClientTCP {
 		System.out.println("Veuillez entrer un message:");
 		Scanner scan = new Scanner(System.in);
 		String text = scan.nextLine();
-		System.out.println("Texte entré: " + text);
+		System.out.println("Texte entrï¿½: " + text);
 
 		//The output stream send to the server
 		DataOutputStream outputStream = new DataOutputStream(socket.getOutputStream());

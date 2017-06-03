@@ -10,8 +10,6 @@ int main(int argc, char **argv) {
 	int res = remove_entry(argv[1]);
 	if (res< 0) {
 		fprintf(stderr,"Error %d during syr1_rm\n",res);
-	} 
-	return 0;	
+	}
+	return 0;
 }
-
-

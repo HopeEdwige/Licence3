@@ -2,13 +2,13 @@
  * A class to get the "Fourmis" algorithm
  */
 public class Fourmis {
-	
+
 	/**
 	 * Constructor of this class
 	 */
 	public Fourmis() {}
-	
-	
+
+
 	/**
 	 * Method to get the next term
 	 * @param String ui The actual term
@@ -17,7 +17,7 @@ public class Fourmis {
 	public static String next(String ui) {
 		String ret = "";
 
-		System.out.println("Valeur d'entrée: " + ui);
+		System.out.println("Valeur d'entrï¿½e: " + ui);
 
 		//Travel the String
 		for (int i = 0; i < ui.length(); i++) {
@@ -42,5 +42,5 @@ public class Fourmis {
 		System.out.println("Valeur de sortie: " + ret);
 		return ret;
 	}
-	
+
 }

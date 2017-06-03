@@ -68,4 +68,3 @@ int syr1_fclose(SYR1_FILE* file) {
     return -1;
   }
 }
-

@@ -7,5 +7,5 @@ begin
 	i:= i+1;
 	res:= res*a
       end
-  done 
+  done
 end {res=(a*b)}

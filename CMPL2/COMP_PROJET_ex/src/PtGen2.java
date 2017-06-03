@@ -1,6 +1,6 @@
 /*********************************************************************************
- *   squelette de PtGen2 fourni aux étudiants, à compléter pour grammaire  Exp2  *
- *   nom du programme compilé, sans suffixe : String    nomSource                *
+ *   squelette de PtGen2 fourni aux ï¿½tudiants, ï¿½ complï¿½ter pour grammaire  Exp2  *
+ *   nom du programme compilï¿½, sans suffixe : String    nomSource                *
  *   ------------------------                                                    *
  *                                                                               *
  *   attributs lexicaux (selon items figurant dans la grammaire):                *
@@ -15,20 +15,20 @@
 import java.io.*;
 
 public class PtGen2 {
-    
+
 
     public static String trinome = "NGUYEN NHON, BOUCHERIE, ANDRIAMILANTO";
     public static int valNb;
     public static String idLu;
 
-    // initialisations  à  compléter 
+    // initialisations  ï¿½  complï¿½ter
     // -------------------------------------
- 
 
-    // code des points de génération à compléter
+
+    // code des points de gï¿½nï¿½ration ï¿½ complï¿½ter
     // -------------------------------------
     public static void pt(int numGen) {
-    	switch (numGen) {  
+    	switch (numGen) {
     	case 0 :	break;
     	case 1 : 	System.out.println("empiler " + valNb); break;
     	case 2 : 	System.out.println("contenug " + idLu); break;
@@ -36,10 +36,9 @@ public class PtGen2 {
     	case 6 : 	System.out.println("div"); break;
     	case 7 : 	System.out.println("add"); break;
     	case 8 : 	System.out.println("sous"); break;
-    	
-    	default : System.out.println("Point de génération non prévu dans votre liste");break;
-    	
+
+    	default : System.out.println("Point de gï¿½nï¿½ration non prï¿½vu dans votre liste");break;
+
     	}
         }
 }
- 

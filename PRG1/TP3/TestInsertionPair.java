@@ -4,26 +4,26 @@ import java.util.Scanner;
 import org.junit.Test;
 
 public class TestInsertionPair {
-	
+
 	@Test
 	public void testInsertionPair() {
 		try {
 			//Read the inputs from the keyboard
-			System.out.println("Veuillez entrer une suite d'entiers terminé par -1:");
+			System.out.println("Veuillez entrer une suite d'entiers terminï¿½ par -1:");
 			Scanner s1 = new Scanner(System.in);
 			InsertionPair myList = new InsertionPair();
 			myList.createArray(s1);
-			System.out.println("Ma liste après les entrées claviers: " + myList);
+			System.out.println("Ma liste aprï¿½s les entrï¿½es claviers: " + myList);
 			
 			//Read from a file
-			System.out.println("Veuillez entrer le nom d'un fichier à lire:");
+			System.out.println("Veuillez entrer le nom d'un fichier ï¿½ lire:");
 			String nom = Lecture.lireString();
 			File f1 = new File(nom);
 			Scanner s2 = new Scanner(f1);
 			myList.createArray(s2);
 			s1.close();
 			s2.close();
-			System.out.println("Ma liste après lecture du fichier: " + myList);
+			System.out.println("Ma liste aprï¿½s lecture du fichier: " + myList);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

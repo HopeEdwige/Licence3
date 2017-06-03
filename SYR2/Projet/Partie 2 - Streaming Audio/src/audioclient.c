@@ -35,7 +35,7 @@ int process_params(int argc, char** args) {
 			filter = F_MONO;
 
 		// If an unknown filter
-		else { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; } 
+		else { perror("Run with audioclient server_host_name file_name [filter_name] [filter_parameter]"); return 1; }
 	}
 
 	// Return the filter
@@ -70,7 +70,7 @@ void close_connection(int err_socket, char* err_message, struct sockaddr* err_de
 
 
 /**
- * Initialize the socket 
+ * Initialize the socket
  *
  * Parameters:
  *	 - char* host  => The name of the host to resolve
@@ -286,7 +286,7 @@ int main(int argc, char** args) {
 					case P_BLOCK:
 
 						write_audio = write(write_init_audio, from_server.message, BUFFER_SIZE);
-						
+
 						// If error during the reading
 						if (write_audio == -1) close_connection(client_socket, "Error at writing a block", (struct sockaddr*)&destination, write_init_audio);
 
@@ -316,7 +316,7 @@ int main(int argc, char** args) {
 						// Close the connection
 						close_connection(client_socket, "The file was correctly read, close the connection, bye", (struct sockaddr*)&destination, write_init_audio);
 						break;
-					
+
 				}
 			}
 		}

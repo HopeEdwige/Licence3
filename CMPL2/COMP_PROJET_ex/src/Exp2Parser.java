@@ -1,5 +1,5 @@
 // $ANTLR 3.5 H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g 2015-02-05 11:06:58
-           
+
 import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class Exp2Parser extends Parser {
 	public static final String[] tokenNames = new String[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ID", "INT", "WS", "'('", "')'", 
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "ID", "INT", "WS", "'('", "')'",
 		"'*'", "'+'", "'-'", "'div'"
 	};
 	public static final int EOF=-1;
@@ -46,7 +46,7 @@ public class Exp2Parser extends Parser {
 	@Override public String getGrammarFileName() { return "H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g"; }
 
 
-	// variables globales et méthodes utiles à placer ici
+	// variables globales et mï¿½thodes utiles ï¿½ placer ici
 
 
 
@@ -61,7 +61,7 @@ public class Exp2Parser extends Parser {
 			exp();
 			state._fsp--;
 
-			match(input,EOF,FOLLOW_EOF_in_unite68); 
+			match(input,EOF,FOLLOW_EOF_in_unite68);
 			}
 
 		}
@@ -107,7 +107,7 @@ public class Exp2Parser extends Parser {
 				case 1 :
 					// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:35:10: '+' terme
 					{
-					match(input,10,FOLLOW_10_in_exp97); 
+					match(input,10,FOLLOW_10_in_exp97);
 					pushFollow(FOLLOW_terme_in_exp99);
 					terme();
 					state._fsp--;
@@ -118,7 +118,7 @@ public class Exp2Parser extends Parser {
 				case 2 :
 					// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:36:10: '-' terme
 					{
-					match(input,11,FOLLOW_11_in_exp116); 
+					match(input,11,FOLLOW_11_in_exp116);
 					pushFollow(FOLLOW_terme_in_exp118);
 					terme();
 					state._fsp--;
@@ -177,7 +177,7 @@ public class Exp2Parser extends Parser {
 				case 1 :
 					// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:41:11: '*' primaire
 					{
-					match(input,9,FOLLOW_9_in_terme164); 
+					match(input,9,FOLLOW_9_in_terme164);
 					pushFollow(FOLLOW_primaire_in_terme166);
 					primaire();
 					state._fsp--;
@@ -188,7 +188,7 @@ public class Exp2Parser extends Parser {
 				case 2 :
 					// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:42:11: 'div' primaire
 					{
-					match(input,12,FOLLOW_12_in_terme184); 
+					match(input,12,FOLLOW_12_in_terme184);
 					pushFollow(FOLLOW_primaire_in_terme186);
 					primaire();
 					state._fsp--;
@@ -266,12 +266,12 @@ public class Exp2Parser extends Parser {
 				case 3 :
 					// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:48:5: '(' exp ')'
 					{
-					match(input,7,FOLLOW_7_in_primaire236); 
+					match(input,7,FOLLOW_7_in_primaire236);
 					pushFollow(FOLLOW_exp_in_primaire239);
 					exp();
 					state._fsp--;
 
-					match(input,8,FOLLOW_8_in_primaire241); 
+					match(input,8,FOLLOW_8_in_primaire241);
 					}
 					break;
 
@@ -296,7 +296,7 @@ public class Exp2Parser extends Parser {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:56:11: ( INT )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:56:15: INT
 			{
-			INT1=(Token)match(input,INT,FOLLOW_INT_in_nbentier267); 
+			INT1=(Token)match(input,INT,FOLLOW_INT_in_nbentier267);
 			 PtGen2.valNb = Integer.parseInt((INT1!=null?INT1.getText():null));
 			}
 
@@ -320,8 +320,8 @@ public class Exp2Parser extends Parser {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:57:7: ( ID )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:57:9: ID
 			{
-			ID2=(Token)match(input,ID,FOLLOW_ID_in_ident276); 
-			 PtGen2.idLu = (ID2!=null?ID2.getText():null); 
+			ID2=(Token)match(input,ID,FOLLOW_ID_in_ident276);
+			 PtGen2.idLu = (ID2!=null?ID2.getText():null);
 			}
 
 		}

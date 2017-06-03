@@ -10,7 +10,7 @@ public class InsertionPair {
 	private int size;
 	private Pair[] array = new Pair[SIZE_MAX];
 
-	
+
 	/**
 	 * The constructor
 	 * Just initializes the size to 0
@@ -19,7 +19,7 @@ public class InsertionPair {
 		this.size = 0;
 	}
 
-	
+
 	/**
 	 * Get a copy of the current array
 	 * @return Pair[] A copy of the current array
@@ -34,8 +34,8 @@ public class InsertionPair {
 		}
 		return copy;
 	}
-	
-	
+
+
 	/**
 	 * Insert a Pair object into the current array
 	 * The array is sorted before and after the insertion
@@ -69,31 +69,31 @@ public class InsertionPair {
 				this.size ++;
 				result = true;
 			}
-			
+
 		}
-		
+
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * Get a displayable description of this object and its current state
 	 * @return String A displayable description of this object
 	 */
 	public String toString() {
 		String ret = "";
-		
+
 		ret = ret + "Array de taille " + this.size + " dont le contenu est ";
-		
+
 		for (int i = 0; i < this.size-1; i++) {
 			ret = ret + this.array[i].toString() + ", ";
 		}
 		ret = ret + this.array[this.size-1].toString() + ".";
-		
+
 		return ret;
 	}
-	
-	
+
+
 	/**
 	 * Initializes the values of the array
 	 * @param Scanner scanner The scanner object where we'll get the inputs

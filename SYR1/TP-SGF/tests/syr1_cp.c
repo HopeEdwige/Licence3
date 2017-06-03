@@ -9,7 +9,7 @@ int main(int argc, char **argv) {
 	if (argc!=3) {
 		fprintf(stderr,"usage : syr1_cp nom1 nom2\n");
 		return -1;
-	} 
+	}
 
 	char* nom1=argv[1];
 	char* nom2=argv[2];
@@ -33,9 +33,9 @@ int main(int argc, char **argv) {
 		if (res !=EOF) 	syr1_putc(res,file1);
 	}
 
-	fflush(stdout);  
+	fflush(stdout);
 	syr1_fclose(file1);
 	fclose(file2);
-	printf("Number of physical IOs involved : %d\n",physical_io_count);  
+	printf("Number of physical IOs involved : %d\n",physical_io_count);
 	return 0;
 }

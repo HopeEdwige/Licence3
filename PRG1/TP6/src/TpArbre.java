@@ -13,7 +13,7 @@ public class TpArbre {
 
 	// pour les arbres binaires manipules
 	private static final int NUMBER_OF_TREES = 5;
-	private static ArrayList<Image> treeSet = 
+	private static ArrayList<Image> treeSet =
 			new ArrayList<Image>(NUMBER_OF_TREES);
 	private static final Scanner standardInput = new Scanner(System.in);
 
@@ -343,7 +343,7 @@ public class TpArbre {
 			try {
 				value = standardInput.nextInt();
 				end = (value >= min) && (value <= max);
-			} 
+			}
 			catch (NumberFormatException e) {
 				end = false;
 			}

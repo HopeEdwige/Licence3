@@ -1,10 +1,10 @@
 package rattrapage_java;
 
 public class Parallelepipede {
-	
+
 	static int surface(int longueur, int largeur, int hauteur){
 
-		int result = 2 * (longueur * largeur + longueur * hauteur + largeur * hauteur); 
+		int result = 2 * (longueur * largeur + longueur * hauteur + largeur * hauteur);
 		return result;
 	}
 
@@ -15,7 +15,7 @@ public class Parallelepipede {
 	}
 
 	public static void main(String[] args){
-		
+
 		System.out.println("surface(12x3x5) = "+surface(12, 3, 5));
 		System.out.println("volume(12x3x5) = "+volume(12, 3, 5));
 

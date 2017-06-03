@@ -87,7 +87,7 @@ int reverse_file(char* filename) {
 
 				// Close the file
 				int result_close = close(file);
-				
+
 				// Free the buffer
 				free(buffer);
 
@@ -204,7 +204,7 @@ simple_list* reverse_list(simple_list* head) {
 	// Some temporary variables
 	simple_list* tmp = NULL;
 	simple_list* tmp2;
-	
+
 	// While there are still some unreversed elements
 	while (head != NULL) {
 		// Get the current element and store it in a var

@@ -7,7 +7,7 @@ import java.io.InputStream;
 import java.util.Scanner;
 
 public class Image extends BinaryTree<NodeState> {
-	
+
 	private static final Scanner standardInput = new Scanner(System.in);
 	private static final int WINDOW_SIZE = 256;
 
@@ -23,32 +23,32 @@ public class Image extends BinaryTree<NodeState> {
 	public boolean isPixelOn(int x, int y) {
 		Iterator<NodeState> it = this.iterator();
 		int tmpX = 256, tmpY = 256;
-		
+
 		while (!it.isEmpty()) {
-			
+
 			//Horizontal
 			if (tmpX == tmpY) {
 				if (x < (tmpX/2))
 					it.goLeft();  //Upper
-				
+
 				else
 					it.goRight();  //Lower
-				
+
 				tmpX = tmpX/2;
 			}
-			
+
 			//Vertical
 			else {
 				if (y < (tmpY/2))
 					it.goLeft();  //Left
-				
+
 				else
 					it.goRight();  //Right
-				
+
 				tmpY = tmpY/2;
 			}
 		}
-		
+
 		it.goUp();
 		return (it.getValue().equals(NodeState.valueOf(1)));
 	}
@@ -56,21 +56,21 @@ public class Image extends BinaryTree<NodeState> {
 	public void affect(Image image2, Dessin dessinWindow) {
 		Iterator<NodeState> it = image2.iterator();
 		Iterator<NodeState> itThis = this.iterator();
-		
+
 		itThis.clear();
-		
+
 		if (!it.isEmpty())
 			affectAux(it, itThis);
-		
+
 		//Display on the first screen
 		this.plotImage(3, dessinWindow);
 	}
-	
-	
+
+
 	private void affectAux(Iterator<NodeState> it, Iterator<NodeState> itThis) {
 		if (!itThis.isEmpty()) {
 			itThis.addValue(it.getValue().copy());
-			
+
 			it.goLeft();
 			itThis.goLeft();
 			affectAux(it, itThis);
@@ -83,21 +83,21 @@ public class Image extends BinaryTree<NodeState> {
 			itThis.goUp();
 		}
 	}
-	
+
 
 	public void rotate180(Image image2, Dessin dessinWindow) {
 		Iterator<NodeState> it = image2.iterator();
 		Iterator<NodeState> itThis = this.iterator();
-		
+
 		//Clear this image
 		itThis.clear();
-		
+
 		if (!it.isEmpty())
 			rotateAux(it, itThis);
-		
+
 		this.plotImage(2, dessinWindow);
 	}
-	
+
 	private void rotateAux (Iterator<NodeState> it, Iterator<NodeState> itThis) {
 		if (!it.isEmpty()) {
 			int e = it.getValue().e;
@@ -114,27 +114,27 @@ public class Image extends BinaryTree<NodeState> {
 			itThis.goUp();
 		}
 	}
-	
+
 	public void videoInverse(Dessin dessinWindow) {
 		//Draw the drawing as beginning in the 1st window
 		plotImage(1, dessinWindow);
-		
+
 		//Get an iterator
 		Iterator<NodeState> it = this.iterator();
-		
+
 		//Throw the invert
 		invertAux(it);
-		
+
 		//Draw the drawing as result in the 2nd window
 		plotImage(2, dessinWindow);
 	}
-	
-	
+
+
 	private void invertAux(Iterator<NodeState> it) {
 		//If not empty
 		if (!it.isEmpty()) {
 			NodeState ns = it.getValue();
-			
+
 			//Process this one
 			if (ns.e == 1) {
 				it.setValue(NodeState.valueOf(0));
@@ -142,7 +142,7 @@ public class Image extends BinaryTree<NodeState> {
 			else if (ns.e == 0) {
 				it.setValue(NodeState.valueOf(1));
 			}
-			
+
 			//Process the sons
 			it.goLeft();
 			invertAux(it);
@@ -158,24 +158,24 @@ public class Image extends BinaryTree<NodeState> {
 		Iterator<NodeState> it1 = image1.iterator();
 		Iterator<NodeState> it2 = image2.iterator();
 		Iterator<NodeState> it3 = this.iterator();
-		
+
 		//Clear this image
 		it3.clear();
-		
+
 		if (!it1.isEmpty() && !it2.isEmpty()){
 			intersectionAux(it1, it2, it3);
 		}
-		
+
 		this.plotImage(3, dessinWindow); // resultat dans fenetre 3
 		image1.plotImage(1, dessinWindow); // premiere image dans fenetre 1
 		image2.plotImage(2, dessinWindow); // deuxieme image dans fenetre 2
 	}
-	
+
 	private void intersectionAux(Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
 		if (!it1.isEmpty() && !it2.isEmpty()){
 			NodeState ns1 = it1.getValue();
 			NodeState ns2 = it2.getValue();
-			
+
 			if (ns1.equals(NodeState.valueOf(0)) || ns2.equals(NodeState.valueOf(0))) {
 				itThis.addValue(NodeState.valueOf(0));
 			}
@@ -203,7 +203,7 @@ public class Image extends BinaryTree<NodeState> {
 					it2.goUp();
 				}
 			}
-			
+
 			it1.goLeft();
 			it2.goLeft();
 			itThis.goLeft();
@@ -218,7 +218,7 @@ public class Image extends BinaryTree<NodeState> {
 			it1.goUp();
 			it2.goUp();
 			itThis.goUp();
-			
+
 		}
 	}
 
@@ -226,10 +226,10 @@ public class Image extends BinaryTree<NodeState> {
 		Iterator<NodeState> it1 = image1.iterator();
 		Iterator<NodeState> it2 = image2.iterator();
 		Iterator<NodeState> it3 = this.iterator();
-		
+
 		//Clear this image
 		it3.clear();
-		
+
 		if (!it1.isEmpty() && !it2.isEmpty()){
 			unionAux(it1, it2, it3);
 		}
@@ -237,12 +237,12 @@ public class Image extends BinaryTree<NodeState> {
 		image1.plotImage(1, dessinWindow); // premiere image dans fenetre 1
 		image2.plotImage(2, dessinWindow); // deuxieme image dans fenetre 2
 	}
-	
+
 	private void unionAux (Iterator<NodeState> it1, Iterator<NodeState> it2, Iterator<NodeState> itThis) {
 		if (!it1.isEmpty() && !it2.isEmpty()){
 			NodeState ns1 = it1.getValue();
 			NodeState ns2 = it2.getValue();
-			
+
 			if (ns1.equals(NodeState.valueOf(1)) || ns2.equals(NodeState.valueOf(1))) {
 				itThis.addValue(NodeState.valueOf(1));
 			}
@@ -270,7 +270,7 @@ public class Image extends BinaryTree<NodeState> {
 					it2.goUp();
 				}
 			}
-			
+
 			it1.goLeft();
 			it2.goLeft();
 			itThis.goLeft();
@@ -285,7 +285,7 @@ public class Image extends BinaryTree<NodeState> {
 			it1.goUp();
 			it2.goUp();
 			itThis.goUp();
-			
+
 		}
 	}
 
@@ -299,19 +299,19 @@ public class Image extends BinaryTree<NodeState> {
 			return false;
 		}
 	}
-	
+
 	private boolean testDiagAux(Iterator<NodeState> it) {
 		boolean result = true;
 		if (!it.isEmpty()) {
 			if (it.getValue().equals(NodeState.valueOf(0))) {
 				result = false;
-			} 
-			
+			}
+
 			else if (it.getValue().equals(NodeState.valueOf(2))) {
-				
+
 				//Go to Left 1st generation
 				it.goLeft();
-				
+
 				if (it.getValue().equals(NodeState.valueOf(1))) {
 					//Go Up 1st generation
 					it.goUp();
@@ -348,9 +348,9 @@ public class Image extends BinaryTree<NodeState> {
 
 		Iterator<NodeState> it = this.iterator();
 		int tmpX = 256, tmpY = 256;
-		
+
 		while ((!it.isEmpty()) && (result)) {
-			
+
 			//Horizontal
 			if (tmpX == tmpY) {
 				if ((x1 < (tmpX/2)) && (x2 < (tmpX/2))) {
@@ -365,7 +365,7 @@ public class Image extends BinaryTree<NodeState> {
 
 				tmpX = tmpX/2;
 			}
-			
+
 			//Vertical
 			else {
 				if (result) {
@@ -377,12 +377,12 @@ public class Image extends BinaryTree<NodeState> {
 					} else {
 						result = false;
 					}
-					
+
 					tmpY = tmpY/2;
 				}
 			}
 		}
-		
+
 		return result;
 	}
 
@@ -398,7 +398,7 @@ public class Image extends BinaryTree<NodeState> {
 			return isIncluAux(itThis, it2);
 		}
 	}
-	
+
 	private boolean isIncluAux (Iterator<NodeState> itThis, Iterator<NodeState> it2) {
 		boolean result = true;
 		if (!it2.isEmpty()) {
@@ -428,7 +428,7 @@ public class Image extends BinaryTree<NodeState> {
 		}
 		return result;
 	}
-	
+
 	public static void readImage(int windowNumber, Dessin dessinWindow) {
 		System.out.print("nom du fichier d'entree : ");
 		String fileName = standardInput.nextLine();
@@ -439,10 +439,10 @@ public class Image extends BinaryTree<NodeState> {
 			System.out.println("---------------------");
 			xReadImageFromFile(inFile, windowNumber, dessinWindow);
 			inFile.close();
-		} 
+		}
 		catch (FileNotFoundException e) {
 			System.out.println("fichier " + fileName + " inexistant");
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("impossible de fermer le fichier " + fileName);
@@ -501,7 +501,7 @@ public class Image extends BinaryTree<NodeState> {
 			if (isSquare) {
 				xConstructTree(it, x, y, squareWidth, false, windowNumber,
 						dessinWindow);
-			} 
+			}
 			else {
 				xConstructTree(it, x, y, rectangleWidth, true, windowNumber,
 						dessinWindow);
@@ -511,7 +511,7 @@ public class Image extends BinaryTree<NodeState> {
 			if (isSquare) {
 				xConstructTree(it, x, y + rectangleWidth, squareWidth, false,
 						windowNumber, dessinWindow);
-			} 
+			}
 			else {
 				xConstructTree(it, x + rectangleWidth, y, rectangleWidth, true,
 						windowNumber, dessinWindow);
@@ -533,11 +533,11 @@ public class Image extends BinaryTree<NodeState> {
 			outFile.write(ch.getBytes());
 			outFile.flush();
 			outFile.close();
-		} 
+		}
 		catch (FileNotFoundException e) {
 			System.out.println("probl?e d'ouverture de fichier pour "
 					+ fileName);
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("impossible de fermer le fichier " + fileName);
@@ -559,7 +559,7 @@ public class Image extends BinaryTree<NodeState> {
 							+ (x + squareWidth - 1) + " "
 							+ (y + squareWidth - 1) + "\n";
 				}
-			} 
+			}
 			else if (node.e == 1) {
 				result = result + "1 " + x + " " + y + " "
 						+ (x + squareWidth - 1) + " "
@@ -578,7 +578,7 @@ public class Image extends BinaryTree<NodeState> {
 			it.goRight();
 			if (isSquare) {
 				result += xSave(it, x, y + rectangleWidth, squareWidth, false);
-			} 
+			}
 			else {
 				result += xSave(it, x + rectangleWidth, y, rectangleWidth, true);
 			}
@@ -612,7 +612,7 @@ public class Image extends BinaryTree<NodeState> {
 					dessinWindow.switchOn(x, y, x + squareWidth - 1, y
 							+ squareWidth - 1, windowNumber);
 				}
-			} 
+			}
 			else {
 				if (node.e == 1) {
 					dessinWindow.switchOn(x, y, x + squareWidth - 1, y
@@ -625,7 +625,7 @@ public class Image extends BinaryTree<NodeState> {
 			if (isSquare) {
 				xPlotTree(it, x, y, squareWidth, false, windowNumber,
 						dessinWindow);
-			} 
+			}
 			else {
 				xPlotTree(it, x, y, rectangleWidth, true, windowNumber,
 						dessinWindow);
@@ -635,7 +635,7 @@ public class Image extends BinaryTree<NodeState> {
 			if (isSquare) {
 				xPlotTree(it, x, y + rectangleWidth, squareWidth, false,
 						windowNumber, dessinWindow);
-			} 
+			}
 			else {
 				xPlotTree(it, x + rectangleWidth, y, rectangleWidth, true,
 						windowNumber, dessinWindow);

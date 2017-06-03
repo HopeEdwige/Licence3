@@ -1,4 +1,4 @@
-(* Pour interpréter: ocaml graphics.cma *)
+(* Pour interprï¿½ter: ocaml graphics.cma *)
 (* Pour compiler: ocamlbuild -cflags -dtypes -lib graphics *)
 
 open Graphics;;
@@ -14,28 +14,28 @@ type programme = Stop | TGauche | TDroite | Avancer of int | Pinceau of etat
 type robot = { pos: position; ori: orientation; etat: etat };;
 
 
-(* Dimension de la fenêtre graphique *)
+(* Dimension de la fenï¿½tre graphique *)
 
 let largeur=500;;
 let hauteur=500;;
 
-(* Ouverture de la fenêtre *)
+(* Ouverture de la fenï¿½tre *)
 
 open_graph (Printf.sprintf " %dx%d" largeur hauteur);;
 set_color black;;
 
 let translation (x,y)= (x+(largeur / 2), y+(hauteur/2));;
 
-(* Déplacer la position courante (en traçant une ligne) jusqu'à un point de coordonnées pos=(x,y) *)
+(* Dï¿½placer la position courante (en traï¿½ant une ligne) jusqu'ï¿½ un point de coordonnï¿½es pos=(x,y) *)
 let tracerVers pos=
   let (x,y)= translation pos in lineto x y;moveto x y;;
 
-(* Déplacer la position courante (sans tracer) jusqu'à un point de coordonnées pos=(x,y) *)
+(* Dï¿½placer la position courante (sans tracer) jusqu'ï¿½ un point de coordonnï¿½es pos=(x,y) *)
 let allerVers pos=
   let (x,y)= translation pos in moveto x y;;
 
-(* Initialisation de la fenêtre graphique *)
-let init ()= 
+(* Initialisation de la fenï¿½tre graphique *)
+let init ()=
   clear_graph ();
   allerVers (0,0);;
 
@@ -43,7 +43,7 @@ let init ()=
 init();;
 
 
-let gtrace r= 
+let gtrace r=
   if r.etat=Pose then tracerVers r.pos else allerVers r.pos;;
 
 
@@ -75,7 +75,7 @@ let rec execute = function (p, r) -> match p with
   | Pinceau e -> { r with etat = e }
   | Bloc [] -> r
   | Bloc (p1::l) -> execute(Bloc l, execute(p1, r))
-  | Repeat (i, p1) -> 
+  | Repeat (i, p1) ->
     if (i > 0) then execute(Repeat(i-1, p1), execute(p1
 , r))
     else r;;

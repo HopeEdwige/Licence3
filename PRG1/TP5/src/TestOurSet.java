@@ -66,7 +66,7 @@ public class TestOurSet {
 		boolean bool4 = ourList.containsAux(22222);
 		assertTrue("apparteance", bool1 && !bool2 && bool3 && !bool4);
 	}
-	
+
 	@Test
 	public void testSetAddition() throws FileNotFoundException {
 		OurSet ourList1 = readFileToOurSet("f0.ens");

@@ -83,7 +83,7 @@ int main(int argc, char** args) {
 		// Create buffers
 		char audio_buffer[sample_size];
 
-		// For each audio sample		
+		// For each audio sample
 		do {
 			// Simply read each sample of the audio file
 			read_audio = read(read_init_audio, audio_buffer, sample_size);

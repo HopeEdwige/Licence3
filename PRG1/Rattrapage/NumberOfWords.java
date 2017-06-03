@@ -10,7 +10,7 @@ public class NumberOfWords {
 		while (txt.charAt(i) != '.') {
 
 			if (txt.charAt(i) == ' ' && txt.charAt(i + 1) != ' ') {
-				
+
 				++result;
 			}
 			++i;

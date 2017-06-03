@@ -20,7 +20,7 @@ type robot = {pos: position; dir: direction; etat: etatPinceau};;
 
 let gauche = function
   | Nord -> Ouest
-  | Est -> Nord 
+  | Est -> Nord
   | Sud -> Est
   | Ouest -> Sud;;
 
@@ -31,14 +31,14 @@ let droite = function
   | Sud -> Ouest;;
 
 let avance (x,y) i dir =
-  match dir with 
+  match dir with
   | Nord -> (x,y+i)
   | Est -> (x+i,y)
   | Sud -> (x,y-i)
   | Ouest -> (x-i,y);;
 
 let rec execute p r =
-  match p with 
+  match p with
   | Stop -> r
   | TourneGauche -> {r with dir= (gauche r.dir)}
   | TourneDroite -> {r with dir= (droite r.dir)}
@@ -48,7 +48,7 @@ let rec execute p r =
   | Bloc (p1::l) ->
     let r1 = execute p1 r in
     execute (Bloc l) r1
-  | Repete(i,p1) -> 
+  | Repete(i,p1) ->
     if i<=0 then r
     else
       let r1= execute p1 r in

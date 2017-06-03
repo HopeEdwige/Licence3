@@ -12,9 +12,9 @@ assert(longueur([]) = 0);;
 
 
 let rec oter ( l, e ) = match l with
-    [] -> []  
+    [] -> []
   | x::r -> if x = e then oter(r, e) else x::oter(r, e);;
- 
+
 assert(oter(l, 4) = [1; 2; 3; 5; 6]);;
 assert(oter([1; 2; 3], 4) = [1; 2; 3]);;
 assert(oter([], 4) = []);;

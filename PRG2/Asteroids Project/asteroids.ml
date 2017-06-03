@@ -167,7 +167,7 @@ let init_etat () =
 		lasters = create_asteroids nb_base_asteroides;
 		lmiss = []
 	};;
-	
+
 
 
 
@@ -244,8 +244,8 @@ let teleportation = function etat ->
 	       etat.ship with
 	       vpos = (lance random_y_vaisseau ,lance random_x_vaisseau)
 	       	   }
-	};;	
-	       
+	};;
+
 
 (* --- Check if an asteroid hit the ship --- *)
 let rec aster_vs_ship = function (lasters, ship) ->
@@ -346,10 +346,10 @@ let etat_suivant = function etat ->
 (* #################### Graphical functions #################### *)
 (* --- Display asteroids --- *)
 let affiche_asteroid = function asteroide ->
-	match asteroide.apos with (x, y) ->  
+	match asteroide.apos with (x, y) ->
 		set_color asteroide.acouleur;
 		Graphics.fill_circle x y asteroide.at;;
-		
+
 
 (* --- Display the ship as a square --- *)
 let affiche_ship = function ship ->
@@ -358,7 +358,7 @@ let affiche_ship = function ship ->
 		Graphics.fill_circle x y t_vaisseau;
 		Graphics.moveto x y;
 		match translate((x, y), ship.vori, t_canon) with (t_x, t_y) -> Graphics.lineto t_x t_y;;
-		
+
 
 (* --- Display a missile --- *)
 let affiche_tir = function tir ->
@@ -367,7 +367,7 @@ let affiche_tir = function tir ->
 		Graphics.moveto x y;
 		match translate((x, y), tir.mori, t_missile) with (t_x, t_y) -> Graphics.lineto t_x t_y;;
 
-(* --- Display the score --- 
+(* --- Display the score ---
 let affiche_score = function score ->
         set_color white;
 	Graphics.moveto 950 550;
@@ -383,7 +383,7 @@ let affiche_etat = function etat ->
 	affiche_ship etat.ship;
 	List.iter affiche_tir etat.lmiss;
 		();;
-	
+
 
 
 (* #################### Main function and launcher #################### *)
@@ -408,7 +408,7 @@ let main () =
 
 	(* initialisation du generateur aleatoire *)
 	Random.self_init ();
-	
+
 	(* initialisation de la fenetre graphique et de l'affichage *)
 	open_graph (" " ^ string_of_int width ^ "x" ^ string_of_int height);
 	auto_synchronize false;

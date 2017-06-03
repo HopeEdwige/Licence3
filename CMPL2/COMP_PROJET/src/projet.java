@@ -2,9 +2,9 @@
  *    projet.java    pour AntLR version 3                                                             *
  *    programme fourni aux etudiants QUI NE DOIVENT PAS LE MODIFIER                                   *
  *    ce programme contient le main qui demande le nom du programme source que l'on souhaite compiler,*
- *    et lance sa compilation a partir de l'axiome "unite" de la grammaire projet.g                   *     
+ *    et lance sa compilation a partir de l'axiome "unite" de la grammaire projet.g                   *
  *    on peut compiler plusieurs programmes source de suite (arret par un retour-chariot)             *
- *    ANTLR suspend completement le traitement les programmes sources de syntaxe erronee si l'on met  *  
+ *    ANTLR suspend completement le traitement les programmes sources de syntaxe erronee si l'on met  *
  *    la clause @rulecatch dans la grammaire                                                          *
  *    NB : ce module utilise des classes externes comme Lecture, UtilLex, ANTLRxxx                    *
  *****************************************************************************************************/
@@ -17,14 +17,14 @@ import org.antlr.runtime.RecognitionException;
 
 
 class projet {
-	public static String nomSourceComplet; // nom du source a compiler, avec son suffixe .pro 
-	
+	public static String nomSourceComplet; // nom du source a compiler, avec son suffixe .pro
+
 	private static void UneCompilation (String nomDuSource ) {
 		try {
 			ANTLRFileStream input = new ANTLRFileStream(nomDuSource);
 			projetLexer lexer = new projetLexer(input);
 			CommonTokenStream token_stream = new CommonTokenStream(lexer); // production d'un flot d'unite lexicales
-			projetParser parser = new projetParser(token_stream);   
+			projetParser parser = new projetParser(token_stream);
 			PtGen.pt(0); // point de generation des initialisations
 			// Compile le texte source en entree, l'axiome "unite" est precise
 			parser.unite();
@@ -39,33 +39,33 @@ class projet {
 		}
 		catch (IOException exc) {
 			System.err.println("IO exception: " + exc);
-		} 
-		// try	
-	
+		}
+		// try
+
 	} // UneCompilation
-	
-	
+
+
 	public static void main(String [] args) {
 		System.out.println("PROJET DE COMPILATION version : " + PtGen.trinome);
 		System.out.println("----------------------------------------");
 		System.out.println();
-		
-		do 
+
+		do
 		 {
 			// lecture du nom de fichier en entree, sans son suffixe
-			System.out.println(); 
+			System.out.println();
 		    System.out.print("Donnez le nom du fichier que vous souhaitez compiler, sans suffixe :  (RC si termine ");
 		    UtilLex.nomSource=Lecture.lireString();  // on fournit a UtilLex le nom sans suffixe
 		    System.out.println();
-		    
+
 		    if (!UtilLex.nomSource.equals("")) {
 		    	nomSourceComplet = UtilLex.nomSource+".pro";
-		    	// traitement d'une compilation	 
+		    	// traitement d'une compilation
 		    	UneCompilation (nomSourceComplet);
-		    } 
+		    }
 		    System.out.println();
 		}
-		while (!UtilLex.nomSource.equals("")); 	
-		System.out.println("\n \n Merci pour votre patience, " + PtGen.trinome + ", et a bientot !!!");	
+		while (!UtilLex.nomSource.equals(""));
+		System.out.println("\n \n Merci pour votre patience, " + PtGen.trinome + ", et a bientot !!!");
 	} // main
 } // projet

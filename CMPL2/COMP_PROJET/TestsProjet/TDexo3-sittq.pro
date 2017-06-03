@@ -1,7 +1,7 @@
 programme sittq:
 
 const marqueur = -1;
-var ent nblu, min, max;		{adresses variables dans la pile d'exécution de MAPILE: 0, 1, 2}
+var ent nblu, min, max;		{adresses variables dans la pile d'exï¿½cution de MAPILE: 0, 1, 2}
 debut
 	lire(min); max := min; lire(nblu);
 	ttq nblu <> marqueur faire

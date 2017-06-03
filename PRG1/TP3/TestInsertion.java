@@ -57,7 +57,7 @@ public class TestInsertion {
 			assertTrue("courte liste, test 2, un ajout de plus",
 					equalIntegerArrays(tab2Prog.toArray(), tab2));
 			tab2Prog.insert(5);
-			assertTrue("courte liste, test 3, même ajout une 2e fois",
+			assertTrue("courte liste, test 3, mï¿½me ajout une 2e fois",
 					equalIntegerArrays(tab2Prog.toArray(), tab2));
 			tab2Prog.insert(6);
 			assertTrue("courte liste, test 4, un ajout de plus",
@@ -110,7 +110,7 @@ public class TestInsertion {
 					"une courte liste de doublets avec doublons et -1 en position impaire",
 					equalPairArrays(tab2Pair.toArray(), tab2));
 			File f3 = new File("val3.txt");
-			// juste une nouvelle avant-dernière valeur
+			// juste une nouvelle avant-derniï¿½re valeur
 			Scanner s3 = new Scanner(f3);
 			InsertionPair tab3Pair = new InsertionPair();
 			tab3Pair.createArray(s3);

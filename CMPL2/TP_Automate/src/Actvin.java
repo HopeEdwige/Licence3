@@ -13,7 +13,7 @@ public class Actvin {
 		/* 4 */	  { 10,  10,  10,   6,  10,   0,  10,  10   },
 		/* 5 */	  { 10,  10,  5,   10,   7,   8,  10,  10   },
 		/* 6 */	  { 11,  11,  11,  11,  11,   0,  11,  11   }
-	} ;		   
+	} ;
 
 	// Ids for the error type
 	private static final int FATALE = 0 , NONFATALE = 1;
@@ -26,7 +26,7 @@ public class Actvin {
 
 	// Default values for the chauffeur object parameters
 	private static int numchauf, bj = 0, bg = 0, ordin = 0, type = 0, volume = 100, index_nextChauf = 0, already_encountered = -1;
-	
+
 	// Some counters to count the total number of each sort of wine
 	private static int bj_total = 0, bg_total = 0, ordin_total = 0;
 
@@ -231,7 +231,7 @@ public class Actvin {
 						bj_total += bj;
 						bj = 0;
 						break;
-						
+
 					case 2:
 						bg_total += bg;
 						bg = 0;
@@ -260,7 +260,7 @@ public class Actvin {
 				while (i < index_nextChauf) {
 					Chauffeur current = tabchauf[i];
 					if (current.magdif.size() > max) {
-						max = current.magdif.size(); 
+						max = current.magdif.size();
 						vip = current.numchauf;
 					}
 					i++;
@@ -268,7 +268,7 @@ public class Actvin {
 				System.out.println("Le chauffeur ayant livre le plus de magasins differents ce mois-ci est : " + Lexvin.repId(vip));
 				break;
 
-			// lecture 
+			// lecture
 			case 10:
 				erreur(NONFATALE, "Syntaxe invalide");
 				break;
@@ -305,7 +305,7 @@ public class Actvin {
 		public Chauffeur(int numchauf, int bj, int bg, int ordin, SmallSet magdif) {
 			this.numchauf = numchauf;
 			this.bj = bj;
-			this.bg = bg; 
+			this.bg = bg;
 			this.ordin = ordin;
 			this.magdif = magdif.clone();
 		}

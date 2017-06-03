@@ -6,7 +6,7 @@ open Parser
 
 (* subst_expr :
    (einit: expression) -> (x: variable) -> (e: expression) -> expression
-   
+
    Substitue la variable x par l'expression e dans einit
 *)
 
@@ -35,7 +35,7 @@ let rec renommerExpr einit lx=
 	| _ -> einit;;
 
 
-(* Fonction de renommage nécessaire pour éviter que le résultat de la substitution de x par y dans 
+(* Fonction de renommage nï¿½cessaire pour ï¿½viter que le rï¿½sultat de la substitution de x par y dans
    \forall y. 1+ x soit \forall y'. 1 + y *)
 
 let rec renommerFormule f lx=
@@ -50,7 +50,7 @@ let rec renommerFormule f lx=
 
 
 (* subst_formule :
-   (f: formule) -> (x: variable) -> (e: expression) -> formule 
+   (f: formule) -> (x: variable) -> (e: expression) -> formule
 
    Substitue la variable x par l'expression e dans la formule f *)
 
@@ -83,9 +83,9 @@ assert((subst_formule f1 "y" (Const 10))=f1);;
 
 
 
-(* ######################### Partie complétée ######################### *)
+(* ######################### Partie complï¿½tï¿½e ######################### *)
 
-(* ----- Simplifie les expressions arithmétiques binaires ----- *)
+(* ----- Simplifie les expressions arithmï¿½tiques binaires ----- *)
 let rec partEval e =
 	match e with
 		| Const i -> Const i
@@ -111,7 +111,7 @@ let rec partEval e =
 				| op, res1, res2 -> BinExpr(op, res1, res2);;
 
 
-(* ----- Simplifie une expression (et en donne le résultat) ----- *)
+(* ----- Simplifie une expression (et en donne le rï¿½sultat) ----- *)
 let rec simplif f =
 	match f with
 		| True -> True
@@ -205,7 +205,7 @@ let rec vcgen = function (p, f) ->
 
 
 
-(* ----- Affiche un programme annoté entré ----- *)
+(* ----- Affiche un programme annotï¿½ entrï¿½ ----- *)
 let print_prog_annote = function nom_fichier ->
 	match file_parse nom_fichier with
 		(post, prog, pre) ->

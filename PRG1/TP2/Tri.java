@@ -19,8 +19,8 @@ public class Tri {
 			// System.out.println("T[i] = "+T[i]+", T[rangmin] = "+T[rangmin]);
 		}
 	}
-	
-	
+
+
 	public static boolean rechDicho(int[] T, int a) {
 		int n = T.length;
 		int deb = 0, fin = n - 1, milieu = (deb + fin) / 2;
@@ -31,13 +31,13 @@ public class Tri {
 			else if (a > T[milieu]) {
 				deb = milieu + 1;
 			}
-			
+
 			milieu = (deb + fin) / 2;
 		}
-		
+
 		return (deb <= fin);
 	}
-	
+
 
 	public static void main(String[] arg) {
 
@@ -49,7 +49,7 @@ public class Tri {
 
 			System.out.print("" + T[i] + ", ");
 		}
-		
+
 		if (rechDicho(T, 8)) {
 			System.out.print("Gotcha!");
 		}

@@ -9,7 +9,7 @@ import java.util.Scanner;
 
 
 public class Client {
-	
+
 	public static void main(String[] args) throws Exception {
 
 		//Open the socket
@@ -35,7 +35,7 @@ public class Client {
 
 		//And display it
 		printOnClient(response.getData());
-		
+
 		//Then close the socket
 		socket.close();
 	}
@@ -45,6 +45,6 @@ public class Client {
 		InputStreamReader isr = new InputStreamReader(bais);
 		BufferedReader br = new BufferedReader(isr);
 		String line = br.readLine();
-		System.out.println("Reçu sur le client: " + new String(line));
+		System.out.println("Reï¿½u sur le client: " + new String(line));
 	}
 }

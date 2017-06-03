@@ -2,7 +2,7 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 /*
- * Le code du serveur répondant aux ping sur UDP.
+ * Le code du serveur rï¿½pondant aux ping sur UDP.
  */
 public class serverPING
 {
@@ -15,7 +15,7 @@ public class serverPING
 		}
 		int port = Integer.parseInt(args[0]);
 		//	int port = 7775;
-		// récuperer un nombre aléatoire pour simuler une perte de paquets 
+		// rï¿½cuperer un nombre alï¿½atoire pour simuler une perte de paquets
 
 		Random random = new Random();
 		DatagramSocket socket = new DatagramSocket(port);

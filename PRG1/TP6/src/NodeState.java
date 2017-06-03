@@ -1,7 +1,7 @@
 public class NodeState {
 
 	public final int e;
-	
+
 	private static final NodeState ZERO = new NodeState(0);
 	private static final NodeState ONE = new NodeState(1);
 	private static final NodeState TWO = new NodeState(2);

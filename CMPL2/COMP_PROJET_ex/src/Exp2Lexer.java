@@ -24,7 +24,7 @@ public class Exp2Lexer extends Lexer {
 		return new Lexer[] {};
 	}
 
-	public Exp2Lexer() {} 
+	public Exp2Lexer() {}
 	public Exp2Lexer(CharStream input) {
 		this(input, new RecognizerSharedState());
 	}
@@ -41,7 +41,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:7:6: ( '(' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:7:8: '('
 			{
-			match('('); 
+			match('(');
 			}
 
 			state.type = _type;
@@ -61,7 +61,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:8:6: ( ')' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:8:8: ')'
 			{
-			match(')'); 
+			match(')');
 			}
 
 			state.type = _type;
@@ -81,7 +81,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:9:6: ( '*' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:9:8: '*'
 			{
-			match('*'); 
+			match('*');
 			}
 
 			state.type = _type;
@@ -101,7 +101,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:10:7: ( '+' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:10:9: '+'
 			{
-			match('+'); 
+			match('+');
 			}
 
 			state.type = _type;
@@ -121,7 +121,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:11:7: ( '-' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:11:9: '-'
 			{
-			match('-'); 
+			match('-');
 			}
 
 			state.type = _type;
@@ -141,7 +141,7 @@ public class Exp2Lexer extends Lexer {
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:12:7: ( 'div' )
 			// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:12:9: 'div'
 			{
-			match("div"); 
+			match("div");
 
 			}
 
@@ -460,63 +460,63 @@ public class Exp2Lexer extends Lexer {
 			case 1 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:10: T__7
 				{
-				mT__7(); 
+				mT__7();
 
 				}
 				break;
 			case 2 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:15: T__8
 				{
-				mT__8(); 
+				mT__8();
 
 				}
 				break;
 			case 3 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:20: T__9
 				{
-				mT__9(); 
+				mT__9();
 
 				}
 				break;
 			case 4 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:25: T__10
 				{
-				mT__10(); 
+				mT__10();
 
 				}
 				break;
 			case 5 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:31: T__11
 				{
-				mT__11(); 
+				mT__11();
 
 				}
 				break;
 			case 6 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:37: T__12
 				{
-				mT__12(); 
+				mT__12();
 
 				}
 				break;
 			case 7 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:43: INT
 				{
-				mINT(); 
+				mINT();
 
 				}
 				break;
 			case 8 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:47: ID
 				{
-				mID(); 
+				mID();
 
 				}
 				break;
 			case 9 :
 				// H:\\windows\\COMP_PROJET_ex\\src\\Exp2.g:1:50: WS
 				{
-				mWS(); 
+				mWS();
 
 				}
 				break;

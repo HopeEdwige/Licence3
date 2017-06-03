@@ -1,4 +1,4 @@
-programme exo9:	
+programme exo9:
 
 var ent x1, y1, x2, y2, d;
 
@@ -17,6 +17,6 @@ fin ;
 
 debut
 	lire(x1, y1, x2, y2);
-	dist(x1, y1, x2, y2)(d); 
+	dist(x1, y1, x2, y2)(d);
 	ecrire(d);
 fin

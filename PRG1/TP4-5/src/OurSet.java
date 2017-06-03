@@ -49,10 +49,10 @@ public class OurSet extends List<SubSet> {
 	private static Comparison compare(int a, int b) {
 		if (a < b) {
 			return Comparison.INF;
-		} 
+		}
 		else if (a == b) {
 			return Comparison.EGAL;
-		} 
+		}
 		else {
 			return Comparison.SUP;
 		}
@@ -80,7 +80,7 @@ public class OurSet extends List<SubSet> {
 		int x = readValue(standardInput, 0);
 		if (this.containsAux(x)) {
 			System.out.println(" valeur présente");
-		} 
+		}
 		else {
 			System.out.println(" valeur non présente");
 		}
@@ -385,7 +385,7 @@ public class OurSet extends List<SubSet> {
 			inFile.close();
 			System.out.println(" nouveau contenu :");
 			this.printNewState();
-		} 
+		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("fichier " + fileName + " inexistant");
@@ -408,7 +408,7 @@ public class OurSet extends List<SubSet> {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("pb ouverture fichier lors de la sauvegarde");
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("probleme de fermeture du fichier");
@@ -452,7 +452,7 @@ public class OurSet extends List<SubSet> {
 		try {
 			String string = this.toString();
 			f.write(string.getBytes());
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}

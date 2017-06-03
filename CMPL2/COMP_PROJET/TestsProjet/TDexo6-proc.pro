@@ -19,7 +19,7 @@ debut
 	lire(x);
 	verifdrapeau(x)(r, marq);
 	si non marq alors
-		recurs()(r); 
+		recurs()(r);
 		si op alors r:=x+r sinon r:=x*r fsi
 	fsi
 fin;

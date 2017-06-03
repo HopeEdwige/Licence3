@@ -248,7 +248,7 @@ public class SmallSet {
 	 */
 	@Override
 	public String toString() {
-		String ret = "Eléments présents: ";
+		String ret = "Elï¿½ments prï¿½sents: ";
 		for (int i = 0; i < 256; i++) {
 			if (this.tab[i])
 				ret += i + " ";

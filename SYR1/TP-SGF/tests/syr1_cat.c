@@ -6,7 +6,7 @@ int main(int argc, char **argv) {
 	if (argc!=2) {
 		fprintf(stderr,"usage : syr1_cat nom\n");
 		return -1;
-	} 
+	}
 	char* nom=argv[1];
 	SYR1_FILE* file= syr1_fopen(nom,"r");
 
@@ -21,6 +21,5 @@ int main(int argc, char **argv) {
 	} else {
 		fprintf(stderr,"Le fichier %s n'existe pas sur le disque disk.img\n",nom);
 		return -1;
-	}  
+	}
 }
-

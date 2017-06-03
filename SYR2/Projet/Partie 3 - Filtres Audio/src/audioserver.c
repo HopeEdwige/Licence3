@@ -42,7 +42,7 @@ void server_error_encountered(int err_socket, int err_type, char* err_message, s
 
 
 /**
- * Initialize the socket 
+ * Initialize the socket
  *
  * Return:
  *	 - int  => The socket file descriptor or -1 if error
@@ -85,7 +85,7 @@ int main(int argc, char** args) {
 	// If there are too many arguments
 	if (argc > 1) { fprintf(stderr, "%s\n", (COMMAND_SYNTAX)); return 1; }
 
-	
+
 	/* ##### Network structures ##### */
 	// Socket creation and bind
 	int server_socket = init_socket();
@@ -118,7 +118,7 @@ int main(int argc, char** args) {
 
 	/* 	################################################## Serve clients ################################################## */
 	while (1) {  // Server always running
-		
+
 		// Clear and initialize the fd set
 		FD_ZERO(&watch_over);
 		FD_SET(server_socket, &watch_over);
@@ -159,7 +159,7 @@ int main(int argc, char** args) {
 
 						// If not busy, then put this client as the current
 						else {
-							
+
 							// Put the server busy
 							server_state = S_BUSY;
 

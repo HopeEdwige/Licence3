@@ -1,13 +1,13 @@
 {n >= 0}
 begin
   i:=0;
-  while ((i*i)<n) do 
+  while ((i*i)<n) do
     i:=i+1
   done;
-  if ((i*i)>n) 
-  then 
+  if ((i*i)>n)
+  then
     i:=i-1
-  else 
+  else
     skip
   endif
 end

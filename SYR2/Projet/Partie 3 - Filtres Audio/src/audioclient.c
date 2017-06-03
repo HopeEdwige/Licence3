@@ -122,7 +122,7 @@ void close_connection(int err_socket, char* err_message, int audio_fd) {
 
 
 /**
- * Initialize the socket 
+ * Initialize the socket
  *
  * Parameters:
  *	 - char* host  => The name of the host to resolve
@@ -352,7 +352,7 @@ int main(int argc, char** args) {
 
 						// Send the request
 						if (sendto(client_socket, &to_server, sizeof(struct packet), 0, (struct sockaddr*)&destination, destination_length) == -1) {
-							
+
 							// If echo filter, free the buffer
 							if (filter == F_ECHO) free(echo_buffer);
 
@@ -498,7 +498,7 @@ int main(int argc, char** args) {
 
 								// And in the end, just read the whole echo buffer left
 								if (write(write_init_audio, (echo_buffer + to_read_position*BUFFER_SIZE), ((current_buffer_position - to_read_position)*BUFFER_SIZE)) == -1) {
-									
+
 									// Echo filter so free the buffer
 									free(echo_buffer);
 
@@ -556,14 +556,14 @@ int main(int argc, char** args) {
 					default:
 						close_connection(client_socket, "Packet type unknown", write_init_audio);
 						break;
-					
+
 				}
 			}
 		}
 
 		// If an error during the receiving of a packet
 		else {
-									
+
 			// If echo filter, free the buffer (only if it has been initialized)
 			if ((filter == F_ECHO) && (nb_buffers_per_echo > 0)) free(echo_buffer);
 

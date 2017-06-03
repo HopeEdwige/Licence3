@@ -7,5 +7,5 @@ begin
 	i:=i+1;
 	j:=j+1
       end
-  done 
+  done
 end {i=j}

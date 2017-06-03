@@ -117,7 +117,7 @@ public class List<T extends SuperT> {
 	public String toString() {
 		String s = "contenu de la liste : \n";
 		ListIterator p = this.iterator();
-		while (!p.isOnFlag()) 
+		while (!p.isOnFlag())
 		{
 			s = s + p.getValue().toString() + " ";
 			p.goForward();
@@ -137,7 +137,7 @@ public class List<T extends SuperT> {
 		//Attributes
 		public T value;
 		public Element left, right;
-		
+
 		/**
 		 * Constructor of Element class
 		 */
@@ -208,7 +208,7 @@ public class List<T extends SuperT> {
 		/**
 		 * Remove the current element and put the current element on the last one
 		 */
-		public void remove() {	
+		public void remove() {
 			try {
 				//We can't delete the flag
 				assert current != flag : "\n\n\nImpossible de retirer le drapeau\n\n\n";

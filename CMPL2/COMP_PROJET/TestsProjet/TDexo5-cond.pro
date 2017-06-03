@@ -10,7 +10,7 @@ debut
 				b4: ecrire(3),
 				b5: ecrire(4)
 			aut ecrire(5)
-			fcond, 
+			fcond,
 		b6: ecrire(6)
 	fcond ;
 fin

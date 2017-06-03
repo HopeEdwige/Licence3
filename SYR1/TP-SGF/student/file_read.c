@@ -154,7 +154,7 @@ int syr1_getc(SYR1_FILE *file) {
                     //If error
                     return -2;
                 }
-                
+
                 //If no more block
                 return -3;
 

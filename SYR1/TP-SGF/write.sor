@@ -29,7 +29,7 @@ Test écriture N°4 : relecture du fichier testABC.txt
 Nombre d'E/S physiques : 7 (2 lectures + 5 écritures)
 
 ***********************************************************
-Test écriture N°5 : relecture du fichier test012.txt 
+Test écriture N°5 : relecture du fichier test012.txt
 [OK]	 Ouverture en relecture réussie
 [OK]     La relecture a fonctionné correctement
 

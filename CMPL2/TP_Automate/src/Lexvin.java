@@ -9,10 +9,10 @@ public class Lexvin {
 
 	// codage des items
 	public static final int BEAUJOLAIS = 0, BOURGOGNE = 1, IDENT = 2, NBENTIER = 3, VIRGULE = 4, PTVIRG = 5, BARRE = 6, AUTRES = 7 ;
-	
+
 	// Item table
 	public static final String[] item = {
-	   "BEAUJ", "BOURG", "IDENT", "NBENT", "  ,  ", "  ;  ", "  /  ", "AUTRE" 
+	   "BEAUJ", "BOURG", "IDENT", "NBENT", "  ,  ", "  ;  ", "  /  ", "AUTRE"
 	};
 
 	public static int valNb, numId; // attributs lexicaux
@@ -70,10 +70,10 @@ public class Lexvin {
      * Read the next char
      */
 	private static void lirecar() {
-    	carlu = Lecture.lireChar(f); 
+    	carlu = Lecture.lireChar(f);
     	if (carlu == '\r')
             carlu = ' ' ;
-    	fen.append("" + carlu); // la valeur carlu est transformee en chaine 
+    	fen.append("" + carlu); // la valeur carlu est transformee en chaine
     	if (Character.isWhitespace(carlu))
             carlu = ' ';
     	else

@@ -1,5 +1,5 @@
 // $ANTLR 3.5 H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g 2015-04-09 10:41:39
-           
+
 import java.io.IOException;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
@@ -13,12 +13,12 @@ import java.util.ArrayList;
 @SuppressWarnings("all")
 public class projetParser extends Parser {
 	public static final String[] tokenNames = new String[] {
-		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "COMMENT", "ID", "INT", "ML_COMMENT", 
-		"WS", "'('", "')'", "'*'", "'+'", "','", "'-'", "':'", "':='", "';'", 
-		"'<'", "'<='", "'<>'", "'='", "'>'", "'>='", "'alors'", "'aut'", "'bool'", 
-		"'cond'", "'const'", "'debut'", "'def'", "'div'", "'ecrire'", "'ent'", 
-		"'et'", "'faire'", "'fait'", "'faux'", "'fcond'", "'fin'", "'fixe'", "'fsi'", 
-		"'lire'", "'mod'", "'module'", "'non'", "'ou'", "'proc'", "'programme'", 
+		"<invalid>", "<EOR>", "<DOWN>", "<UP>", "COMMENT", "ID", "INT", "ML_COMMENT",
+		"WS", "'('", "')'", "'*'", "'+'", "','", "'-'", "':'", "':='", "';'",
+		"'<'", "'<='", "'<>'", "'='", "'>'", "'>='", "'alors'", "'aut'", "'bool'",
+		"'cond'", "'const'", "'debut'", "'def'", "'div'", "'ecrire'", "'ent'",
+		"'et'", "'faire'", "'fait'", "'faux'", "'fcond'", "'fin'", "'fixe'", "'fsi'",
+		"'lire'", "'mod'", "'module'", "'non'", "'ou'", "'proc'", "'programme'",
 		"'ref'", "'si'", "'sinon'", "'ttq'", "'var'", "'vrai'"
 	};
 	public static final int EOF=-1;
@@ -94,9 +94,9 @@ public class projetParser extends Parser {
 
 
 
-	 
+
 	// variables globales et methodes utiles a placer ici
-	  
+
 
 
 
@@ -128,8 +128,8 @@ public class projetParser extends Parser {
 					unitprog();
 					state._fsp--;
 
-					match(input,EOF,FOLLOW_EOF_in_unite65); 
-					PtGen.afftabSymb(); PtGen.pt(123); 
+					match(input,EOF,FOLLOW_EOF_in_unite65);
+					PtGen.afftabSymb(); PtGen.pt(123);
 					}
 					break;
 				case 2 :
@@ -139,8 +139,8 @@ public class projetParser extends Parser {
 					unitmodule();
 					state._fsp--;
 
-					match(input,EOF,FOLLOW_EOF_in_unite83); 
-					PtGen.afftabSymb(); PtGen.pt(123); 
+					match(input,EOF,FOLLOW_EOF_in_unite83);
+					PtGen.afftabSymb(); PtGen.pt(123);
 					}
 					break;
 
@@ -164,13 +164,13 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:40:5: 'programme' ident ':' declarations corps
 			{
 			PtGen.pt(54);
-			match(input,48,FOLLOW_48_in_unitprog102); 
+			match(input,48,FOLLOW_48_in_unitprog102);
 			PtGen.pt(47);
 			pushFollow(FOLLOW_ident_in_unitprog106);
 			ident();
 			state._fsp--;
 
-			match(input,15,FOLLOW_15_in_unitprog108); 
+			match(input,15,FOLLOW_15_in_unitprog108);
 			pushFollow(FOLLOW_declarations_in_unitprog115);
 			declarations();
 			state._fsp--;
@@ -179,7 +179,7 @@ public class projetParser extends Parser {
 			corps();
 			state._fsp--;
 
-			 System.out.println("succes, arret de la compilation "); 
+			 System.out.println("succes, arret de la compilation ");
 			}
 
 		}
@@ -201,13 +201,13 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:46:5: 'module' ident ':' declarations
 			{
 			PtGen.pt(54);
-			match(input,44,FOLLOW_44_in_unitmodule141); 
+			match(input,44,FOLLOW_44_in_unitmodule141);
 			PtGen.pt(48);
 			pushFollow(FOLLOW_ident_in_unitmodule145);
 			ident();
 			state._fsp--;
 
-			match(input,15,FOLLOW_15_in_unitmodule147); 
+			match(input,15,FOLLOW_15_in_unitmodule147);
 			pushFollow(FOLLOW_declarations_in_unitmodule155);
 			declarations();
 			state._fsp--;
@@ -348,7 +348,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:55:3: ( 'def' ident ( ',' ident )* ptvg )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:55:5: 'def' ident ( ',' ident )* ptvg
 			{
-			match(input,30,FOLLOW_30_in_partiedef202); 
+			match(input,30,FOLLOW_30_in_partiedef202);
 			pushFollow(FOLLOW_ident_in_partiedef204);
 			ident();
 			state._fsp--;
@@ -367,7 +367,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:55:34: ',' ident
 					{
-					match(input,13,FOLLOW_13_in_partiedef209); 
+					match(input,13,FOLLOW_13_in_partiedef209);
 					pushFollow(FOLLOW_ident_in_partiedef211);
 					ident();
 					state._fsp--;
@@ -405,7 +405,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:58:10: ( 'ref' specif ( ',' specif )* ptvg )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:58:12: 'ref' specif ( ',' specif )* ptvg
 			{
-			match(input,49,FOLLOW_49_in_partieref230); 
+			match(input,49,FOLLOW_49_in_partieref230);
 			pushFollow(FOLLOW_specif_in_partieref233);
 			specif();
 			state._fsp--;
@@ -424,7 +424,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:58:43: ',' specif
 					{
-					match(input,13,FOLLOW_13_in_partieref238); 
+					match(input,13,FOLLOW_13_in_partieref238);
 					pushFollow(FOLLOW_specif_in_partieref240);
 					specif();
 					state._fsp--;
@@ -476,8 +476,8 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:61:19: 'fixe' '(' type ( ',' type )* ')'
 					{
-					match(input,40,FOLLOW_40_in_specif266); 
-					match(input,9,FOLLOW_9_in_specif268); 
+					match(input,40,FOLLOW_40_in_specif266);
+					match(input,9,FOLLOW_9_in_specif268);
 					pushFollow(FOLLOW_type_in_specif270);
 					type();
 					state._fsp--;
@@ -496,7 +496,7 @@ public class projetParser extends Parser {
 						case 1 :
 							// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:61:53: ',' type
 							{
-							match(input,13,FOLLOW_13_in_specif276); 
+							match(input,13,FOLLOW_13_in_specif276);
 							pushFollow(FOLLOW_type_in_specif278);
 							type();
 							state._fsp--;
@@ -510,7 +510,7 @@ public class projetParser extends Parser {
 						}
 					}
 
-					match(input,10,FOLLOW_10_in_specif285); 
+					match(input,10,FOLLOW_10_in_specif285);
 					}
 					break;
 
@@ -526,8 +526,8 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:62:19: 'mod' '(' type ( ',' type )* ')'
 					{
-					match(input,43,FOLLOW_43_in_specif309); 
-					match(input,9,FOLLOW_9_in_specif312); 
+					match(input,43,FOLLOW_43_in_specif309);
+					match(input,9,FOLLOW_9_in_specif312);
 					pushFollow(FOLLOW_type_in_specif314);
 					type();
 					state._fsp--;
@@ -546,7 +546,7 @@ public class projetParser extends Parser {
 						case 1 :
 							// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:62:53: ',' type
 							{
-							match(input,13,FOLLOW_13_in_specif320); 
+							match(input,13,FOLLOW_13_in_specif320);
 							pushFollow(FOLLOW_type_in_specif322);
 							type();
 							state._fsp--;
@@ -560,7 +560,7 @@ public class projetParser extends Parser {
 						}
 					}
 
-					match(input,10,FOLLOW_10_in_specif329); 
+					match(input,10,FOLLOW_10_in_specif329);
 					}
 					break;
 
@@ -586,7 +586,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:65:9: ( 'const' ( ident '=' valeur ptvg )+ )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:65:11: 'const' ( ident '=' valeur ptvg )+
 			{
-			match(input,28,FOLLOW_28_in_consts347); 
+			match(input,28,FOLLOW_28_in_consts347);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:65:19: ( ident '=' valeur ptvg )+
 			int cnt13=0;
 			loop13:
@@ -606,7 +606,7 @@ public class projetParser extends Parser {
 					state._fsp--;
 
 					PtGen.pt(1);
-					match(input,21,FOLLOW_21_in_consts355); 
+					match(input,21,FOLLOW_21_in_consts355);
 					pushFollow(FOLLOW_valeur_in_consts357);
 					valeur();
 					state._fsp--;
@@ -647,7 +647,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:68:7: ( 'var' ( type ident ( ',' ident )* ptvg )+ )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:68:9: 'var' ( type ident ( ',' ident )* ptvg )+
 			{
-			match(input,53,FOLLOW_53_in_vars381); 
+			match(input,53,FOLLOW_53_in_vars381);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:68:15: ( type ident ( ',' ident )* ptvg )+
 			int cnt15=0;
 			loop15:
@@ -670,7 +670,7 @@ public class projetParser extends Parser {
 					ident();
 					state._fsp--;
 
-					 PtGen.pt(1); PtGen.pt(9); 
+					 PtGen.pt(1); PtGen.pt(9);
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:68:58: ( ',' ident )*
 					loop14:
 					while (true) {
@@ -684,12 +684,12 @@ public class projetParser extends Parser {
 						case 1 :
 							// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:68:60: ',' ident
 							{
-							match(input,13,FOLLOW_13_in_vars393); 
+							match(input,13,FOLLOW_13_in_vars393);
 							pushFollow(FOLLOW_ident_in_vars396);
 							ident();
 							state._fsp--;
 
-							 PtGen.pt(1); PtGen.pt(9); 
+							 PtGen.pt(1); PtGen.pt(9);
 							}
 							break;
 
@@ -713,7 +713,7 @@ public class projetParser extends Parser {
 				cnt15++;
 			}
 
-			 PtGen.pt(91); 
+			 PtGen.pt(91);
 			}
 
 		}
@@ -751,14 +751,14 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:71:9: 'ent'
 					{
-					match(input,33,FOLLOW_33_in_type422); 
+					match(input,33,FOLLOW_33_in_type422);
 					PtGen.pt(7);
 					}
 					break;
 				case 2 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:72:9: 'bool'
 					{
-					match(input,26,FOLLOW_26_in_type435); 
+					match(input,26,FOLLOW_26_in_type435);
 					PtGen.pt(8);
 					}
 					break;
@@ -782,7 +782,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:75:9: ( ( decproc ptvg )+ )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:75:11: ( decproc ptvg )+
 			{
-			 PtGen.pt(124); 
+			 PtGen.pt(124);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:75:30: ( decproc ptvg )+
 			int cnt17=0;
 			loop17:
@@ -816,7 +816,7 @@ public class projetParser extends Parser {
 				cnt17++;
 			}
 
-			 PtGen.pt(125); 
+			 PtGen.pt(125);
 			}
 
 		}
@@ -837,7 +837,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:78:9: ( 'proc' ident ( parfixe )? ( parmod )? ( consts )? ( vars )? corps )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:78:12: 'proc' ident ( parfixe )? ( parmod )? ( consts )? ( vars )? corps
 			{
-			match(input,47,FOLLOW_47_in_decproc472); 
+			match(input,47,FOLLOW_47_in_decproc472);
 			pushFollow(FOLLOW_ident_in_decproc475);
 			ident();
 			state._fsp--;
@@ -962,11 +962,11 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:81:9: ';'
 					{
-					match(input,17,FOLLOW_17_in_ptvg509); 
+					match(input,17,FOLLOW_17_in_ptvg509);
 					}
 					break;
 				case 2 :
-					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:83:3: 
+					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:83:3:
 					{
 					}
 					break;
@@ -990,12 +990,12 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:85:7: ( 'debut' instructions 'fin' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:85:9: 'debut' instructions 'fin'
 			{
-			match(input,29,FOLLOW_29_in_corps527); 
+			match(input,29,FOLLOW_29_in_corps527);
 			pushFollow(FOLLOW_instructions_in_corps529);
 			instructions();
 			state._fsp--;
 
-			match(input,39,FOLLOW_39_in_corps531); 
+			match(input,39,FOLLOW_39_in_corps531);
 			}
 
 		}
@@ -1016,8 +1016,8 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:88:8: ( 'fixe' '(' pf ( ';' pf )* ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:88:10: 'fixe' '(' pf ( ';' pf )* ')'
 			{
-			match(input,40,FOLLOW_40_in_parfixe543); 
-			match(input,9,FOLLOW_9_in_parfixe545); 
+			match(input,40,FOLLOW_40_in_parfixe543);
+			match(input,9,FOLLOW_9_in_parfixe545);
 			pushFollow(FOLLOW_pf_in_parfixe547);
 			pf();
 			state._fsp--;
@@ -1035,7 +1035,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:88:26: ';' pf
 					{
-					match(input,17,FOLLOW_17_in_parfixe551); 
+					match(input,17,FOLLOW_17_in_parfixe551);
 					pushFollow(FOLLOW_pf_in_parfixe553);
 					pf();
 					state._fsp--;
@@ -1048,7 +1048,7 @@ public class projetParser extends Parser {
 				}
 			}
 
-			match(input,10,FOLLOW_10_in_parfixe557); 
+			match(input,10,FOLLOW_10_in_parfixe557);
 			}
 
 		}
@@ -1091,7 +1091,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:91:36: ',' ident
 					{
-					match(input,13,FOLLOW_13_in_pf579); 
+					match(input,13,FOLLOW_13_in_pf579);
 					pushFollow(FOLLOW_ident_in_pf581);
 					ident();
 					state._fsp--;
@@ -1125,8 +1125,8 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:94:9: ( 'mod' '(' pm ( ';' pm )* ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:94:11: 'mod' '(' pm ( ';' pm )* ')'
 			{
-			match(input,43,FOLLOW_43_in_parmod600); 
-			match(input,9,FOLLOW_9_in_parmod602); 
+			match(input,43,FOLLOW_43_in_parmod600);
+			match(input,9,FOLLOW_9_in_parmod602);
 			pushFollow(FOLLOW_pm_in_parmod604);
 			pm();
 			state._fsp--;
@@ -1144,7 +1144,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:94:26: ';' pm
 					{
-					match(input,17,FOLLOW_17_in_parmod608); 
+					match(input,17,FOLLOW_17_in_parmod608);
 					pushFollow(FOLLOW_pm_in_parmod610);
 					pm();
 					state._fsp--;
@@ -1157,7 +1157,7 @@ public class projetParser extends Parser {
 				}
 			}
 
-			match(input,10,FOLLOW_10_in_parmod614); 
+			match(input,10,FOLLOW_10_in_parmod614);
 			}
 
 		}
@@ -1200,7 +1200,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:97:37: ',' ident
 					{
-					match(input,13,FOLLOW_13_in_pm637); 
+					match(input,13,FOLLOW_13_in_pm637);
 					pushFollow(FOLLOW_ident_in_pm639);
 					ident();
 					state._fsp--;
@@ -1251,7 +1251,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:101:19: ';' instruction
 					{
-					match(input,17,FOLLOW_17_in_instructions663); 
+					match(input,17,FOLLOW_17_in_instructions663);
 					pushFollow(FOLLOW_instruction_in_instructions665);
 					instruction();
 					state._fsp--;
@@ -1387,7 +1387,7 @@ public class projetParser extends Parser {
 					}
 					break;
 				case 7 :
-					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:112:3: 
+					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:112:3:
 					{
 					}
 					break;
@@ -1411,13 +1411,13 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:114:7: ( 'si' expression 'alors' instructions ( 'sinon' instructions )? 'fsi' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:114:9: 'si' expression 'alors' instructions ( 'sinon' instructions )? 'fsi'
 			{
-			match(input,50,FOLLOW_50_in_inssi729); 
+			match(input,50,FOLLOW_50_in_inssi729);
 			pushFollow(FOLLOW_expression_in_inssi731);
 			expression();
 			state._fsp--;
 
-			 PtGen.pt(30); 
-			match(input,24,FOLLOW_24_in_inssi737); 
+			 PtGen.pt(30);
+			match(input,24,FOLLOW_24_in_inssi737);
 			pushFollow(FOLLOW_instructions_in_inssi739);
 			instructions();
 			state._fsp--;
@@ -1432,8 +1432,8 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:116:4: 'sinon' instructions
 					{
-					match(input,51,FOLLOW_51_in_inssi745); 
-					 PtGen.pt(32); 
+					match(input,51,FOLLOW_51_in_inssi745);
+					 PtGen.pt(32);
 					pushFollow(FOLLOW_instructions_in_inssi749);
 					instructions();
 					state._fsp--;
@@ -1443,8 +1443,8 @@ public class projetParser extends Parser {
 
 			}
 
-			 PtGen.pt(33); 
-			match(input,41,FOLLOW_41_in_inssi759); 
+			 PtGen.pt(33);
+			match(input,41,FOLLOW_41_in_inssi759);
 			}
 
 		}
@@ -1465,14 +1465,14 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:120:9: ( 'cond' expression ':' instructions ( ',' expression ':' instructions )* ( 'aut' instructions )? 'fcond' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:120:11: 'cond' expression ':' instructions ( ',' expression ':' instructions )* ( 'aut' instructions )? 'fcond'
 			{
-			match(input,27,FOLLOW_27_in_inscond772); 
-			 PtGen.pt(36); 
+			match(input,27,FOLLOW_27_in_inscond772);
+			 PtGen.pt(36);
 			pushFollow(FOLLOW_expression_in_inscond777);
 			expression();
 			state._fsp--;
 
-			 PtGen.pt(30); 
-			match(input,15,FOLLOW_15_in_inscond782); 
+			 PtGen.pt(30);
+			match(input,15,FOLLOW_15_in_inscond782);
 			pushFollow(FOLLOW_instructions_in_inscond784);
 			instructions();
 			state._fsp--;
@@ -1490,14 +1490,14 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:121:12: ',' expression ':' instructions
 					{
-					match(input,13,FOLLOW_13_in_inscond797); 
-					 PtGen.pt(37); 
+					match(input,13,FOLLOW_13_in_inscond797);
+					 PtGen.pt(37);
 					pushFollow(FOLLOW_expression_in_inscond802);
 					expression();
 					state._fsp--;
 
-					 PtGen.pt(30); 
-					match(input,15,FOLLOW_15_in_inscond807); 
+					 PtGen.pt(30);
+					match(input,15,FOLLOW_15_in_inscond807);
 					pushFollow(FOLLOW_instructions_in_inscond809);
 					instructions();
 					state._fsp--;
@@ -1520,8 +1520,8 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:122:12: 'aut' instructions
 					{
-					 PtGen.pt(38); 
-					match(input,25,FOLLOW_25_in_inscond828); 
+					 PtGen.pt(38);
+					match(input,25,FOLLOW_25_in_inscond828);
 					pushFollow(FOLLOW_instructions_in_inscond830);
 					instructions();
 					state._fsp--;
@@ -1531,8 +1531,8 @@ public class projetParser extends Parser {
 
 			}
 
-			 PtGen.pt(39); 
-			match(input,38,FOLLOW_38_in_inscond848); 
+			 PtGen.pt(39);
+			match(input,38,FOLLOW_38_in_inscond848);
 			}
 
 		}
@@ -1553,20 +1553,20 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:126:9: ( 'ttq' expression 'faire' instructions 'fait' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:126:11: 'ttq' expression 'faire' instructions 'fait'
 			{
-			match(input,52,FOLLOW_52_in_boucle863); 
-			 PtGen.pt(34); 
+			match(input,52,FOLLOW_52_in_boucle863);
+			 PtGen.pt(34);
 			pushFollow(FOLLOW_expression_in_boucle867);
 			expression();
 			state._fsp--;
 
-			 PtGen.pt(30); 
-			match(input,35,FOLLOW_35_in_boucle871); 
+			 PtGen.pt(30);
+			match(input,35,FOLLOW_35_in_boucle871);
 			pushFollow(FOLLOW_instructions_in_boucle873);
 			instructions();
 			state._fsp--;
 
-			 PtGen.pt(35); 
-			match(input,36,FOLLOW_36_in_boucle877); 
+			 PtGen.pt(35);
+			match(input,36,FOLLOW_36_in_boucle877);
 			}
 
 		}
@@ -1587,13 +1587,13 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:129:8: ( 'lire' '(' ident ( ',' ident )* ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:129:10: 'lire' '(' ident ( ',' ident )* ')'
 			{
-			match(input,42,FOLLOW_42_in_lecture890); 
-			match(input,9,FOLLOW_9_in_lecture892); 
+			match(input,42,FOLLOW_42_in_lecture890);
+			match(input,9,FOLLOW_9_in_lecture892);
 			pushFollow(FOLLOW_ident_in_lecture894);
 			ident();
 			state._fsp--;
 
-			 PtGen.pt(26); 
+			 PtGen.pt(26);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:129:45: ( ',' ident )*
 			loop32:
 			while (true) {
@@ -1607,12 +1607,12 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:129:47: ',' ident
 					{
-					match(input,13,FOLLOW_13_in_lecture900); 
+					match(input,13,FOLLOW_13_in_lecture900);
 					pushFollow(FOLLOW_ident_in_lecture902);
 					ident();
 					state._fsp--;
 
-					 PtGen.pt(26); 
+					 PtGen.pt(26);
 					}
 					break;
 
@@ -1621,7 +1621,7 @@ public class projetParser extends Parser {
 				}
 			}
 
-			match(input,10,FOLLOW_10_in_lecture909); 
+			match(input,10,FOLLOW_10_in_lecture909);
 			}
 
 		}
@@ -1642,13 +1642,13 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:132:9: ( 'ecrire' '(' expression ( ',' expression )* ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:132:11: 'ecrire' '(' expression ( ',' expression )* ')'
 			{
-			match(input,32,FOLLOW_32_in_ecriture922); 
-			match(input,9,FOLLOW_9_in_ecriture924); 
+			match(input,32,FOLLOW_32_in_ecriture922);
+			match(input,9,FOLLOW_9_in_ecriture924);
 			pushFollow(FOLLOW_expression_in_ecriture926);
 			expression();
 			state._fsp--;
 
-			 PtGen.pt(27); 
+			 PtGen.pt(27);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:132:53: ( ',' expression )*
 			loop33:
 			while (true) {
@@ -1662,12 +1662,12 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:132:55: ',' expression
 					{
-					match(input,13,FOLLOW_13_in_ecriture932); 
+					match(input,13,FOLLOW_13_in_ecriture932);
 					pushFollow(FOLLOW_expression_in_ecriture934);
 					expression();
 					state._fsp--;
 
-					 PtGen.pt(27); 
+					 PtGen.pt(27);
 					}
 					break;
 
@@ -1676,7 +1676,7 @@ public class projetParser extends Parser {
 				}
 			}
 
-			match(input,10,FOLLOW_10_in_ecriture941); 
+			match(input,10,FOLLOW_10_in_ecriture941);
 			}
 
 		}
@@ -1701,7 +1701,7 @@ public class projetParser extends Parser {
 			ident();
 			state._fsp--;
 
-			 PtGen.pt(28); 
+			 PtGen.pt(28);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:136:29: ( ':=' expression | ( effixes ( effmods )? )? )
 			int alt36=2;
 			int LA36_0 = input.LA(1);
@@ -1722,12 +1722,12 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:136:31: ':=' expression
 					{
-					match(input,16,FOLLOW_16_in_affouappel963); 
+					match(input,16,FOLLOW_16_in_affouappel963);
 					pushFollow(FOLLOW_expression_in_affouappel965);
 					expression();
 					state._fsp--;
 
-					 PtGen.pt(29); 
+					 PtGen.pt(29);
 					}
 					break;
 				case 2 :
@@ -1771,7 +1771,7 @@ public class projetParser extends Parser {
 
 					}
 
-					 PtGen.pt(46); 
+					 PtGen.pt(46);
 					}
 					break;
 
@@ -1797,7 +1797,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:141:9: ( '(' ( expression ( ',' expression )* )? ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:141:11: '(' ( expression ( ',' expression )* )? ')'
 			{
-			match(input,9,FOLLOW_9_in_effixes1022); 
+			match(input,9,FOLLOW_9_in_effixes1022);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:141:15: ( expression ( ',' expression )* )?
 			int alt38=2;
 			int LA38_0 = input.LA(1);
@@ -1825,7 +1825,7 @@ public class projetParser extends Parser {
 						case 1 :
 							// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:141:29: ',' expression
 							{
-							match(input,13,FOLLOW_13_in_effixes1029); 
+							match(input,13,FOLLOW_13_in_effixes1029);
 							pushFollow(FOLLOW_expression_in_effixes1031);
 							expression();
 							state._fsp--;
@@ -1843,7 +1843,7 @@ public class projetParser extends Parser {
 
 			}
 
-			match(input,10,FOLLOW_10_in_effixes1039); 
+			match(input,10,FOLLOW_10_in_effixes1039);
 			}
 
 		}
@@ -1864,7 +1864,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:144:9: ( '(' ( ident ( ',' ident )* )? ')' )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:144:10: '(' ( ident ( ',' ident )* )? ')'
 			{
-			match(input,9,FOLLOW_9_in_effmods1051); 
+			match(input,9,FOLLOW_9_in_effmods1051);
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:144:14: ( ident ( ',' ident )* )?
 			int alt40=2;
 			int LA40_0 = input.LA(1);
@@ -1879,7 +1879,7 @@ public class projetParser extends Parser {
 					ident();
 					state._fsp--;
 
-					 PtGen.pt(45); 
+					 PtGen.pt(45);
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:144:39: ( ',' ident )*
 					loop39:
 					while (true) {
@@ -1893,12 +1893,12 @@ public class projetParser extends Parser {
 						case 1 :
 							// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:144:40: ',' ident
 							{
-							match(input,13,FOLLOW_13_in_effmods1059); 
+							match(input,13,FOLLOW_13_in_effmods1059);
 							pushFollow(FOLLOW_ident_in_effmods1061);
 							ident();
 							state._fsp--;
 
-							 PtGen.pt(45); 
+							 PtGen.pt(45);
 							}
 							break;
 
@@ -1912,7 +1912,7 @@ public class projetParser extends Parser {
 
 			}
 
-			match(input,10,FOLLOW_10_in_effmods1070); 
+			match(input,10,FOLLOW_10_in_effmods1070);
 			}
 
 		}
@@ -1955,7 +1955,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:147:21: 'ou' exp1
 					{
-					match(input,46,FOLLOW_46_in_expression1088); 
+					match(input,46,FOLLOW_46_in_expression1088);
 					PtGen.pt(10);
 					pushFollow(FOLLOW_exp1_in_expression1093);
 					exp1();
@@ -2008,7 +2008,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:150:15: 'et' exp2
 					{
-					match(input,34,FOLLOW_34_in_exp11118); 
+					match(input,34,FOLLOW_34_in_exp11118);
 					PtGen.pt(10);
 					pushFollow(FOLLOW_exp2_in_exp11123);
 					exp2();
@@ -2061,7 +2061,7 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:153:9: 'non' exp2
 					{
-					match(input,45,FOLLOW_45_in_exp21145); 
+					match(input,45,FOLLOW_45_in_exp21145);
 					pushFollow(FOLLOW_exp2_in_exp21147);
 					exp2();
 					state._fsp--;
@@ -2141,79 +2141,79 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:158:5: '=' exp4
 					{
-					match(input,21,FOLLOW_21_in_exp31177); 
-					 PtGen.pt(14); 
+					match(input,21,FOLLOW_21_in_exp31177);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31181);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(15); 
+					 PtGen.pt(14);
+					 PtGen.pt(15);
 					}
 					break;
 				case 2 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:159:5: '<>' exp4
 					{
-					match(input,20,FOLLOW_20_in_exp31191); 
-					 PtGen.pt(14); 
+					match(input,20,FOLLOW_20_in_exp31191);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31195);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(16); 
+					 PtGen.pt(14);
+					 PtGen.pt(16);
 					}
 					break;
 				case 3 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:160:5: '>' exp4
 					{
-					match(input,22,FOLLOW_22_in_exp31205); 
-					 PtGen.pt(14); 
+					match(input,22,FOLLOW_22_in_exp31205);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31210);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(17); 
+					 PtGen.pt(14);
+					 PtGen.pt(17);
 					}
 					break;
 				case 4 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:161:5: '>=' exp4
 					{
-					match(input,23,FOLLOW_23_in_exp31220); 
-					 PtGen.pt(14); 
+					match(input,23,FOLLOW_23_in_exp31220);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31224);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(18); 
+					 PtGen.pt(14);
+					 PtGen.pt(18);
 					}
 					break;
 				case 5 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:162:5: '<' exp4
 					{
-					match(input,18,FOLLOW_18_in_exp31234); 
-					 PtGen.pt(14); 
+					match(input,18,FOLLOW_18_in_exp31234);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31239);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(19); 
+					 PtGen.pt(14);
+					 PtGen.pt(19);
 					}
 					break;
 				case 6 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:163:5: '<=' exp4
 					{
-					match(input,19,FOLLOW_19_in_exp31249); 
-					 PtGen.pt(14); 
+					match(input,19,FOLLOW_19_in_exp31249);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp4_in_exp31253);
 					exp4();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(20); 
+					 PtGen.pt(14);
+					 PtGen.pt(20);
 					}
 					break;
 
@@ -2259,27 +2259,27 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:168:10: '+' exp5
 					{
-					match(input,12,FOLLOW_12_in_exp41288); 
-					 PtGen.pt(14); 
+					match(input,12,FOLLOW_12_in_exp41288);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp5_in_exp41292);
 					exp5();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(21); 
+					 PtGen.pt(14);
+					 PtGen.pt(21);
 					}
 					break;
 				case 2 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:169:10: '-' exp5
 					{
-					match(input,14,FOLLOW_14_in_exp41307); 
-					 PtGen.pt(14); 
+					match(input,14,FOLLOW_14_in_exp41307);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_exp5_in_exp41311);
 					exp5();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(22); 
+					 PtGen.pt(14);
+					 PtGen.pt(22);
 					}
 					break;
 
@@ -2328,27 +2328,27 @@ public class projetParser extends Parser {
 				case 1 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:174:14: '*' primaire
 					{
-					match(input,11,FOLLOW_11_in_exp51355); 
-					 PtGen.pt(14); 
+					match(input,11,FOLLOW_11_in_exp51355);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_primaire_in_exp51359);
 					primaire();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(23); 
+					 PtGen.pt(14);
+					 PtGen.pt(23);
 					}
 					break;
 				case 2 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:175:13: 'div' primaire
 					{
-					match(input,31,FOLLOW_31_in_exp51377); 
-					 PtGen.pt(14); 
+					match(input,31,FOLLOW_31_in_exp51377);
+					 PtGen.pt(14);
 					pushFollow(FOLLOW_primaire_in_exp51382);
 					primaire();
 					state._fsp--;
 
-					 PtGen.pt(14); 
-					 PtGen.pt(24); 
+					 PtGen.pt(14);
+					 PtGen.pt(24);
 					}
 					break;
 
@@ -2409,7 +2409,7 @@ public class projetParser extends Parser {
 					valeur();
 					state._fsp--;
 
-					 PtGen.pt(25); 
+					 PtGen.pt(25);
 					}
 					break;
 				case 2 :
@@ -2419,18 +2419,18 @@ public class projetParser extends Parser {
 					ident();
 					state._fsp--;
 
-					 PtGen.pt(31); 
+					 PtGen.pt(31);
 					}
 					break;
 				case 3 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:181:5: '(' expression ')'
 					{
-					match(input,9,FOLLOW_9_in_primaire1426); 
+					match(input,9,FOLLOW_9_in_primaire1426);
 					pushFollow(FOLLOW_expression_in_primaire1428);
 					expression();
 					state._fsp--;
 
-					match(input,10,FOLLOW_10_in_primaire1430); 
+					match(input,10,FOLLOW_10_in_primaire1430);
 					}
 					break;
 
@@ -2497,7 +2497,7 @@ public class projetParser extends Parser {
 				case 2 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:185:5: '+' nbentier
 					{
-					match(input,12,FOLLOW_12_in_valeur1452); 
+					match(input,12,FOLLOW_12_in_valeur1452);
 					pushFollow(FOLLOW_nbentier_in_valeur1454);
 					nbentier();
 					state._fsp--;
@@ -2508,7 +2508,7 @@ public class projetParser extends Parser {
 				case 3 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:186:5: '-' nbentier
 					{
-					match(input,14,FOLLOW_14_in_valeur1462); 
+					match(input,14,FOLLOW_14_in_valeur1462);
 					pushFollow(FOLLOW_nbentier_in_valeur1464);
 					nbentier();
 					state._fsp--;
@@ -2519,14 +2519,14 @@ public class projetParser extends Parser {
 				case 4 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:187:5: 'vrai'
 					{
-					match(input,54,FOLLOW_54_in_valeur1472); 
+					match(input,54,FOLLOW_54_in_valeur1472);
 					PtGen.pt(5);
 					}
 					break;
 				case 5 :
 					// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:188:5: 'faux'
 					{
-					match(input,37,FOLLOW_37_in_valeur1480); 
+					match(input,37,FOLLOW_37_in_valeur1480);
 					PtGen.pt(6);
 					}
 					break;
@@ -2552,7 +2552,7 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:198:11: ( INT )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:198:15: INT
 			{
-			INT1=(Token)match(input,INT,FOLLOW_INT_in_nbentier1510); 
+			INT1=(Token)match(input,INT,FOLLOW_INT_in_nbentier1510);
 			 UtilLex.valNb = Integer.parseInt((INT1!=null?INT1.getText():null));
 			}
 
@@ -2576,8 +2576,8 @@ public class projetParser extends Parser {
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:200:7: ( ID )
 			// H:\\windows\\git\\Compilation\\COMP_PROJET\\src\\projet.g:200:9: ID
 			{
-			ID2=(Token)match(input,ID,FOLLOW_ID_in_ident1521); 
-			 UtilLex.traiterId((ID2!=null?ID2.getText():null), (ID2!=null?ID2.getLine():0)); 
+			ID2=(Token)match(input,ID,FOLLOW_ID_in_ident1521);
+			 UtilLex.traiterId((ID2!=null?ID2.getText():null), (ID2!=null?ID2.getLine():0));
 			}
 
 		}

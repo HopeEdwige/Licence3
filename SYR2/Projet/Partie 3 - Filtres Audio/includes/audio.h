@@ -31,5 +31,4 @@ int aud_readinit (char *filename, int *sample_rate, int*sample_size, int* channe
  * @params sample_rate, sample_size, channels: see aud_readinit above
  * @return a new descriptor or <0 if an error occurred. NB: 0 itself is a valid descriptor number!
  */
-int aud_writeinit (int sample_rate, int sample_size, int channels); 
-
+int aud_writeinit (int sample_rate, int sample_size, int channels);

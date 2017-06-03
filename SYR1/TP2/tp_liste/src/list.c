@@ -125,7 +125,7 @@ int insert_tail(list_elem_t * * l, int value) {
   //Create the new element with the value enterred
   list_elem_t * nouveau = create_element(value);
 
-  //If the element creation does an error 
+  //If the element creation does an error
   if (nouveau == NULL) {
     return -1;
   }
@@ -154,7 +154,7 @@ int insert_tail(list_elem_t * * l, int value) {
  * SYNOPSYS :
  *   list_elem_t * find_element(list_elem_t * l, int index)
  * DESCRIPTION :
- *   Retourne un pointeur sur le maillon à la position n°i de la liste 
+ *   Retourne un pointeur sur le maillon à la position n°i de la liste
  *   (le 1er élément est situé à la position 0).
  * PARAMETRES :
  *   int index : position de l'élément à retrouver
@@ -188,7 +188,7 @@ list_elem_t * find_element(list_elem_t * l, int index) {
  * DESCRIPTION :
  *   Supprime de la liste (dont la tête a été passée en paramètre) le premier élément de
  *   valeur value, et libère l'espace mémoire utilisé par le maillon
- *   ainsi supprimé. 
+ *   ainsi supprimé.
  *   Attention : à l'issue de la fonction la tête de liste peut avoir été modifiée.
  * PARAMETRES :
  *   list_elem_t ** ppl : pointeur sur le  pointeur de tête de liste
@@ -249,7 +249,7 @@ int remove_element(list_elem_t * * ppl, int value) {
  * PARAMETRES :
  *   list_elem_t ** l : pointeur sur le pointeur de tête de liste
  * RESULTAT :
- *   aucun 
+ *   aucun
  */
 void reverse_list(list_elem_t * * l) {
 	if ((l != NULL) && (*l != NULL)) {
@@ -275,7 +275,7 @@ void reverse_list(list_elem_t * * l) {
       int i = 0;
       while (i < nb_malloc) {
         //printf("i = %d, contenu = %d \n", i, table[i]->value);
-  
+
         //If i+1 exists in the table
         if (i < (nb_malloc - 1)) {
           table[i]->next = table[i+1];

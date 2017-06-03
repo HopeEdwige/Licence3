@@ -25,8 +25,8 @@ assert(nb_noeuds(a2) = 2);;
 
 
 
-let rec profondeur = function 
-Feuille f -> 0 
+let rec profondeur = function
+Feuille f -> 0
   | Noeud n -> let prof_g = profondeur n.gauche and prof_d = profondeur n.droite in
 	       if (prof_g > prof_d) then 1 + prof_g else 1 + prof_d;;
 
@@ -46,7 +46,7 @@ mirroir(a2);;
 
 
 
-let rec ops_et_feuilles = function 
+let rec ops_et_feuilles = function
 Feuille f -> ([], [f])
   | Noeud n -> let (op_g, f_g) = ops_et_feuilles n.gauche and (op_d, f_d) = ops_et_feuilles n.droite in (n.op :: op_g @ op_d, f_g @ f_d);;
 

@@ -34,7 +34,7 @@ public class OurSet extends List<SubSet> {
 		while (i < MAX_RANG) {
 			it.addRight(new SubSet(i, new SmallSet()));
 		}*/
-		System.out.println("OurSet créé");
+		System.out.println("OurSet crï¿½ï¿½");
 	}
 
 
@@ -55,10 +55,10 @@ public class OurSet extends List<SubSet> {
 	/*private static Comparison compare(int a, int b) {
 		if (a < b) {
 			return Comparison.INF;
-		} 
+		}
 		else if (a == b) {
 			return Comparison.EGAL;
-		} 
+		}
 		else {
 			return Comparison.SUP;
 		}
@@ -69,7 +69,7 @@ public class OurSet extends List<SubSet> {
 	 * Print the actual state
 	 */
 	public void print() {
-		System.out.println(" [version corrigée de contenu]");
+		System.out.println(" [version corrigï¿½e de contenu]");
 		this.print(System.out);
 	}
 
@@ -82,13 +82,13 @@ public class OurSet extends List<SubSet> {
 	 * Display if a value is contained or not
 	 */
 	public void containment() {
-		System.out.println(" valeur cherché : ");
+		System.out.println(" valeur cherchï¿½ : ");
 		int x = readValue(standardInput, 0);
 		if (this.containsAux(x)) {
-			System.out.println(" valeur préente");
-		} 
+			System.out.println(" valeur prï¿½ente");
+		}
 		else {
-			System.out.println(" valeur non préente");
+			System.out.println(" valeur non prï¿½ente");
 		}
 	}
 
@@ -97,7 +97,7 @@ public class OurSet extends List<SubSet> {
 	 * Display the menu to add one or multiple elements
 	 */
 	public void add() {
-		System.out.println(" valeurs éajouter (-1 pour finir) : ");
+		System.out.println(" valeurs ï¿½ajouter (-1 pour finir) : ");
 		this.addAux(System.in);
 		System.out.println(" nouveau contenu :");
 		this.printNewState();
@@ -108,7 +108,7 @@ public class OurSet extends List<SubSet> {
 	 * Display the menu to remove one or multiple elements
 	 */
 	public void remove() {
-		System.out.println("  valeurs éremove (-1 pour finir) : ");
+		System.out.println("  valeurs ï¿½remove (-1 pour finir) : ");
 		this.removeAux(System.in);
 		System.out.println(" nouveau contenu :");
 		this.printNewState();
@@ -162,7 +162,7 @@ public class OurSet extends List<SubSet> {
 			x = scan.nextInt();
 		else
 			x = -1;
-		
+
 		Iterator<SubSet> it = this.iterator();
 
 		//Until we read -1
@@ -206,15 +206,15 @@ public class OurSet extends List<SubSet> {
 			}
 
 			it.restart();
-			
+
 			//If there is some more int
 			if (scan.hasNextInt())
 				x = scan.nextInt();
-			
+
 			//If no more
 			else
 				x = -1;
-		}		
+		}
 
 	}
 
@@ -248,7 +248,7 @@ public class OurSet extends List<SubSet> {
 		}
 
 		catch (IOException e) {
-			System.out.println("Exception rencontré pendant la suppression:" + "\n" + e.getMessage());
+			System.out.println("Exception rencontrï¿½ pendant la suppression:" + "\n" + e.getMessage());
 		}
 
 	}
@@ -276,7 +276,7 @@ public class OurSet extends List<SubSet> {
 
 
 	/* 	#####################################################################################
-		############### Difféence, DifféenceSymérique, Intersection, Union ###############
+		############### Diffï¿½ence, Diffï¿½enceSymï¿½rique, Intersection, Union ###############
 		##################################################################################### */
 	/**
 	 * Do the difference with another set
@@ -403,7 +403,7 @@ public class OurSet extends List<SubSet> {
 	}
 
 	/* 	#####################################################################################
-		################################  Egalité inclusion  ###############################
+		################################  Egalitï¿½ inclusion  ###############################
 		##################################################################################### */
 	@Override
 	/**
@@ -461,10 +461,10 @@ public class OurSet extends List<SubSet> {
 	 */
 	public void isIncludedIn(OurSet set2) {
 		if (includedAux(set2))
-			System.out.println("Le set entréest inclus dans celui-ci.");
+			System.out.println("Le set entrï¿½est inclus dans celui-ci.");
 
 		else
-			System.out.println("Le set entrén'est pas inclus dans celui-ci.");
+			System.out.println("Le set entrï¿½n'est pas inclus dans celui-ci.");
 	}
 
 
@@ -508,7 +508,7 @@ public class OurSet extends List<SubSet> {
 	 * Display that we'll print the present ranks here
 	 */
 	public void printRanks() {
-		System.out.println(" [version corrigé de rangs]");
+		System.out.println(" [version corrigï¿½ de rangs]");
 		this.printRanksAux();
 	}
 
@@ -518,7 +518,7 @@ public class OurSet extends List<SubSet> {
 	 */
 	private void printRanksAux() {
 		int k = 0;
-		System.out.println(" Rangs préents :");
+		System.out.println(" Rangs prï¿½ents :");
 		Iterator<SubSet> it = this.iterator();
 		while (!it.isOnFlag()) {
 			System.out.print(it.getValue().rank + "  ");
@@ -543,13 +543,13 @@ public class OurSet extends List<SubSet> {
 		InputStream inFile;
 		try {
 			inFile = new FileInputStream(fileName);
-			System.out.println(" [version corrigé de restauration]");
+			System.out.println(" [version corrigï¿½ de restauration]");
 			this.clear();
 			this.addAux(inFile);
 			inFile.close();
 			System.out.println(" nouveau contenu :");
 			this.printNewState();
-		} 
+		}
 		catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("fichier " + fileName + " inexistant");
@@ -565,7 +565,7 @@ public class OurSet extends List<SubSet> {
 	 * Save the current state into a file
 	 */
 	public void save() {
-		System.out.println(" [version corrigé de sauvegarde]");
+		System.out.println(" [version corrigï¿½ de sauvegarde]");
 
 		OutputStream outFile;
 		try {
@@ -576,7 +576,7 @@ public class OurSet extends List<SubSet> {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			System.out.println("pb ouverture fichier lors de la sauvegarde");
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 			System.out.println("probleme de fermeture du fichier");
@@ -629,7 +629,7 @@ public class OurSet extends List<SubSet> {
 		try {
 			String string = this.toString();
 			f.write(string.getBytes());
-		} 
+		}
 		catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -641,7 +641,7 @@ public class OurSet extends List<SubSet> {
 	 */
 	private void printNewState() {
 		this.print(System.out);
-		System.out.println(" Nombre d'ééents : " + this.sizeAux());
+		System.out.println(" Nombre d'ï¿½ï¿½ents : " + this.sizeAux());
 		this.printRanksAux();
 	}
 

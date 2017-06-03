@@ -66,7 +66,7 @@ public class projetLexer extends Lexer {
 		return new Lexer[] {};
 	}
 
-	public projetLexer() {} 
+	public projetLexer() {}
 	public projetLexer(CharStream input) {
 		this(input, new RecognizerSharedState());
 	}
@@ -83,7 +83,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:7:6: ( '(' )
 			// ./src/projet.g:7:8: '('
 			{
-			match('('); 
+			match('(');
 			}
 
 			state.type = _type;
@@ -103,7 +103,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:8:7: ( ')' )
 			// ./src/projet.g:8:9: ')'
 			{
-			match(')'); 
+			match(')');
 			}
 
 			state.type = _type;
@@ -123,7 +123,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:9:7: ( '*' )
 			// ./src/projet.g:9:9: '*'
 			{
-			match('*'); 
+			match('*');
 			}
 
 			state.type = _type;
@@ -143,7 +143,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:10:7: ( '+' )
 			// ./src/projet.g:10:9: '+'
 			{
-			match('+'); 
+			match('+');
 			}
 
 			state.type = _type;
@@ -163,7 +163,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:11:7: ( ',' )
 			// ./src/projet.g:11:9: ','
 			{
-			match(','); 
+			match(',');
 			}
 
 			state.type = _type;
@@ -183,7 +183,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:12:7: ( '-' )
 			// ./src/projet.g:12:9: '-'
 			{
-			match('-'); 
+			match('-');
 			}
 
 			state.type = _type;
@@ -203,7 +203,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:13:7: ( ':' )
 			// ./src/projet.g:13:9: ':'
 			{
-			match(':'); 
+			match(':');
 			}
 
 			state.type = _type;
@@ -223,7 +223,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:14:7: ( ':=' )
 			// ./src/projet.g:14:9: ':='
 			{
-			match(":="); 
+			match(":=");
 
 			}
 
@@ -244,7 +244,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:15:7: ( ';' )
 			// ./src/projet.g:15:9: ';'
 			{
-			match(';'); 
+			match(';');
 			}
 
 			state.type = _type;
@@ -264,7 +264,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:16:7: ( '<' )
 			// ./src/projet.g:16:9: '<'
 			{
-			match('<'); 
+			match('<');
 			}
 
 			state.type = _type;
@@ -284,7 +284,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:17:7: ( '<=' )
 			// ./src/projet.g:17:9: '<='
 			{
-			match("<="); 
+			match("<=");
 
 			}
 
@@ -305,7 +305,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:18:7: ( '<>' )
 			// ./src/projet.g:18:9: '<>'
 			{
-			match("<>"); 
+			match("<>");
 
 			}
 
@@ -326,7 +326,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:19:7: ( '=' )
 			// ./src/projet.g:19:9: '='
 			{
-			match('='); 
+			match('=');
 			}
 
 			state.type = _type;
@@ -346,7 +346,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:20:7: ( '>' )
 			// ./src/projet.g:20:9: '>'
 			{
-			match('>'); 
+			match('>');
 			}
 
 			state.type = _type;
@@ -366,7 +366,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:21:7: ( '>=' )
 			// ./src/projet.g:21:9: '>='
 			{
-			match(">="); 
+			match(">=");
 
 			}
 
@@ -387,7 +387,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:22:7: ( 'alors' )
 			// ./src/projet.g:22:9: 'alors'
 			{
-			match("alors"); 
+			match("alors");
 
 			}
 
@@ -408,7 +408,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:23:7: ( 'aut' )
 			// ./src/projet.g:23:9: 'aut'
 			{
-			match("aut"); 
+			match("aut");
 
 			}
 
@@ -429,7 +429,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:24:7: ( 'bool' )
 			// ./src/projet.g:24:9: 'bool'
 			{
-			match("bool"); 
+			match("bool");
 
 			}
 
@@ -450,7 +450,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:25:7: ( 'cond' )
 			// ./src/projet.g:25:9: 'cond'
 			{
-			match("cond"); 
+			match("cond");
 
 			}
 
@@ -471,7 +471,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:26:7: ( 'const' )
 			// ./src/projet.g:26:9: 'const'
 			{
-			match("const"); 
+			match("const");
 
 			}
 
@@ -492,7 +492,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:27:7: ( 'debut' )
 			// ./src/projet.g:27:9: 'debut'
 			{
-			match("debut"); 
+			match("debut");
 
 			}
 
@@ -513,7 +513,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:28:7: ( 'def' )
 			// ./src/projet.g:28:9: 'def'
 			{
-			match("def"); 
+			match("def");
 
 			}
 
@@ -534,7 +534,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:29:7: ( 'div' )
 			// ./src/projet.g:29:9: 'div'
 			{
-			match("div"); 
+			match("div");
 
 			}
 
@@ -555,7 +555,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:30:7: ( 'ecrire' )
 			// ./src/projet.g:30:9: 'ecrire'
 			{
-			match("ecrire"); 
+			match("ecrire");
 
 			}
 
@@ -576,7 +576,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:31:7: ( 'ent' )
 			// ./src/projet.g:31:9: 'ent'
 			{
-			match("ent"); 
+			match("ent");
 
 			}
 
@@ -597,7 +597,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:32:7: ( 'et' )
 			// ./src/projet.g:32:9: 'et'
 			{
-			match("et"); 
+			match("et");
 
 			}
 
@@ -618,7 +618,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:33:7: ( 'faire' )
 			// ./src/projet.g:33:9: 'faire'
 			{
-			match("faire"); 
+			match("faire");
 
 			}
 
@@ -639,7 +639,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:34:7: ( 'fait' )
 			// ./src/projet.g:34:9: 'fait'
 			{
-			match("fait"); 
+			match("fait");
 
 			}
 
@@ -660,7 +660,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:35:7: ( 'faux' )
 			// ./src/projet.g:35:9: 'faux'
 			{
-			match("faux"); 
+			match("faux");
 
 			}
 
@@ -681,7 +681,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:36:7: ( 'fcond' )
 			// ./src/projet.g:36:9: 'fcond'
 			{
-			match("fcond"); 
+			match("fcond");
 
 			}
 
@@ -702,7 +702,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:37:7: ( 'fin' )
 			// ./src/projet.g:37:9: 'fin'
 			{
-			match("fin"); 
+			match("fin");
 
 			}
 
@@ -723,7 +723,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:38:7: ( 'fixe' )
 			// ./src/projet.g:38:9: 'fixe'
 			{
-			match("fixe"); 
+			match("fixe");
 
 			}
 
@@ -744,7 +744,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:39:7: ( 'fsi' )
 			// ./src/projet.g:39:9: 'fsi'
 			{
-			match("fsi"); 
+			match("fsi");
 
 			}
 
@@ -765,7 +765,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:40:7: ( 'lire' )
 			// ./src/projet.g:40:9: 'lire'
 			{
-			match("lire"); 
+			match("lire");
 
 			}
 
@@ -786,7 +786,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:41:7: ( 'mod' )
 			// ./src/projet.g:41:9: 'mod'
 			{
-			match("mod"); 
+			match("mod");
 
 			}
 
@@ -807,7 +807,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:42:7: ( 'module' )
 			// ./src/projet.g:42:9: 'module'
 			{
-			match("module"); 
+			match("module");
 
 			}
 
@@ -828,7 +828,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:43:7: ( 'non' )
 			// ./src/projet.g:43:9: 'non'
 			{
-			match("non"); 
+			match("non");
 
 			}
 
@@ -849,7 +849,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:44:7: ( 'ou' )
 			// ./src/projet.g:44:9: 'ou'
 			{
-			match("ou"); 
+			match("ou");
 
 			}
 
@@ -870,7 +870,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:45:7: ( 'proc' )
 			// ./src/projet.g:45:9: 'proc'
 			{
-			match("proc"); 
+			match("proc");
 
 			}
 
@@ -891,7 +891,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:46:7: ( 'programme' )
 			// ./src/projet.g:46:9: 'programme'
 			{
-			match("programme"); 
+			match("programme");
 
 			}
 
@@ -912,7 +912,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:47:7: ( 'ref' )
 			// ./src/projet.g:47:9: 'ref'
 			{
-			match("ref"); 
+			match("ref");
 
 			}
 
@@ -933,7 +933,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:48:7: ( 'si' )
 			// ./src/projet.g:48:9: 'si'
 			{
-			match("si"); 
+			match("si");
 
 			}
 
@@ -954,7 +954,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:49:7: ( 'sinon' )
 			// ./src/projet.g:49:9: 'sinon'
 			{
-			match("sinon"); 
+			match("sinon");
 
 			}
 
@@ -975,7 +975,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:50:7: ( 'ttq' )
 			// ./src/projet.g:50:9: 'ttq'
 			{
-			match("ttq"); 
+			match("ttq");
 
 			}
 
@@ -996,7 +996,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:51:7: ( 'var' )
 			// ./src/projet.g:51:9: 'var'
 			{
-			match("var"); 
+			match("var");
 
 			}
 
@@ -1017,7 +1017,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:52:7: ( 'vrai' )
 			// ./src/projet.g:52:9: 'vrai'
 			{
-			match("vrai"); 
+			match("vrai");
 
 			}
 
@@ -1216,7 +1216,7 @@ public class projetLexer extends Lexer {
 				case 1 :
 					// ./src/projet.g:214:6: '\\{' ( . )* '\\}'
 					{
-					match('{'); 
+					match('{');
 					// ./src/projet.g:214:11: ( . )*
 					loop4:
 					while (true) {
@@ -1233,7 +1233,7 @@ public class projetLexer extends Lexer {
 						case 1 :
 							// ./src/projet.g:214:12: .
 							{
-							matchAny(); 
+							matchAny();
 							}
 							break;
 
@@ -1242,14 +1242,14 @@ public class projetLexer extends Lexer {
 						}
 					}
 
-					match('}'); 
+					match('}');
 					skip();
 					}
 					break;
 				case 2 :
 					// ./src/projet.g:215:6: '#' (~ ( '\\r' | '\\n' ) )*
 					{
-					match('#'); 
+					match('#');
 					// ./src/projet.g:215:10: (~ ( '\\r' | '\\n' ) )*
 					loop5:
 					while (true) {
@@ -1301,7 +1301,7 @@ public class projetLexer extends Lexer {
 			// ./src/projet.g:219:15: ( '/*' ( options {greedy=false; } : . )* '*/' )
 			// ./src/projet.g:219:19: '/*' ( options {greedy=false; } : . )* '*/'
 			{
-			match("/*"); 
+			match("/*");
 
 			// ./src/projet.g:219:24: ( options {greedy=false; } : . )*
 			loop7:
@@ -1326,7 +1326,7 @@ public class projetLexer extends Lexer {
 				case 1 :
 					// ./src/projet.g:219:51: .
 					{
-					matchAny(); 
+					matchAny();
 					}
 					break;
 
@@ -1335,7 +1335,7 @@ public class projetLexer extends Lexer {
 				}
 			}
 
-			match("*/"); 
+			match("*/");
 
 			_channel=HIDDEN;
 			}
@@ -1358,357 +1358,357 @@ public class projetLexer extends Lexer {
 			case 1 :
 				// ./src/projet.g:1:10: T__9
 				{
-				mT__9(); 
+				mT__9();
 
 				}
 				break;
 			case 2 :
 				// ./src/projet.g:1:15: T__10
 				{
-				mT__10(); 
+				mT__10();
 
 				}
 				break;
 			case 3 :
 				// ./src/projet.g:1:21: T__11
 				{
-				mT__11(); 
+				mT__11();
 
 				}
 				break;
 			case 4 :
 				// ./src/projet.g:1:27: T__12
 				{
-				mT__12(); 
+				mT__12();
 
 				}
 				break;
 			case 5 :
 				// ./src/projet.g:1:33: T__13
 				{
-				mT__13(); 
+				mT__13();
 
 				}
 				break;
 			case 6 :
 				// ./src/projet.g:1:39: T__14
 				{
-				mT__14(); 
+				mT__14();
 
 				}
 				break;
 			case 7 :
 				// ./src/projet.g:1:45: T__15
 				{
-				mT__15(); 
+				mT__15();
 
 				}
 				break;
 			case 8 :
 				// ./src/projet.g:1:51: T__16
 				{
-				mT__16(); 
+				mT__16();
 
 				}
 				break;
 			case 9 :
 				// ./src/projet.g:1:57: T__17
 				{
-				mT__17(); 
+				mT__17();
 
 				}
 				break;
 			case 10 :
 				// ./src/projet.g:1:63: T__18
 				{
-				mT__18(); 
+				mT__18();
 
 				}
 				break;
 			case 11 :
 				// ./src/projet.g:1:69: T__19
 				{
-				mT__19(); 
+				mT__19();
 
 				}
 				break;
 			case 12 :
 				// ./src/projet.g:1:75: T__20
 				{
-				mT__20(); 
+				mT__20();
 
 				}
 				break;
 			case 13 :
 				// ./src/projet.g:1:81: T__21
 				{
-				mT__21(); 
+				mT__21();
 
 				}
 				break;
 			case 14 :
 				// ./src/projet.g:1:87: T__22
 				{
-				mT__22(); 
+				mT__22();
 
 				}
 				break;
 			case 15 :
 				// ./src/projet.g:1:93: T__23
 				{
-				mT__23(); 
+				mT__23();
 
 				}
 				break;
 			case 16 :
 				// ./src/projet.g:1:99: T__24
 				{
-				mT__24(); 
+				mT__24();
 
 				}
 				break;
 			case 17 :
 				// ./src/projet.g:1:105: T__25
 				{
-				mT__25(); 
+				mT__25();
 
 				}
 				break;
 			case 18 :
 				// ./src/projet.g:1:111: T__26
 				{
-				mT__26(); 
+				mT__26();
 
 				}
 				break;
 			case 19 :
 				// ./src/projet.g:1:117: T__27
 				{
-				mT__27(); 
+				mT__27();
 
 				}
 				break;
 			case 20 :
 				// ./src/projet.g:1:123: T__28
 				{
-				mT__28(); 
+				mT__28();
 
 				}
 				break;
 			case 21 :
 				// ./src/projet.g:1:129: T__29
 				{
-				mT__29(); 
+				mT__29();
 
 				}
 				break;
 			case 22 :
 				// ./src/projet.g:1:135: T__30
 				{
-				mT__30(); 
+				mT__30();
 
 				}
 				break;
 			case 23 :
 				// ./src/projet.g:1:141: T__31
 				{
-				mT__31(); 
+				mT__31();
 
 				}
 				break;
 			case 24 :
 				// ./src/projet.g:1:147: T__32
 				{
-				mT__32(); 
+				mT__32();
 
 				}
 				break;
 			case 25 :
 				// ./src/projet.g:1:153: T__33
 				{
-				mT__33(); 
+				mT__33();
 
 				}
 				break;
 			case 26 :
 				// ./src/projet.g:1:159: T__34
 				{
-				mT__34(); 
+				mT__34();
 
 				}
 				break;
 			case 27 :
 				// ./src/projet.g:1:165: T__35
 				{
-				mT__35(); 
+				mT__35();
 
 				}
 				break;
 			case 28 :
 				// ./src/projet.g:1:171: T__36
 				{
-				mT__36(); 
+				mT__36();
 
 				}
 				break;
 			case 29 :
 				// ./src/projet.g:1:177: T__37
 				{
-				mT__37(); 
+				mT__37();
 
 				}
 				break;
 			case 30 :
 				// ./src/projet.g:1:183: T__38
 				{
-				mT__38(); 
+				mT__38();
 
 				}
 				break;
 			case 31 :
 				// ./src/projet.g:1:189: T__39
 				{
-				mT__39(); 
+				mT__39();
 
 				}
 				break;
 			case 32 :
 				// ./src/projet.g:1:195: T__40
 				{
-				mT__40(); 
+				mT__40();
 
 				}
 				break;
 			case 33 :
 				// ./src/projet.g:1:201: T__41
 				{
-				mT__41(); 
+				mT__41();
 
 				}
 				break;
 			case 34 :
 				// ./src/projet.g:1:207: T__42
 				{
-				mT__42(); 
+				mT__42();
 
 				}
 				break;
 			case 35 :
 				// ./src/projet.g:1:213: T__43
 				{
-				mT__43(); 
+				mT__43();
 
 				}
 				break;
 			case 36 :
 				// ./src/projet.g:1:219: T__44
 				{
-				mT__44(); 
+				mT__44();
 
 				}
 				break;
 			case 37 :
 				// ./src/projet.g:1:225: T__45
 				{
-				mT__45(); 
+				mT__45();
 
 				}
 				break;
 			case 38 :
 				// ./src/projet.g:1:231: T__46
 				{
-				mT__46(); 
+				mT__46();
 
 				}
 				break;
 			case 39 :
 				// ./src/projet.g:1:237: T__47
 				{
-				mT__47(); 
+				mT__47();
 
 				}
 				break;
 			case 40 :
 				// ./src/projet.g:1:243: T__48
 				{
-				mT__48(); 
+				mT__48();
 
 				}
 				break;
 			case 41 :
 				// ./src/projet.g:1:249: T__49
 				{
-				mT__49(); 
+				mT__49();
 
 				}
 				break;
 			case 42 :
 				// ./src/projet.g:1:255: T__50
 				{
-				mT__50(); 
+				mT__50();
 
 				}
 				break;
 			case 43 :
 				// ./src/projet.g:1:261: T__51
 				{
-				mT__51(); 
+				mT__51();
 
 				}
 				break;
 			case 44 :
 				// ./src/projet.g:1:267: T__52
 				{
-				mT__52(); 
+				mT__52();
 
 				}
 				break;
 			case 45 :
 				// ./src/projet.g:1:273: T__53
 				{
-				mT__53(); 
+				mT__53();
 
 				}
 				break;
 			case 46 :
 				// ./src/projet.g:1:279: T__54
 				{
-				mT__54(); 
+				mT__54();
 
 				}
 				break;
 			case 47 :
 				// ./src/projet.g:1:285: ID
 				{
-				mID(); 
+				mID();
 
 				}
 				break;
 			case 48 :
 				// ./src/projet.g:1:288: INT
 				{
-				mINT(); 
+				mINT();
 
 				}
 				break;
 			case 49 :
 				// ./src/projet.g:1:292: WS
 				{
-				mWS(); 
+				mWS();
 
 				}
 				break;
 			case 50 :
 				// ./src/projet.g:1:295: COMMENT
 				{
-				mCOMMENT(); 
+				mCOMMENT();
 
 				}
 				break;
 			case 51 :
 				// ./src/projet.g:1:303: ML_COMMENT
 				{
-				mML_COMMENT(); 
+				mML_COMMENT();
 
 				}
 				break;

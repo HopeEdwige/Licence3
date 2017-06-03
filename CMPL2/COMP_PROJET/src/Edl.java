@@ -8,7 +8,7 @@ public class Edl {
 	static Descripteur[] tabDesc = new Descripteur[MAXMOD+1];
 	static int ipo, nMod, nbErr;
 	static String nomProg;
-	
+
 	// Les tableaux necessaires
 	static String[] nomUnites = new String[MAXMOD+1];
 	static int[] transDon = new int[MAXMOD+1];
@@ -17,7 +17,7 @@ public class Edl {
 	static EltDef[] dicoDef = new EltDef[(MAXMOD+1)*Descripteur.MAXDEF];
 	static int flagDicoDef = 0;
 
-	
+
 	/**
 	 * Verifie si nomProc present dans dicoDef
 	 */
@@ -55,11 +55,11 @@ public class Edl {
 		System.out.print("nom du programme : ");
 		s = Lecture.lireString();
 		nomProg = s;
-		
+
 		// ----- Le programme principal -----
 		tabDesc[0] = new Descripteur();
 		tabDesc[0].lireDesc(s);
-		if (!tabDesc[0].unite.equals("programme")) 
+		if (!tabDesc[0].unite.equals("programme"))
 			erreur(FATALE,"programme attendu");
 
 		// Enregistre le nom du programme
@@ -93,7 +93,7 @@ public class Edl {
 				// Met a jour transDon et transCode
 				transDon[nMod] = transDon[nMod-1] + tabDesc[nMod-1].tailleGlobaux;
 				transCode[nMod] = transCode[nMod-1] + tabDesc[nMod-1].tailleCode;
-				
+
 				// Si tout est bon, ajoute tabDef au dictionnaire
 				for (int i = 1; i <= tabDesc[nMod].nbDef; i++) {
 
@@ -109,7 +109,7 @@ public class Edl {
 					else
 						erreur(NONFATALE, "Double declaration de " + tabDesc[nMod].tabDef[i].nomProc);
 				}
-				
+
 				// Incremente le falg de dico def
 				flagDicoDef += tabDesc[nMod].nbDef;
 			}
@@ -234,7 +234,7 @@ public class Edl {
 		System.out.println("\n Table DicoDef:");
 		for (int i = 1; i <= flagDicoDef; i++)
 			System.out.println("[" + i + "]" + " => (" + dicoDef[i].nomProc + ", " + dicoDef[i].adPo + ", " + dicoDef[i].nbParam + ")");
-	
+
 		System.out.println("\n Table AdFinale:");
 		for (int y = 0; y <= nMod; y++) {
 			System.out.print("[" + y + "]" + " => ");
@@ -256,18 +256,18 @@ public class Edl {
 	 * Le premier est le programme et les autres les modules
 	 */
 	public static void main (String argv[]) {
-		
+
 		// Affichage simple
 		System.out.println("EDITEUR DE LIENS / PROJET LICENCE");
 		System.out.println("---------------------------------");
 		System.out.println("");
-		
+
 		// Initialisations
 		nbErr = 0;
 		ipo = 1;
 		transCode[0] = 0;
 		transDon[0] = 0;
-		
+
 
 
 		// #########################  Phase 1  #########################
@@ -279,20 +279,20 @@ public class Edl {
 
 			// Parcours tabRef
 			for (int j = 1; j <= tabDesc[i].nbRef; j++) {
-				
+
 				// Cherche ref
 				int ref_id = presentDico(tabDesc[i].tabRef[j].nomProc);
-				
+
 				// Si non present dans les defs, erreur
 				if (ref_id == 0)
 					erreur(NONFATALE, "Reference sur procedure non definie");
-				
+
 				// Si ok, l'ajoute a adFinale
 				else
 					adFinale[i][j] = dicoDef[ref_id].adPo;
 			}
 		}
-		
+
 		// Si des erreurs ont ete rencontres
 		if (nbErr > 0) {
 			System.out.println("programme executable non produit");

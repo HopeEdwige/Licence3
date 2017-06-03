@@ -1,5 +1,5 @@
 import java.awt.Frame;
-import java.awt.Font; 
+import java.awt.Font;
 import java.awt.Button;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -114,13 +114,13 @@ public class TpEnsemble {
 	boolean b;
 	do {
 	    b = true;
-	    x = 0;	
+	    x = 0;
 	    System.out.print(s);
 	    try {
 		x = standardInput.nextInt();
 	    }
-	    catch (NumberFormatException e) { 
-		b = false; 
+	    catch (NumberFormatException e) {
+		b = false;
 	    }
 	    b = b && x>=d && x<=f;
 	    if (!b) {

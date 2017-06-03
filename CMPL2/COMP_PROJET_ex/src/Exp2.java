@@ -1,9 +1,9 @@
-// Exp2.java    
+// Exp2.java
 // A. GRAZON - V.MASSON
-// programme fourni aux étudiants qui ne doivent pas le modifier
-// ce programme contient le main qui demande le nom du texte source que l'on souhaite compiler, 
-// et lance sa compilation à partir de l'axiome "unite" de la grammaire Exp2.g
-// il est prévu de pouvoir compiler plusieurs textes source de suite (arrêt par un retour-chariot)
+// programme fourni aux ï¿½tudiants qui ne doivent pas le modifier
+// ce programme contient le main qui demande le nom du texte source que l'on souhaite compiler,
+// et lance sa compilation ï¿½ partir de l'axiome "unite" de la grammaire Exp2.g
+// il est prï¿½vu de pouvoir compiler plusieurs textes source de suite (arrï¿½t par un retour-chariot)
 
 
 import java.io.*;
@@ -12,49 +12,49 @@ import org.antlr.runtime.CommonTokenStream;
 import org.antlr.runtime.RecognitionException;
 
 class Exp2 {
-	public static String nomSource; // nom du source à compiler 
-	
+	public static String nomSource; // nom du source ï¿½ compiler
+
 	private static void UneCompilation (String nomDuSource ) {
 		try {
 			ANTLRFileStream input = new ANTLRFileStream(nomDuSource);
 			Exp2Lexer lexer = new Exp2Lexer(input);
-			CommonTokenStream token_stream = new CommonTokenStream(lexer); // production d'un flot d'unités lexicales
-			Exp2Parser parser = new Exp2Parser(token_stream);   
-			PtGen2.pt(0); // point de génération des initialisations
-			parser.unite(); // Compile le texte source en entrée, l'axiome "unite" est precisé
+			CommonTokenStream token_stream = new CommonTokenStream(lexer); // production d'un flot d'unitï¿½s lexicales
+			Exp2Parser parser = new Exp2Parser(token_stream);
+			PtGen2.pt(0); // point de gï¿½nï¿½ration des initialisations
+			parser.unite(); // Compile le texte source en entrï¿½e, l'axiome "unite" est precisï¿½
 
 		 } catch (FileNotFoundException fnf) {
-			System.out.println("exception: " + fnf); // cas où le fichier source précisé n'existe pas
+			System.out.println("exception: " + fnf); // cas oï¿½ le fichier source prï¿½cisï¿½ n'existe pas
 		}
 		catch (RecognitionException re) {
-	 	    System.out.println("Recognition exception: " + re); // erreur de nature syntaxique détectée par le lexer ou le parser
-			// System.err.println dirige ses impressions sur une autre sortie et les messages ont alors tendance à se superposer
+	 	    System.out.println("Recognition exception: " + re); // erreur de nature syntaxique dï¿½tectï¿½e par le lexer ou le parser
+			// System.err.println dirige ses impressions sur une autre sortie et les messages ont alors tendance ï¿½ se superposer
 		}
 		catch (IOException exc) {
 			System.err.println("IO exception: " + exc);
-		} 	
+		}
 	} // UneCompilation
-	
-	
+
+
 	public static void main(String [] args) {
 		System.out.println("Premier exercice du poly : " + PtGen2.trinome);
 		System.out.println("----------------------------------------");
 		System.out.println();
-		
-		do 
+
+		do
 		 {
-			// lecture du nom de fichier en entrée
-			System.out.println(); 
-		    System.out.print("Donnez le nom du fichier que vous souhaitez compiler :  (RC si terminé) ");
-		    nomSource=Lecture.lireString();  
+			// lecture du nom de fichier en entrï¿½e
+			System.out.println();
+		    System.out.print("Donnez le nom du fichier que vous souhaitez compiler :  (RC si terminï¿½) ");
+		    nomSource=Lecture.lireString();
 		    System.out.println();
-		    
+
 		    if (!nomSource.equals("")) {
-		    	UneCompilation (nomSource); // traitement d'une compilation	
-		    } 
+		    	UneCompilation (nomSource); // traitement d'une compilation
+		    }
 		    System.out.println();
 		 }
-		while (!nomSource.equals("")); 	
-		System.out.println("\n \n Merci pour votre patience, " + PtGen2.trinome + ", et à bientôt !!!");	
-	} 
-} 
+		while (!nomSource.equals(""));
+		System.out.println("\n \n Merci pour votre patience, " + PtGen2.trinome + ", et ï¿½ bientï¿½t !!!");
+	}
+}

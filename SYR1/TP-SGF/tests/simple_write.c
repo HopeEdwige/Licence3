@@ -28,4 +28,3 @@ int main(int argc, char **argv) {
 	printf("Erreur à l'ouverture du fichier");
 	return -1;
 }
-

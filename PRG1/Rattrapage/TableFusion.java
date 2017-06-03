@@ -21,7 +21,7 @@ public class TableFusion {
 				} else {
 					result[k] = x2[j++];
 				}
-				
+
 			} else if (i < x1.length) {
 				result[k] = x1[i++];
 			} else if (j < x2.length) {
@@ -32,12 +32,12 @@ public class TableFusion {
 
 		/*
 		 * while (i < x1.length && j < x2.length) {
-		 * 
+		 *
 		 * if (x1[i] < x2[j]) { result[i + j] = x1[i++]; } else { result[i + j]
 		 * = x2[j++]; } }
-		 * 
+		 *
 		 * while (i < x1.length) { result[i + j] = x1[i++]; }
-		 * 
+		 *
 		 * while (j < x2.length) { result[i + j] = x2[j++]; }
 		 */
 

@@ -2,10 +2,10 @@
  * A class to represent a couple of integers
  */
 public class Pair {
-	
+
 	public int x;
 	public int y;
-	
+
 
 	/**
 	 * The constructor initializes the two attributes
@@ -16,7 +16,7 @@ public class Pair {
 		this.x = a;
 		this.y = b;
 	}
-	
+
 
 	/**
 	 * The constructor initializes the two attributes
@@ -46,7 +46,7 @@ public class Pair {
 		}
 	}
 
-	
+
 	/**
 	 * Get a displayable description of this object and its current state
 	 * @return String A displayable description of this object
@@ -54,7 +54,7 @@ public class Pair {
 	public String toString() {
 	    return "[" + this.x + ", " + this.y + "]";
 	}
-	
+
 
 	/**
 	 * Method to know if the current object is lower than another

@@ -24,8 +24,8 @@ public class SubSet implements SuperT {
 	 * @param SmallSet f The SmallSet to initialize it
 	 */
 	public SubSet(int r, SmallSet f) {
-		rank = r; 
-		set = f; 
+		rank = r;
+		set = f;
 	}
 
 
@@ -56,11 +56,11 @@ public class SubSet implements SuperT {
 	 * @return true if the two objects are equal, false if not
 	 */
 	public boolean equals(Object obj) {
-		if (this == obj) { 
-			return true; 
+		if (this == obj) {
+			return true;
 		}
-		if (!(obj instanceof SubSet)) { 
-			return false; 
+		if (!(obj instanceof SubSet)) {
+			return false;
 		}
 		SubSet f = (SubSet)obj;
 		return f.rank == rank && f.set.equals(set);

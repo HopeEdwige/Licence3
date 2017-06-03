@@ -72,7 +72,7 @@ public class TpListe {
 				menu.add(button);
 			}
 			menu.setVisible(true);
-		} 
+		}
 		catch (AssertionError e) {
 			e.printStackTrace();
 			System.out.println(e.getMessage());

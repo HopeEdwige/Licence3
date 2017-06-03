@@ -5,12 +5,12 @@ import java.util.Scanner;
  * A class to get an array of sorted integers
  */
 public class InsertionInteger {
-	
+
 	private static final int SIZE_MAX = 10;
 	private int size;
 	private int[] array = new int[SIZE_MAX];
 
-	
+
 	/**
 	 * The constructor
 	 * Just initializes the size to 0
@@ -19,7 +19,7 @@ public class InsertionInteger {
 		this.size = 0;
 	}
 
-	
+
 	/**
 	 * Get a copy of the current array
 	 * @return int[] A copy of the current array
@@ -33,8 +33,8 @@ public class InsertionInteger {
 		}
 		return copy;
 	}
-	
-	
+
+
 	/**
 	 * Insert an integer into the current array
 	 * The array is sorted before and after the insertion
@@ -69,34 +69,34 @@ public class InsertionInteger {
 				this.size ++;
 				result = true;
 			}
-			
+
 		}
-		
+
 		return result;
 	}
-	
-	
+
+
 	/**
 	 * Get a displayable description of this object and its current state
 	 * @return String A displayable description of this object
 	 */
 	public String toString() {
 		String ret = "";
-		
+
 		ret = ret + "Array de taille " + this.size + " dont le contenu est [";
-		
+
 		for (int i = 0; i < this.size-1; i++) {
 			ret = ret + this.array[i] + ", ";
 		}
 		ret = ret + this.array[this.size-1] + "].";
-		
+
 		return ret;
 	}
-	
-	
+
+
 	/**
 	 * Initializes the values of the array
-	 * @param Scanner scanner The scanner object where we'll get the inputs
+	 *ï¿½@param Scanner scanner The scanner object where we'll get the inputs
 	 */
 	public void createArray(Scanner scanner) {
 		int entry = scanner.nextInt();
@@ -105,5 +105,5 @@ public class InsertionInteger {
 			entry = scanner.nextInt();
 		}
 	}
-	
+
 }

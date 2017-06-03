@@ -35,12 +35,12 @@ public class NombreMystere {
 		}
 		return count;
 	}
-	
+
 	public static boolean check(int x) {
 		//Create the final tab
 		int[] tabX2 = getTab(x * x);
 		int[] tabX3 = getTab(x * x * x);
-		
+
 		int[] tab = new int[tabX2.length + tabX3.length];
 		for (int tmpx2 = 0; tmpx2 < tabX2.length; tmpx2++) {
 			tab[tmpx2] = tabX2[tmpx2];
@@ -48,7 +48,7 @@ public class NombreMystere {
 		for (int tmpx3 = tabX2.length; tmpx3 < tab.length; tmpx3++) {
 			tab[tmpx3] = tabX3[tmpx3 - tabX2.length];
 		}
-		
+
 		boolean[] ret = new boolean[10];
 		for (int i = 0; i < 10; i++) {
 			ret[i] = false;
@@ -62,7 +62,7 @@ public class NombreMystere {
 				return false;
 			}
 		}
-		
+
 		boolean ok = true;
 		int tmp = 0;
 		while ((ok) && (tmp < 10)) {
@@ -71,7 +71,7 @@ public class NombreMystere {
 			}
 			tmp++;
 		}
-		
+
 		return ok;
 	}
 

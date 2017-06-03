@@ -56,7 +56,7 @@ public class TestOurSet {
 	public void testSetCreation() throws FileNotFoundException {
 		OurSet ourList1 = readFileToOurSet("test-desordre.ens");
 		OurSet ourList2 = readFileToOurSet("f0.ens");
-		assertTrue("set creation désordre", compareOurSets(ourList1, ourList2));
+		assertTrue("set creation dï¿½sordre", compareOurSets(ourList1, ourList2));
 	}
 
 	@Test
@@ -68,7 +68,7 @@ public class TestOurSet {
 		boolean bool4 = ourList.containsAux(22222);
 		assertTrue("apparteance", bool1 && !bool2 && bool3 && !bool4);
 	}
-	
+
 	@Test
 	public void testSetAddition() throws FileNotFoundException {
 		OurSet ourList1 = readFileToOurSet("f0.ens");
@@ -258,9 +258,9 @@ public class TestOurSet {
 				testSparsity(ourList1));
 		assertTrue("symmetric difference f0 et f0 : sparsity 2",
 				testSparsity(ourList2));
-		assertTrue("symmetric difference f0 et f0 : résultat 1",
+		assertTrue("symmetric difference f0 et f0 : rï¿½sultat 1",
 				compareOurSets(ourList1, ourList3));
-		assertTrue("symmetric difference f0 et f0 : résultat 2",
+		assertTrue("symmetric difference f0 et f0 : rï¿½sultat 2",
 				compareOurSets(ourList2, ourList3));
 	}
 

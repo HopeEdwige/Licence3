@@ -136,7 +136,7 @@ int main(int argc, char **argv) {
 	}
 
 	syr1_fclose(file_r);
-	printf("\nNombre d'E/S physiques : %d (%d lectures + %d écritures)\n",physical_io_count, physical_read_count,physical_write_count);	
+	printf("\nNombre d'E/S physiques : %d (%d lectures + %d écritures)\n",physical_io_count, physical_read_count,physical_write_count);
 	printf("\n***********************************************************\n");
 	printf("Test écriture N°5 : relecture du fichier test012.txt \n");
 	file_r = syr1_fopen("test012.txt", "r");
@@ -210,7 +210,7 @@ int main(int argc, char **argv) {
 		int nbcar = 0;
 		int res = syr1_getc(file_r);
 		int nberreur = 0;
-	
+
 		while ((res >= 0) && (nberreur < 5)) {
 			if (res != ('A' + (nbcar % 10))) {
 				printf("[FAILED] Erreur de relecture '%c/%02X' attendu mais '%c/%02X' lu\n",

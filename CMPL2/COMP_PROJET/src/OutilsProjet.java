@@ -1,12 +1,12 @@
 import java.io.*;
 
-class Mnemo { 
+class Mnemo {
 
-    // La procedure Mnemo.creerFichier(int ipo,int[] po,String nomComplet) 
-    // permet d'obtenir, dans le fichier de nom nomComplet (ie AVEC suffixe 
+    // La procedure Mnemo.creerFichier(int ipo,int[] po,String nomComplet)
+    // permet d'obtenir, dans le fichier de nom nomComplet (ie AVEC suffixe
     // .gen ou .ima), le mnemonique du code contenu dans le tableau po[1..ipo] 
     // Les tableaux inst et nbp sont "public" car ils servent dans Mapile
- 
+
     public static final String [] inst =
     {"",
      "reserver  ","empiler   ","contenug  ","affecterg ","ou        ",
@@ -15,10 +15,10 @@ class Mnemo {
      "mul       ","div       ","bsifaux   ","bincond   ","lirent    ",
      "lirebool  ","ecrent    ","ecrbool   ","arret     ","empileradg",
      "empileradl","contenul  ","affecterl ","appel     ","retour    "};
-	
+
     public static final int [] nbp =
     {0,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,1,2,2,2,2,1};
-	
+
     public static void creerFichier(int ipo,int[] po,String nomComplet) {
 	int code,i=1;
 	OutputStream f=Ecriture.ouvrir(nomComplet);
@@ -38,13 +38,13 @@ class Mnemo {
 				   +nomComplet);
 		System.exit(1);
 	    }
-	    Ecriture.ecrireString(f,"  "+inst[code]);	
+	    Ecriture.ecrireString(f,"  "+inst[code]);
 	    switch (nbp[code]) {
 	    case 1 : i++;Ecriture.ecrireInt(f,po[i],7);break;
 	    case 2 : i++;Ecriture.ecrireInt(f,po[i],7);
 		     i++;Ecriture.ecrireInt(f,po[i],4);break;
-	    }	    
-	    i++;Ecriture.ecrireStringln(f,"");    
+	    }
+	    i++;Ecriture.ecrireStringln(f,"");
 	}
 	Ecriture.fermer(f);
     }
@@ -53,13 +53,13 @@ class Mnemo {
 
 
 
-// Les classes suivantes permettent de declarer un descripteur : 
+// Les classes suivantes permettent de declarer un descripteur :
 // EltDef : type de chaque element de la table des points d'entree tabDef
 // EltRef : type de chaque element de la table des references externes tabRef
 // Descripteur : type d'un descripteur, les procedures ecrireDesc/lireDesc
 //               permettent la sauvegarde/initialisation d'une variable
-//               Descripteur vers/a partir d'un fichier dont le nom est fourni 
-//               SANS suffixe (celui-ci est ajoute par les deux procedures et 
+//               Descripteur vers/a partir d'un fichier dont le nom est fourni
+//               SANS suffixe (celui-ci est ajoute par les deux procedures et
 //               est ".desc")
 
 
@@ -71,7 +71,7 @@ class EltDef {
 	this.nomProc=nomProc;this.adPo=adPo;this.nbParam=nbParam;
 	}
 }
-    
+
 class EltRef {
     public String nomProc;
     public int nbParam;
@@ -83,7 +83,7 @@ class EltRef {
 
 
 class Descripteur {
-    //valeurs du vecteur de translation 
+    //valeurs du vecteur de translation
     public static final int TRANSDON=1,TRANSCODE=2,REFEXT=3;
 
     public String unite;
@@ -93,7 +93,7 @@ class Descripteur {
     public EltDef [] tabDef = new EltDef [MAXDEF+1];
     public EltRef [] tabRef = new EltRef [MAXREF+1];
 
-    public Descripteur() { 
+    public Descripteur() {
 	for (int i=0;i<=MAXDEF;i++) tabDef[i]=new EltDef("inconnu",-2,-2);
 	for (int i=0;i<=MAXREF;i++) tabRef[i]=new EltRef("inconnu",-2);
     }
@@ -107,11 +107,11 @@ class Descripteur {
 	    "nbRef          "+nbRef+"\n"+
 	    "nbTransExt     "+nbTransExt+"\n"+
 	    "tabDef         "+" \n";
-	for (int i=1;i<=nbDef;i++) 
+	for (int i=1;i<=nbDef;i++)
 	    s=s+"    "+tabDef[i].nomProc+"  "+tabDef[i].adPo+"  "+
 		tabDef[i].nbParam+"\n";
 	s=s+"tabRef         "+" \n";
-	for (int i=1;i<=nbRef;i++) 
+	for (int i=1;i<=nbRef;i++)
 	    s=s+"    "+tabRef[i].nomProc+"  "+tabRef[i].nbParam+"\n";
 	return s;
     }

@@ -43,12 +43,12 @@ public class Boules {
 						s++;
 					}
 					break;
-					
+
 				//If a white one
 				case 'b':
 					s++;
 					break;
-				
+
 				//If a red one
 				case 'r':
 					if (tableauBoules[t] == 'r'){
@@ -58,14 +58,14 @@ public class Boules {
 						t--;
 					}
 					break;
-					
+
 				//If there's an error
 				default:
 					Ecriture.ecrireString("Erreur : s = " + s + ", boule = " + tableauBoules[s]);
 					System.exit(0);
 					break;
 			}
-			
+
 			//Display a picture at the moment
 			photo(r, s, t, tableauBoules);
 		}
@@ -75,7 +75,7 @@ public class Boules {
 		ecrireTableauBoules(tableauBoules);
 		Ecriture.ecrireStringln("");
 	}
-	
+
 
 	/**
 	 * Read the list of balls enterred by the user
@@ -87,7 +87,7 @@ public class Boules {
 		while (i < nombreBoules) {
 			char c = Lecture.lireChar();
 			tab[i] = c;
-			
+
 			if (c == '\n') {
 				i--;
 			} else {
@@ -96,7 +96,7 @@ public class Boules {
 		}
 		return tab;
 	}
-	
+
 
 	/**
 	 * Write the list of balls on the output screen
@@ -107,20 +107,20 @@ public class Boules {
 			Ecriture.ecrireChar(tab[i]);
 		}
 	}
-	
+
 
 	/**
 	 * Switch two balls in the table
 	 * @param i The index of the first one
 	 * @param j The index of the second
-	 * @param tab The balls table 
+	 * @param tab The balls table
 	 */
 	private static void echange(int i, int j, char[] tab) {
 		char c = tab[i];
 		tab[i] = tab[j];
 		tab[j] = c;
 	}
-	
+
 
 	/**
 	 * Take a picture at a given moment

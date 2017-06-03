@@ -7,7 +7,7 @@ module m2ess1:
 	debut
 		n:=0;
 	fin;
-	
+
 	proc ajout2 fixe (ent y)
 	debut
 		si n=0 alors min:=y; max:=y

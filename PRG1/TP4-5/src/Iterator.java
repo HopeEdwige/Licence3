@@ -4,7 +4,7 @@ public interface Iterator <T> {
 	public void goBackward();
 	public void restart();
 	public boolean isOnFlag();
-	public void remove(); 
+	public void remove();
 	public T getValue();
 	public T nextValue();
 	public void addLeft(T v);

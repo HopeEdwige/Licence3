@@ -10,6 +10,6 @@ fin;
 
 debut
 	lire(n);
-	fact(n)(fn); 
+	fact(n)(fn);
 	ecrire(fn);
 fin
